@@ -1,5 +1,5 @@
 import numpy as np
-import globals as m
+import globals as g
 
 def k():
     try:
@@ -13,14 +13,14 @@ def k():
 
 def encrypt(text, K):
     listcrypt= []
-    x= m.chartonum(text)
+    x= g.chartonum(text)
     for i in x:
         listcrypt.append((i+K)%26)
-    return m.numtochar(listcrypt)
+    return g.numtochar(listcrypt)
 
 def desencrypt(text, K):
     listcrypt= []
-    x= m.chartonum(text)
+    x= g.chartonum(text)
     for i in x:
         listcrypt.append((i-K)%26)
-    return m.numtochar(listcrypt)
+    return g.numtochar(listcrypt)
