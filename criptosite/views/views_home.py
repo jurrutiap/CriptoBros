@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.template.loader import get_template
+from django.shortcuts import render
 
 
-def home(self):
-    plantilla = get_template('index.html')
-    return HttpResponse(plantilla.render())
+def home(request):
+    return render(request, 'index.html')
 
 def sistema1(self):
     return HttpResponse('Pagina sistema 1 🔥')
