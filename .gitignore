@@ -1,5 +1,6 @@
 # Virtual-Environment
 .venv-cripto
+.venv
 
 # Byte-compiled / optimized / DLL files
 criptosite/criptosite/__pycache__/
