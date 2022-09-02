@@ -1,5 +1,5 @@
 # Implementation of Affine Cipher in Python
-
+import globals as g
 # Extended Euclidean Algorithm for finding modular inverse
 # eg: modinv(7, 26) = 15
 def egcd(a, b):
@@ -26,8 +26,9 @@ def affine_encrypt(text, key):
     '''
 	C = (a*P + b) % 26
 	'''
-    return ''.join([chr(((key[0] * (ord(t) - ord('A')) + key[1]) % 26)
-                        + ord('A')) for t in text.upper().replace(' ', '')])
+    text= g.chartonum(text)
+    return ''.join([chr(((key[0] * (t) + key[1]) % 26)
+                        + ord('A')) for t in text])
 
 
 # affine cipher decryption function
@@ -36,15 +37,16 @@ def affine_decrypt(cipher, key):
     '''
 	P = (a^-1 * (C - b)) % 26
 	'''
-    return ''.join([chr(((modinv(key[0], 26) * (ord(c) - ord('A') - key[1]))
+    cipher=g.chartonum(cipher)
+    return ''.join([chr(((modinv(key[0], 26) * (c - key[1]))
                          % 26) + ord('A')) for c in cipher])
 
 
 # Driver Code to test the above functions
 def main():
     # declaring text and key
-    text = 'AFFINE CIPHER'
-    key = [17, 20]
+    text = str(input("message"))#'AFFINE CIPHER'
+    key = list(map(int, str(input("key")).split())) #17,20
 
     # calling encryption function
     affine_encrypted_text = affine_encrypt(text, key)
@@ -58,5 +60,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-# This code is contributed by
-# Bhushan Borole
