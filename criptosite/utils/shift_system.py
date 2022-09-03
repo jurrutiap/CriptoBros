@@ -24,3 +24,8 @@ def desencrypt(text, K):
     for i in x:
         listcrypt.append((i-K)%26)
     return g.numtochar(listcrypt)
+
+if __name__ == "__main__":
+    message = str(input("Message:"))  # "MYSECRETMESSAGE"
+    key= k()
+    print(encrypt(message,key))

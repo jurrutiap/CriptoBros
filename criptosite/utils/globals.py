@@ -1,6 +1,6 @@
 def chartonum (text):
     numlist=[]
-    y= text.lower().replace(" ", "")
+    y= ''.join(ch for ch in text if ch.isalpha()).lower()
     x = list(y)
     for i in x:
         numlist.append(abs(ord(i)-97))
