@@ -11,7 +11,7 @@ def generateKey(string, key):
                 key.append(key[i % len(key)])
         return "".join(key)
     else:
-        quit()
+        raise Exception("La clave es mas grande que el texto")
 
 def cipherText(string, key):
     cipher_text = []
