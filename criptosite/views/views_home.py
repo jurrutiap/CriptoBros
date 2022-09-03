@@ -6,5 +6,5 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'index.html')
 
-def sistema1(self):
-    return HttpResponse('Pagina sistema 1 🔥')
+def sistema1(request):
+    return render(request, 'tables.html')
