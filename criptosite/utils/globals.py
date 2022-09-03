@@ -10,4 +10,4 @@ def numtochar(text):
     charlist=""
     for i in text:
         charlist+= chr(i+97)
-    return charlist
+    return charlist.upper()

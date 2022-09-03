@@ -56,7 +56,7 @@ def descifrarMensaje(key, message):
             col = 0
             row += 1
 
-    return "".join(plainText)
+    return "".join(plainText).upper()
 
 if __name__ == '__main__':
     main()

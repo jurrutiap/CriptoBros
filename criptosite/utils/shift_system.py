@@ -23,7 +23,8 @@ def desencrypt(text, K):
     x= g.chartonum(text)
     for i in x:
         listcrypt.append((i-K)%26)
-    return g.numtochar(listcrypt)
+    y= g.numtochar(listcrypt)
+    return y.upper()
 
 if __name__ == "__main__":
     message = str(input("Message:"))  # "MYSECRETMESSAGE"

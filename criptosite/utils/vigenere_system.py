@@ -30,7 +30,7 @@ def DecryptedText(cipher_text, key):
     for i in range(len(cipher_text)):
         x = (cipher_text[i] - key[i] + 26) % 26
         orig_text.append(x)
-    return ("".join(g.numtochar(orig_text)))
+    return ("".join(g.numtochar(orig_text))).upper()
 
 
 if __name__ == "__main__":
