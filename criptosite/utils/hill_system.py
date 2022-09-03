@@ -1,3 +1,4 @@
+from pydoc import plain
 import numpy as np
 import globals as g
 
@@ -11,6 +12,10 @@ def encrypt(P, K):
         cipherMatrix[j] = cipherMatrix[j] % 26
     return cipherMatrix
 
+def dencrypt(cipher_text, K):
+    K_inv = MatrixInverse(K)            
+    plain_text = Hill(cipher_text, K_inv)
+    return plain_text
 
 def Hill(message, K):
     text = []
@@ -58,12 +63,41 @@ def create_matrix_from(key):
             m[i][j] = key[n * i + j]
     return m
 
+def k():
+    control= True
+    while control:
+        try:
+            K= str(input('Introducir Key:'))
+            if K == "":
+                raise Exception("Vacio")
+            try:
+                if(len(K)%3 == 0 or len(K)%4 == 0):
+                    print(K)
+                    control = False
+            except:
+                pass
+        except:
+            L=[]
+            r= np.random.randint(1)
+            if r == 0:
+                for _ in range(9):
+                    L.append(np.random.randint(26))
+            elif r == 1:
+                for _ in range(16):
+                    L.append(np.random.randint(26))
+            K= g.numtochar(L)
+            print("Se eligio una clave random")
+            print(K)
+            control = False
+    return K
 
 if __name__ == "__main__":
     message = str(input("Message:"))  # "MYSECRETMESSAGE"
-    key = str(input("Key:"))  # "RRFVSVCCT"
+    key = k()  # "RRFVSVCCT"
     # Create the matrix K that will be used as the key
     K = create_matrix_from(key)
     # C = P * K mod 26
     cipher_text = Hill(message, K)
     print('Cipher text: ', cipher_text)
+    decipher_text = dencrypt(cipher_text, K)
+    print('Decipher text: ', decipher_text)
