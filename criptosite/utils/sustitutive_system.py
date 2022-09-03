@@ -17,10 +17,11 @@ def k(text):
     while control:
         try:
             K= int(input('Introducir Key [2-%s]: ' % (len(text) - 1)))
-            if (K>2 and K<(len(text)-1)):
-                print(K)
-                control = False
-            else:
+            try:
+                if(K>2 and K<(len(text)-1)):
+                    print(K)
+                    control = False
+            except:
                 pass
         except:
             K= np.random.randint(2,(len(text) - 1))
