@@ -7,4 +7,4 @@ def home(request):
     return render(request, 'index.html')
 
 def sistema1(request):
-    return render(request, 'tables.html')
+    return render(request, 'shift_system.html')
