@@ -379,7 +379,7 @@
                                 <div class="card-body">
                                     <form action="/shift_system.php">
                                         <div class="chart-area">
-                                            <textarea name='textC' class="form-control" rows="12"></textarea>
+                                            <textarea name='textC' class="form-control" rows="12" required></textarea>
                                         </div>
                                         <input class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
@@ -392,10 +392,12 @@
                                     <h6 class="m-1 font-weight-bold text-primary">Decrypt</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart-bar">
-                                        <textarea class="form-control" rows="12"></textarea>
-                                    </div>
-                                    <input class="btn btn-primary btn-block" type="submit" value="Submit">
+                                    <form action="/shift_system.php">
+                                        <div class="chart-bar">
+                                            <textarea name='textE' class="form-control" rows="12" required></textarea>
+                                        </div>
+                                        <input class="btn btn-primary btn-block" type="submit" value="Submit">
+                                    </form>
                                 </div>
                             </div>
 
