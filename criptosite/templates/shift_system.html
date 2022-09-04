@@ -386,7 +386,7 @@
                                             <div class="input-group-prepend">
                                               <span class="input-group-text" id="inputGroup-sizing-default">K</span>
                                             </div>
-                                            <input name='k1' id='k1' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{  k1  }}
+                                            <input type="text" name='k1' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                                         </div>
                                         <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
@@ -408,7 +408,7 @@
                                             <div class="input-group-prepend">
                                               <span class="input-group-text" id="inputGroup-sizing-default">K</span>
                                             </div>
-                                            <input name='k2' id='k2' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{  k2  }}
+                                            <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                                         </div>
                                         <input name="desencrypt"class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
@@ -419,24 +419,6 @@
 
                         <!-- Inputs Chart -->
                         <div class="col-xl-4 col-lg-5">
-                            <!-- <div class="card shadow mb-4">
-                                 Card Header - Dropdown
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Inputs</h6>
-                                </div>
-                                Card Body
-                                <div class="card-body">
-                                    <form method="POST" action="" target="_self">
-                                        {% csrf_token %} 
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                              <span class="input-group-text" id="inputGroup-sizing-default">K</span>
-                                            </div>
-                                            <input name='K' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{  K  }}
-                                        </div>
-                                    </form>
-                                </div>
-                            </div> -->
                             <!-- Outputs Chart -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -446,8 +428,16 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <textarea class="form-control" rows="12">{{ data }}</textarea>
-                                    </div>
+                                        <textarea class="form-control" rows="10">{{ data }}</textarea>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">K used to encrypt</span>
+                                            <textarea class="form-control" rows="1">{{ k1 }}</textarea>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">K used to dencrypt</span>
+                                            <textarea class="form-control" rows="1">{{ k2 }}</textarea>
+                                        </div>
+                                    </div>         
                                 </div>
                             </div>
                         </div>

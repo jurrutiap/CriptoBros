@@ -1,14 +1,11 @@
 import numpy as np
 import utils.globals as g
 
-def k():
+def k(k):
     try:
-        K= int(input())%26
-        print(K)
+        K= int(k)%26
     except:
         K = np.random.randint(26)
-        print("Se eligio una clave random")
-        print(K)
     return K
 
 def encrypt(text, K):

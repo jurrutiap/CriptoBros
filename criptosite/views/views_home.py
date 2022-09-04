@@ -15,12 +15,14 @@ def sistema1(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
             message = request.POST['textC']
-            data = shift.encrypt(message, 1)
-            return render(request, 'shift_system.html', {'data':data, 'clear': message})
+            k= shift.k(request.POST['k1'])
+            data = shift.encrypt(message, k)
+            return render(request, 'shift_system.html', {'data':data, 'clear': message, 'k1':k})
 
         if 'desencrypt' in request.POST:
             message = request.POST['textE']
-            data = shift.desencrypt(message, 1)
-            return render(request, 'shift_system.html', {'data':data, 'cipher': message})
+            k= shift.k(request.POST['k2'])
+            data = shift.desencrypt(message, k)
+            return render(request, 'shift_system.html', {'data':data, 'cipher': message, 'k2':k})
 
-    return render(request, 'multiplicative_system.html')
+    return render(request, 'shift_system.html')
