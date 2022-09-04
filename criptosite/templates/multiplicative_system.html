@@ -362,9 +362,9 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Shift Cipher</h1>
-                    <p class="mb-4">The Caesar Cipher is a type of shift cipher. Shift Ciphers work by using the modulo operator to encrypt and decrypt messages. 
-                        The Shift Cipher has a key K, which is an integer from 0 to 25. We will only share this key with people that we want to see our message. </p>
+                    <h1 class="h3 mb-2 text-gray-800">Multiplicative Cipher</h1>
+                    <p class="mb-4">Multiplicative Ciphers work by using the modulo operator to encrypt and decrypt messages. 
+                        The Multiplicative Cipher has a key K, which is an integer from 0 to 25. We will only share this key with people that we want to see our message. </p>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -380,13 +380,7 @@
                                     <form method="POST" action="" target="_self">
                                         {% csrf_token %} 
                                         <div class="chart-area">
-                                            <textarea name='textC' class="form-control" rows="11" required>{{ clear }}</textarea>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                              <span class="input-group-text" id="inputGroup-sizing-default">K</span>
-                                            </div>
-                                            <input name='k1' id='k1' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{  k1  }}
+                                            <textarea name='textC' class="form-control" rows="12" required>{{ clear }}</textarea>
                                         </div>
                                         <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
@@ -402,13 +396,7 @@
                                     <form method="POST" action="", target="_self">
                                         {% csrf_token %} 
                                         <div class="chart-area">
-                                            <textarea name='textE' class="form-control" rows="11" required>{{ cipher }}</textarea>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                              <span class="input-group-text" id="inputGroup-sizing-default">K</span>
-                                            </div>
-                                            <input name='k2' id='k2' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{  k2  }}
+                                            <textarea name='textE' class="form-control" rows="12" required>{{ cipher }}</textarea>
                                         </div>
                                         <input name="desencrypt"class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
@@ -419,24 +407,21 @@
 
                         <!-- Inputs Chart -->
                         <div class="col-xl-4 col-lg-5">
-                            <!-- <div class="card shadow mb-4">
-                                 Card Header - Dropdown
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Inputs</h6>
                                 </div>
-                                Card Body
+                                <!-- Card Body -->
                                 <div class="card-body">
-                                    <form method="POST" action="" target="_self">
-                                        {% csrf_token %} 
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                              <span class="input-group-text" id="inputGroup-sizing-default">K</span>
-                                            </div>
-                                            <input name='K' type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{  K  }}
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text" id="inputGroup-sizing-default">K</span>
                                         </div>
-                                    </form>
+                                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                    </div>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Outputs Chart -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
