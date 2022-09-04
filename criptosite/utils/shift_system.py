@@ -1,5 +1,5 @@
 import numpy as np
-import globals as g
+import utils.globals as g
 
 def k():
     try:

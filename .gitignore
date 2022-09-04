@@ -5,3 +5,4 @@
 # Byte-compiled / optimized / DLL files
 criptosite/criptosite/__pycache__/
 criptosite/views/__pycache__/
+criptosite/utils/__pycache__/

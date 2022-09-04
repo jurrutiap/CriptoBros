@@ -377,11 +377,12 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Encrypt</h6>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/shift_system.php">
+                                    <form method="POST" action="" target="_self">
+                                        {% csrf_token %} 
                                         <div class="chart-area">
-                                            <textarea name='textC' class="form-control" rows="12" required></textarea>
+                                            <textarea name='textC' class="form-control" rows="12" required>{{ clear }}</textarea>
                                         </div>
-                                        <input class="btn btn-primary btn-block" type="submit" value="Submit">
+                                        <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
                                 </div>
                             </div>
@@ -392,11 +393,12 @@
                                     <h6 class="m-1 font-weight-bold text-primary">Decrypt</h6>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/shift_system.php">
-                                        <div class="chart-bar">
-                                            <textarea name='textE' class="form-control" rows="12" required></textarea>
+                                    <form method="POST" action="", target="_self">
+                                        {% csrf_token %} 
+                                        <div class="chart-area">
+                                            <textarea name='textE' class="form-control" rows="12" required>{{ cipher }}</textarea>
                                         </div>
-                                        <input class="btn btn-primary btn-block" type="submit" value="Submit">
+                                        <input name="desencrypt"class="btn btn-primary btn-block" type="submit" value="Submit">
                                     </form>
                                 </div>
                             </div>
@@ -429,7 +431,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <textarea class="form-control" rows="12"></textarea>
+                                        <textarea class="form-control" rows="12">{{ data }}</textarea>
                                     </div>
                                 </div>
                             </div>
