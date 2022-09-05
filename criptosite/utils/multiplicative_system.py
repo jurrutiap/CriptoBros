@@ -1,23 +1,21 @@
 import math as m
+from tkinter import E
 import numpy as np
-import globals as g
+import utils.globals as g
 
-def k():
+def k(k):
     control= True
     while control:
         try:
-            K= int(input())%26
-            if m.gcd(K,26) == 1:
-                print(K)
+            if m.gcd(int(k),26) == 1:
+                K= int(k)%26
                 control = False
             else:
-                pass
+                raise Exception("K invalid")
         except:
             x= [3,5,7,9,11,15,17,19,21,23,25]
             y= np.random.randint(len(x))
             K = x[y]
-            print("Se eligio una clave random")
-            print(K)
             control = False
     return K
 
