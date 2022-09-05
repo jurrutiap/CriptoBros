@@ -11,7 +11,7 @@ import utils.shift_system as shift
 def home(request):
     return render(request, 'index.html')
 
-def sistema1(request, *textC):
+def shift_view(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
             message = request.POST['textC']

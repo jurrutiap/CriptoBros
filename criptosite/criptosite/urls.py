@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from views.views_home import home, sistema1
+from views.views_home import home, shift_view
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('sistema1/', sistema1, name='sistema1'),
+    path('shift/', shift_view, name='shift_view'),
 ]
 urlpatterns += staticfiles_urlpatterns()
