@@ -9,6 +9,7 @@ sys.path.append("..")
 import utils.shift_system as shift
 import utils.multiplicative_system as mp
 import utils.sustitutive_system as sus
+import utils.vigenere_system as vs
 
 def home(request):
     return render(request, 'index.html')
@@ -60,3 +61,19 @@ def sustitutive_view(request, *textC):
             return render(request, 'sustitutive_system.html', {'data':data, 'cipher': message, 'k2':k})
 
     return render(request, 'sustitutive_system.html')
+
+def vigenere_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            k= vs.generateKey(message, request.POST['k1'])
+            data = vs.cipherText(message, k)
+            return render(request, 'vigenere_system.html', {'data':data, 'clear': message, 'k1':k})
+
+        if 'desencrypt' in request.POST:
+            message = request.POST['textE']
+            k= vs.generateKey(message, request.POST['k2'])
+            data = vs.DecryptedText(message, k)
+            return render(request, 'vigenere_system.html', {'data':data, 'cipher': message, 'k2':k})
+
+    return render(request, 'vigenere_system.html')

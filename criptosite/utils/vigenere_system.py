@@ -1,24 +1,30 @@
-import globals as g
+import utils.globals as g
+import numpy as np
 
 
 def generateKey(string, key):
-    key = list(key)
-    if len(string) > len(key):
-        if len(string) == len(key):
-            return (key)
+    try:
+        if key == '':
+            raise Exception("La clave es mas grande que el texto")
+        elif len(string) > len(key):
+            key = list(key)
+            return "".join(key)
         else:
-            for i in range(len(string) - len(key)):
-                key.append(key[i % len(key)])
-        return "".join(key)
-    else:
-        raise Exception("La clave es mas grande que el texto")
+            raise Exception("La clave es mas grande que el texto")
+    except:
+        y= []
+        x= np.random.randint(1, len(string))
+        for _ in range(x):
+            y.append(np.random.randint(26))
+        key = g.numtochar(y)
+        return key
 
 def cipherText(string, key):
     cipher_text = []
     string = g.chartonum(string)
     key = g.chartonum(key)
     for i in range(len(string)):
-        x = (string[i] + key[i]) % 26
+        x = (string[i] + key[i%len(key)]) % 26
         cipher_text.append(x)
     return "".join(g.numtochar(cipher_text).upper())
 
@@ -28,7 +34,7 @@ def DecryptedText(cipher_text, key):
     cipher_text = g.chartonum(cipher_text)
     key = g.chartonum(key)
     for i in range(len(cipher_text)):
-        x = (cipher_text[i] - key[i] + 26) % 26
+        x = (cipher_text[i] - key[i%len(key)] + 26) % 26
         orig_text.append(x)
     return ("".join(g.numtochar(orig_text))).upper()
 

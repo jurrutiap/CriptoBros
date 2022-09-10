@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from views.views_home import home, shift_view, multiplicative_view, sustitutive_view
+from views.views_home import home, shift_view, multiplicative_view, sustitutive_view, vigenere_view
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -24,5 +24,6 @@ urlpatterns = [
     path('shift/', shift_view, name='shift_view'),
     path('multiplicative/', multiplicative_view, name='multiplicative_view'),
     path('sustitutive/', sustitutive_view, name='sustitutive_view'),
+    path('vigenere/', vigenere_view, name='vigenere_view'),
 ]
 urlpatterns += staticfiles_urlpatterns()
