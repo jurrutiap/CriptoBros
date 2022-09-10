@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django import forms
 
 import sys
+import mimetypes
 sys.path.append("..")
 
 import utils.shift_system as shift
@@ -77,3 +78,17 @@ def vigenere_view(request, *textC):
             return render(request, 'vigenere_system.html', {'data':data, 'cipher': message, 'k2':k})
 
     return render(request, 'vigenere_system.html')
+
+def download_file(request):
+    # Define text file name
+    filename = 'utils/text.txt'
+    # Open the file for reading content
+    path = open(filename, 'r')
+    # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filename)
+    # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type=mime_type)
+    # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # Return the response value
+    return response

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from views.views_home import download_file
 from views.views_home import home, shift_view, multiplicative_view, sustitutive_view, vigenere_view
 
 urlpatterns = [
@@ -25,5 +26,6 @@ urlpatterns = [
     path('multiplicative/', multiplicative_view, name='multiplicative_view'),
     path('sustitutive/', sustitutive_view, name='sustitutive_view'),
     path('vigenere/', vigenere_view, name='vigenere_view'),
+    path('download/', download_file, name='download_file'),
 ]
 urlpatterns += staticfiles_urlpatterns()
