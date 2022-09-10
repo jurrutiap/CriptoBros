@@ -8,6 +8,7 @@ sys.path.append("..")
 
 import utils.shift_system as shift
 import utils.multiplicative_system as mp
+import utils.sustitutive_system as sus
 
 def home(request):
     return render(request, 'index.html')
@@ -43,3 +44,19 @@ def multiplicative_view(request, *textC):
             return render(request, 'multiplicative_system.html', {'data':data, 'cipher': message, 'k2':k})
 
     return render(request, 'multiplicative_system.html')
+
+def sustitutive_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            k= sus.k(request.POST['k1'], message)
+            data = sus.encrypt(k, message)
+            return render(request, 'sustitutive_system.html', {'data':data, 'clear': message, 'k1':k})
+
+        if 'desencrypt' in request.POST:
+            message = request.POST['textE']
+            k= sus.k(request.POST['k2'], message)
+            data = sus.desencrypt(k, message)
+            return render(request, 'sustitutive_system.html', {'data':data, 'cipher': message, 'k2':k})
+
+    return render(request, 'sustitutive_system.html')

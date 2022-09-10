@@ -2,35 +2,18 @@ import math as m
 import numpy as np
 
 # Función principal
-def main():
-    message = input('Introducir Mensaje: ').lower()
-    key = k(message)
-    cifrado = cifrarMensaje(key, message)
-    print('cifrado:\n%s' %(cifrado))
-    print("\n")
-    descifrado = descifrarMensaje(key, cifrado)
-    print('descifrado:\n%s' %(descifrado))
-    print("\n")
 
-def k(text):
-    control= True
-    while control:
-        try:
-            K= int(input('Introducir Key [2-%s]: ' % (len(text) - 1)))
-            try:
-                if(K>2 and K<(len(text)-1)):
-                    print(K)
-                    control = False
-            except:
-                pass
-        except:
-            K= np.random.randint(2,(len(text) - 1))
-            print("Se eligio una clave random")
-            print(K)
-            control = False
+def k(k, text):
+    try:
+        if(int(k)>2 and int(k)<(len(text)-1)):
+            K = int(k)
+        else:
+            raise Exception("K invalida")
+    except:
+        K= np.random.randint(2,(len(text) - 1))
     return K
 
-def cifrarMensaje(key, message):
+def encrypt(key, message):
 
     cipherText = [''] * key
     for col in range(key):
@@ -40,7 +23,7 @@ def cifrarMensaje(key, message):
             pointer += key
     return ''.join(cipherText)
 
-def descifrarMensaje(key, message):
+def desencrypt(key, message):
 
     numCols = m.ceil(len(message) / key)
     numRows = key
@@ -57,6 +40,3 @@ def descifrarMensaje(key, message):
             row += 1
 
     return "".join(plainText).upper()
-
-if __name__ == '__main__':
-    main()
