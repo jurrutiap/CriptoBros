@@ -1,12 +1,20 @@
 # Python program to demonstrate
 # Substitution Cipher
 import string
+import numpy as np
 
 """
 create a dictionary to store the substitution
 for the given alphabet in the cipher
 text based on the key
 """
+
+def k(k):
+    try:
+        K= int(k)
+    except:
+        K= np.random.randint(100000000)
+    return K
 
 def cipher_text(plain_txt,key):
     dict1 = {}
@@ -22,7 +30,7 @@ def cipher_text(plain_txt,key):
             temp = char
             cipher_txt.append(temp)
 
-    return "".join(cipher_txt)
+    return "".join(cipher_txt).upper()
 
 
 """
@@ -46,7 +54,7 @@ def DecryptedText(ciphertext, key):
             temp = char
             decrypt_txt.append(temp)
 
-    return "".join(decrypt_txt)
+    return "".join(decrypt_txt).upper()
 
 
 if __name__ == "__main__":

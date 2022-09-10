@@ -10,6 +10,7 @@ import utils.shift_system as shift
 import utils.multiplicative_system as mp
 import utils.sustitutive_system as sus
 import utils.vigenere_system as vs
+import utils.substitution_system as sb
 
 def home(request):
     return render(request, 'index.html')
@@ -77,3 +78,19 @@ def vigenere_view(request, *textC):
             return render(request, 'vigenere_system.html', {'data':data, 'cipher': message, 'k2':k})
 
     return render(request, 'vigenere_system.html')
+
+def substitution_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            k= sb.k(request.POST['k1'])
+            data = sb.cipher_text(message, k)
+            return render(request, 'substitution_system.html', {'data':data, 'clear': message, 'k1':k})
+
+        if 'desencrypt' in request.POST:
+            message = request.POST['textE']
+            k= sb.k(request.POST['k2'])
+            data = sb.DecryptedText(message, k)
+            return render(request, 'substitution_system.html', {'data':data, 'cipher': message, 'k2':k})
+
+    return render(request, 'substitution_system.html')
