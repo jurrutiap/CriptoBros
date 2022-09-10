@@ -10,8 +10,6 @@ def ShiftCipherCryptanalysis(text):
         PossibleTexts.append(f"Assuming the key is {des}, the text is \n {posibleText}")
     return PossibleTexts
 
-
-
 if __name__ == "__main__":
     message = str(input("Message:"))  # "MYSECRETMESSAGE"
     decriptedTexts =ShiftCipherCryptanalysis(message)
