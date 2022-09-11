@@ -12,6 +12,7 @@ import utils.multiplicative_system as mp
 import utils.sustitutive_system as sus
 import utils.vigenere_system as vs
 import utils.substitution_system as sb
+import utils.shift_crypto_analisis as shiftA
 
 def home(request):
     return render(request, 'index.html')
@@ -95,6 +96,16 @@ def substitution_view(request, *textC):
             return render(request, 'substitution_system.html', {'data':data, 'cipher': message, 'k2':k})
 
     return render(request, 'substitution_system.html')
+
+def shiftcryptoanalisis_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            data = shiftA.ShiftCipherCryptanalysis(message)
+            return render(request, 'shift_crypto_analisis.html', {'clear': message})
+
+    return render(request, 'shift_crypto_analisis.html')
+
 
 def download_file(request):
     # Define text file name

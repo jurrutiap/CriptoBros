@@ -1,20 +1,22 @@
-import globals as g
+import utils.globals as g
+import os
 
 def ShiftCipherCryptanalysis(text):
-    PossibleTexts = []
+    f= open("utils/text.txt", "w")
     clearText = ''.join(ch for ch in text if ch.isalpha())
     textAsNumber = g.chartonum(clearText)
     for des in range(26):
         displacedText = [(char - des)%26 for char in textAsNumber]
         posibleText = g.numtochar(displacedText)
-        PossibleTexts.append(f"Assuming the key is {des}, the text is \n {posibleText}")
-    return PossibleTexts
+        f.write(f"With key {des}, the text is {posibleText} \n")
+    f.close()
 
 if __name__ == "__main__":
     message = str(input("Message:"))  # "MYSECRETMESSAGE"
     decriptedTexts =ShiftCipherCryptanalysis(message)
-    for posib in decriptedTexts:
-        print(posib)
+    f= open("criptosite/utils/text.txt", "r")
+    print(f.read())
+    f.close()
 
 
 
