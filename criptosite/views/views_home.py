@@ -13,6 +13,7 @@ import utils.sustitutive_system as sus
 import utils.vigenere_system as vs
 import utils.substitution_system as sb
 import utils.shift_crypto_analisis as shiftA
+import utils.affine_system as afs
 
 def home(request):
     return render(request, 'index.html')
@@ -96,6 +97,22 @@ def substitution_view(request, *textC):
             return render(request, 'substitution_system.html', {'data':data, 'cipher': message, 'k2':k})
 
     return render(request, 'substitution_system.html')
+
+def affine_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            k= afs.k(request.POST['k1'])
+            data = afs.affine_encrypt(message, k)
+            return render(request, 'affine_system.html', {'data':data, 'clear': message, 'k1':'%i,%i'%(k[0],k[1])})
+
+        if 'desencrypt' in request.POST:
+            message = request.POST['textE']
+            k= afs.k(request.POST['k2'])
+            data = afs.affine_decrypt(message, k)
+            return render(request, 'affine_system.html', {'data':data, 'cipher': message, 'k2':request.POST['k2']})
+
+    return render(request, 'affine_system.html')
 
 def shiftcryptoanalisis_view(request, *textC):
     if request.method == "POST":
