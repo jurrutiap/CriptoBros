@@ -17,12 +17,13 @@ def k(k):
     return K
 
 def cipher_text(plain_txt,key):
+    clearedText = ''.join(ch for ch in plain_txt if ch.isalpha())
     dict1 = {}
     cipher_txt = []
     all_letters = string.ascii_letters
     for i in range(len(all_letters)):
         dict1[all_letters[i]] = all_letters[(i + key) % len(all_letters)]
-    for char in plain_txt:
+    for char in clearedText:
         if char in all_letters:
             temp = dict1[char]
             cipher_txt.append(temp)
