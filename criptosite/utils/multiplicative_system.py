@@ -1,5 +1,4 @@
 import math as m
-from tkinter import E
 import numpy as np
 import utils.globals as g
 
