@@ -1,0 +1,69 @@
+{% extends "base_template.html" %}
+
+{% load static %}
+
+{% block head_content %}
+<title>CriptoBros - Shift</title>
+{% endblock %}
+
+{% block main %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Vigenere CryptoAnalysis</h1>
+    <p class="mb-4">Using the match index method, the ciphered text is attacked and the results are obtained as an output. The user is required to provide the length of the key.</p>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <div class="col-xl-8 col-lg-7">
+
+            <!-- Encrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Match-index/Coindicence analysis </h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="" target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='textC' class="form-control" rows="11" required>{{ clear }}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-default">Key length</span>
+                            </div>
+                            <input type="text" name='k1' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Inputs Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <!-- Outputs Chart -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Outputs</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <a class="btn btn-success btn-sm btn-block" href="{% url 'download_file'%}" target="_blank">Download Results</a>
+                    </div>         
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- /.container-fluid -->
+{% endblock %}
+<!-- </body> -->
