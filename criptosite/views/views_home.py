@@ -13,6 +13,7 @@ import utils.sustitutive_system as sus
 import utils.vigenere_system as vs
 import utils.substitution_system as sb
 import utils.shift_crypto_analisis as shiftA
+import utils.Vigenere_Cryptoanalisys as vigenereA
 import utils.affine_system as afs
 
 def home(request):
@@ -123,10 +124,20 @@ def shiftcryptoanalisis_view(request, *textC):
 
     return render(request, 'shift_crypto_analisis.html')
 
+def vigenerecryptoanalisis_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            key_length = request.POST['k1']
+            vigenereA.VigenereCryptoanalisys(key_length, message)
+            return render(request, 'vigenere_crypto_analisis.html', {'clear': message})
+
+    return render(request, 'vigenere_crypto_analisis.html')
+
 
 def download_file(request):
     # Define text file name
-    filename = 'utils/text.txt'
+    filename = 'utils/results.txt'
     # Open the file for reading content
     path = open(filename, 'r')
     # Set the mime type

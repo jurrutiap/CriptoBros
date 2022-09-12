@@ -1,9 +1,20 @@
 import string
+import utils.vigenere_system as vs
 ALFABET = string.ascii_uppercase
 
 USUALFREQUENCIES = [0.082, 0.015, 0.028, 0.043, 0.13, 0.022, 0.02, 0.061, 0.07, 0.002, 0.008, 0.04, 0.024, 0.067, 0.075, 0.019, 0.001, 0.06, 0.063, 0.091, 0.028, 0.01, 0.024, 0.002, 0.02, 0.001]
 
+def k(k):
+    try:
+        K= int(k)
+    except:
+        K = 5
+    return K
+
 def VigenereCryptoanalisys(possibleKeyLen, text):
+    possibleKeyLen = k(possibleKeyLen)
+    f= open("utils/results.txt", "w")
+    f.write(f'VIGENERE CRIPTO ANALYSIS\n\nENCRIPTED TEXT: {text}\nKEY LENGHT: {possibleKeyLen}\n-------------------------------------------------\n\n')
     #Clear text from non alphabet characters
     clearText = ''.join(ch.upper() for ch in text if ch.isalpha())
 
@@ -68,13 +79,18 @@ def VigenereCryptoanalisys(possibleKeyLen, text):
         # Search the element that has the frequency
         # closest to the expected value
         likelyKeyElement = min(frequencies, key=lambda x:abs(x-0.065))
+        f.write(f'FRECUENCE: {likelyKeyElement} LETTER: {frequencies.index(likelyKeyElement)}\n')
 
         possibleKey.append(frequencies.index(likelyKeyElement))
 
     possibleKey = ''.join(ALFABET[x] for x in possibleKey)
-    answer = f"if the key lenght is {possibleKeyLen}, the key is {possibleKey}"
+    f.write(f"\nIf the key lenght is {possibleKeyLen}, the key is '{possibleKey}'\n")
 
-    return answer
+    clear_text = vs.DecryptedText(text, possibleKey)
+    f.write(f'\nDECRIPTED TEXT: {clear_text}')
+
+    f.close()
+    print('done')
 
 message = """nifon aicum niswt luvet vxshk nissx wsstb husle chsnv ytsro
 cdsoy nisgx lnona chvch gnonw yndlh sfrnh npblr yowgf unoca
@@ -97,5 +113,13 @@ EVKAKOEWADREMMXMTBHHCHRTKDNVRZCHRCLQOHPWQ
 AIIWXNRMGWOIIFKEE
 """
 
+message3 = """NOSEXTDUUNDZWCTSJTLXSVCPNDPQVEUUCLRKPJSNTBIEMIEOCPEDUWWOOC
+PRAPFHEVGTLHOEUUDGSNVJVPCFCLPRPXACLFSFLRCVJTLPWPHBCSLPKTBSDPDNAUELOWETVM
+DEAQRCIAWOEESAEGOTIVSPRSUTBSOZBGCBPFCIUSFMTYHGGFRPFHTITTTBIGLJBPCCUEECZY
+GGQVAEDORIFNDPRCPPRELACUSIDTBHAVCTMIUMBGYLDGLMEYESUQVELNQWMTAYPFQSOENYWU
+LVLECWEETCZYUWEBEYPOPNFCWTPGRPVTEOGNJSTOORICUDQSTMFNEFAGUJNXLITITMLFFKSR
+UTDQQNEIXPBVUNDFTRWITRSZBEUTEWTHRUSUDWOEIOILQSTMFNEFAPITLQPIIIBTDTHCMFTN
+COUOSNLCSGSUAFNHQRWOWFHRAUUWEFKCJEDPGVFFLTDGGMQECOWCMJDGLFKUTJFDHQEOIXPHNEP"""
 
-print(VigenereCryptoanalisys(5,message))
+
+VigenereCryptoanalisys(7,message3)

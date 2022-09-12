@@ -2,9 +2,10 @@ import utils.globals as g
 import os
 
 def ShiftCipherCryptanalysis(text):
-    f= open("utils/text.txt", "w")
+    f= open("utils/results.txt", "w")
     clearText = ''.join(ch for ch in text if ch.isalpha())
     textAsNumber = g.chartonum(clearText)
+    f.write(f'SHIFT CRIPTO ANALYSIS\n\nCLEAR TEXT: {text}\n-------------------------------------------------\n\n')
     for des in range(26):
         displacedText = [(char - des)%26 for char in textAsNumber]
         posibleText = g.numtochar(displacedText)
