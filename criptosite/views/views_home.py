@@ -2,9 +2,12 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from django.shortcuts import render
 from django import forms
+from django.core.files.storage import FileSystemStorage
 
+import os
 import sys
 import mimetypes
+import time
 sys.path.append("..")
 
 import utils.shift_system as shift
@@ -14,7 +17,9 @@ import utils.vigenere_system as vs
 import utils.substitution_system as sb
 import utils.shift_crypto_analisis as shiftA
 import utils.Vigenere_Cryptoanalisys as vigenereA
+import utils.affine_Cryptoanalisys as affineA
 import utils.affine_system as afs
+import utils.hill_image_system as his
 
 def home(request):
     return render(request, 'index.html')
@@ -115,6 +120,32 @@ def affine_view(request, *textC):
 
     return render(request, 'affine_system.html')
 
+def hill_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            if os.path.exists("criptosite/static/img/clean.png"):
+                os.remove("criptosite/static/img/clean.png")
+            upload = request.FILES['im1']
+            fss = FileSystemStorage()
+            fss.save('criptosite/static/img/clean.png', upload)
+            his.encrypt_img()
+            return render(request, 'hill_system.html', {'encrypted_image':'aaaaa'})
+
+        if 'decrypt' in request.POST:
+            if os.path.exists("criptosite/static/img/Key.png"):
+                os.remove("criptosite/static/img/Key.png")
+                os.remove("criptosite/static/img/Encrypted.png")
+            fss = FileSystemStorage()
+            upload = request.FILES['im2']
+            fss.save('criptosite/static/img/Encrypted.png', upload)
+            upload = request.FILES['key']
+            fss.save('criptosite/static/img/Key.png', upload)
+            his.decript_img()
+            time.sleep(5)
+            return render(request, 'hill_system.html', {'decrypted_image':'aaaaa'})
+
+    return render(request, 'hill_system.html')
+
 def shiftcryptoanalisis_view(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
@@ -133,6 +164,15 @@ def vigenerecryptoanalisis_view(request, *textC):
             return render(request, 'vigenere_crypto_analisis.html', {'clear': message})
 
     return render(request, 'vigenere_crypto_analisis.html')
+
+def affinecryptoanalisis_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            affineA.AffineCryptoanalisys(message)
+            return render(request, 'affine_crypto_analisis.html', {'clear': message})
+
+    return render(request, 'affine_crypto_analisis.html')
 
 
 def download_file(request):

@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block head_content %}
-<title>CriptoBros - Shift</title>
+<title>CriptoBros - Affine Analysis</title>
 {% endblock %}
 
 {% block main %}
@@ -12,8 +12,8 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Vigenere CryptoAnalysis</h1>
-    <p class="mb-4">Using the match index method, the ciphered text is attacked and the results are obtained as an output. The user is required to provide the length of the key.</p>
+    <h1 class="h3 mb-2 text-gray-800">Affine CryptoAnalysis</h1>
+    <p class="mb-4">With brute force we try every possible combination of keys to find one that makes sense. We go through the 312 possible keys</p>
 
     <!-- Content Row -->
     <div class="row">
@@ -23,19 +23,13 @@
             <!-- Encrypt Chart -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Match-index/Coindicence analysis </h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Brute force analysis </h6>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="" target="_self">
                         {% csrf_token %} 
                         <div class="chart-area">
                             <textarea name='textC' class="form-control" rows="11" required>{{ clear }}</textarea>
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text" id="inputGroup-sizing-default">Key length</span>
-                            </div>
-                            <input type="text" name='k1' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                         </div>
                         <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
                     </form>
