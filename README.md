@@ -61,3 +61,28 @@ The Affine cipher works by using the following encryption function: $$e_k(x) = (
 The affine cipher is a reinforcement to the multiplicative cipher mentioned earlier.
 
 The decryption function is defined as:  $$e_k(x) = a^{-1}\cdot(x-b)mod n$$
+
+## Instalation and Dependencies
+[(Back to top)](#what-to-expect)
+As a general requirement, is is mandatory to have **`Python`** and **`Bootstrap 4`** installed.
+
+After cloning this repository and entering the directory, follow this steps:
+
+First, enter the `criptosite/` folder and execute
+
+```pip install -r requirements.txt```
+
+After that,  execute
+
+```python main.py runserver```
+
+Finally, open any web browser and traverse to
+
+**`127.0.0.1:8000/`**
+
+to view the app.
+
+## Contact
+[(Back to top)](#table-of-contents)
+
+This repository was developed by [Juan Pablo Urrutia](https://github.com/jurrutiap), [Oscar Ordoñez](https://github.com/Odob13), [Raul Peña](https://github.com/rpenal) and [Paola Gallegos](https://github.com/PaolaGAPI). Any questions, please don't hesitate to reach out.
