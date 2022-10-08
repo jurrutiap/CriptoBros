@@ -4,13 +4,17 @@
 
 Live demo [here](http://ec2-3-129-10-141.us-east-2.compute.amazonaws.com:8000/)
 
-This is a web-based encryption proposal developed for "Introduction to Cryptography" (Universidad Nacional de Colombia). Below you will find a walkthrough and a brief explanation of the project.
+This is a web-based encryption proposal developed for "Introduction to Cryptography" (Universidad Nacional de Colombia). Below you will find a walkthrough and a brief explanation of the project. The front-end was built using `Bootstrap` and `Django`.
 
 ## What to expect
 
 - **Easily encrypt and decrypt plain text**, the user can provide a key; otherwise the app will provide a random one.
 - Perform **cryptoanalysis and attack** and retrieve information from encrypted texts.
 - **Encrypt and decrypt images** using the Hill Image-Encryption method
+
+<p align="center" width="100%">
+  <img align="center" src="img/page.png" width="1000px" height="auto">
+</p>
 
 ## Implemented encryption methods
 
@@ -30,6 +34,12 @@ The Hill cipher algorithm is a symmetric key algorithm which means that we can g
 The result of applying Hill Image Encryption are the following:<br><br>
 
 <img src="img/0.png" width="500px" height="auto"> | <img src="img/Encrypted.png" width="500px" height="auto"> | <img src="img/Key.png" width="500px" height="auto"> | <img src="img/Decrypted.png" width="500px" height="auto"> 
+---|---|---|---
+Original image | Encrypted image | Encryption key | Decrypted image
+
+<br><br>
+
+<img src="img/1.png" width="500px" height="auto"> | <img src="img/Encrypted1.png" width="500px" height="auto"> | <img src="img/Key1.png" width="500px" height="auto"> | <img src="img/Decrypted1.png" width="500px" height="auto"> 
 ---|---|---|---
 Original image | Encrypted image | Encryption key | Decrypted image
 
