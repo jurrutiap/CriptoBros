@@ -22,6 +22,19 @@ This is a web-based encryption proposal developed for "Introduction to Cryptogra
 - [**Affine cipher**](#affine-cipher)
 - **Substitution cipher**
 
+## Hill Image Encryption
+[(Back to top)](#what-to-expect)
+
+The Hill cipher algorithm is a symmetric key algorithm which means that we can get the decryption key out of the encryption one easily. In this case, we use an Involutory Key Matrix, the reason bethind this is that the inverse of an involutory matrix is itself, making the decryption methods easier.
+
+The result of applying Hill Image Encryption are the following:<br><br>
+
+<img src="img/0.png" width="500px" height="auto"> | <img src="img/Encrypted.png" width="500px" height="auto"> | <img src="img/Key.png" width="500px" height="auto"> | <img src="img/Decrypted.png" width="500px" height="auto"> 
+---|---|---|---
+Original image | Encrypted image | Encryption key | Decrypted image
+
+<br><br>
+
 ## Shift Cipher
 [(Back to top)](#what-to-expect)
 
@@ -48,3 +61,28 @@ The Affine cipher works by using the following encryption function: $$e_k(x) = (
 The affine cipher is a reinforcement to the multiplicative cipher mentioned earlier.
 
 The decryption function is defined as:  $$e_k(x) = a^{-1}\cdot(x-b)mod n$$
+
+## Instalation and Dependencies
+[(Back to top)](#what-to-expect)
+As a general requirement, is is mandatory to have **`Python`** and **`Bootstrap 4`** installed.
+
+After cloning this repository and entering the directory, follow this steps:
+
+First, enter the `criptosite/` folder and execute
+
+```pip install -r requirements.txt```
+
+After that,  execute
+
+```python main.py runserver```
+
+Finally, open any web browser and traverse to
+
+**`127.0.0.1:8000/`**
+
+to view the app.
+
+## Contact
+[(Back to top)](#table-of-contents)
+
+This repository was developed by [Juan Pablo Urrutia](https://github.com/jurrutiap), [Oscar Ordoñez](https://github.com/Odob13), [Raul Peña](https://github.com/rpenal) and [Paola Gallegos](https://github.com/PaolaGAPI). Any questions, please don't hesitate to reach out.
