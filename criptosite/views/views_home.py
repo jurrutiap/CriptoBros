@@ -20,6 +20,7 @@ import utils.Vigenere_Cryptoanalisys as vigenereA
 import utils.affine_Cryptoanalisys as affineA
 import utils.affine_system as afs
 import utils.hill_image_system as his
+import utils.Substitution_Cryptoanalisys as susan
 
 def home(request):
     return render(request, 'index.html')
@@ -173,6 +174,15 @@ def affinecryptoanalisis_view(request, *textC):
             return render(request, 'affine_crypto_analisis.html', {'clear': message})
 
     return render(request, 'affine_crypto_analisis.html')
+
+def substitutioncryptoanalisis_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            susan.SubstitutionCryptoanalisys(message)
+            return render(request, 'substitution_crypto_analisis.html', {'clear': message})
+
+    return render(request, 'substitution_crypto_analisis.html')
 
 
 def download_file(request):
