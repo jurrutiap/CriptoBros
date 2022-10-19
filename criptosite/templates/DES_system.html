@@ -1,0 +1,1927 @@
+{% extends "base_template.html" %}
+
+{% load static %}
+
+{% block head_content %}
+<title>CriptoBros - Shift</title>
+{% endblock %}
+
+{% block main %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">DES Cipher</h1>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <div class="col-xl-8 col-lg-7">
+
+            <!-- Encrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Encrypt</h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="" target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='textC' class="form-control" rows="11" required>{{ clear }}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                            </div>
+                            <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Decrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-1 font-weight-bold text-primary">Decrypt</h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="", target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='textE' class="form-control" rows="11" required>{{ cipher }}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                            </div>
+                            <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <input name="desencrypt"class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Inputs Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <!-- Outputs Chart -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Outputs</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <textarea class="form-control" rows="10">{{ data }}</textarea>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">K used to encrypt</span>
+                            <textarea class="form-control" rows="1">{{ k1 }}</textarea>
+                        </div>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">K used to decrypt</span>
+                            <textarea class="form-control" rows="1">{{ k2 }}</textarea>
+                        </div>
+                    </div>         
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Explanation</h5>
+                <h6 class="card-subtitle mb-2 text-muted">How does this work?</h6>
+                <p>The standard DES data encryption encrypts a message of 64 bits or 12.8 letters, if you have a longer
+                    message this is divided into blocks of that length and if it is shorter we can fill the gaps with
+                    bits randomly. We use in this encryption a 64 bits key that can be given in the form of letters or
+                    in binary, after all if the key is given in the form of letters it is only necessary to pass it to
+                    binary. Already with the key in binary we make an initial permutation or transformation, the bits
+                    are divided into two blocks, the first 32 and the last 32 or those on the right and those on the
+                    left. Then we use the Feistel function to perform 16 rounds of identical permutations, join the two
+                    blocks again and perform a last permutation to obtain the ciphertext. To better understand this
+                    method, let’s take the following example.<br/>
+                    <strong>Example:</strong> Let’s encrypt the text "Big yellow taxi" using DES encryption with the key
+                    "This is the key". First we pass the plaintext and the key to binary</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">00010</td>
+                            <td style="text-align: center;">01010</td>
+                            <td style="text-align: center;">01000</td>
+                            <td style="text-align: center;">11100</td>
+                            <td style="text-align: center;">00110</td>
+                            <td style="text-align: center;">01110</td>
+                            <td style="text-align: center;">10010</td>
+                            <td style="text-align: center;">11010</td>
+                            <td style="text-align: center;">10111</td>
+                            <td style="text-align: center;">00001</td>
+                            <td style="text-align: center;">11011</td>
+                            <td style="text-align: center;">01010</td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">b</td>
+                            <td style="text-align: center;">i</td>
+                            <td style="text-align: center;">g</td>
+                            <td style="text-align: center;">y</td>
+                            <td style="text-align: center;">e</td>
+                            <td style="text-align: center;">ll</td>
+                            <td style="text-align: center;">o</td>
+                            <td style="text-align: center;">w</td>
+                            <td style="text-align: center;">t</td>
+                            <td style="text-align: center;">a</td>
+                            <td style="text-align: center;">x</td>
+                            <td style="text-align: center;">i</td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">10111</td>
+                            <td style="text-align: center;">01001</td>
+                            <td style="text-align: center;">01010</td>
+                            <td style="text-align: center;">10110</td>
+                            <td style="text-align: center;">01010</td>
+                            <td style="text-align: center;">10110</td>
+                            <td style="text-align: center;">10111</td>
+                            <td style="text-align: center;">01001</td>
+                            <td style="text-align: center;">00110</td>
+                            <td style="text-align: center;">01100</td>
+                            <td style="text-align: center;">00110</td>
+                            <td style="text-align: center;">11100</td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">t</td>
+                            <td style="text-align: center;">h</td>
+                            <td style="text-align: center;">i</td>
+                            <td style="text-align: center;">s</td>
+                            <td style="text-align: center;">i</td>
+                            <td style="text-align: center;">s</td>
+                            <td style="text-align: center;">t</td>
+                            <td style="text-align: center;">h</td>
+                            <td style="text-align: center;">e</td>
+                            <td style="text-align: center;">k</td>
+                            <td style="text-align: center;">e</td>
+                            <td style="text-align: center;">y</td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>To obtain M=0001001001<span style="color: red">0</span>1001000<span style="color: red">1</span>1100001<span
+                        style="color: red">1</span>0011101<span style="color: red">0</span>01010101101<span
+                        style="color: red">0</span>1011100<span style="color: red">0</span>0111011<span
+                        style="color: red">0</span>1010111<span style="color: red">1</span> where the red bits are the
+                    multiples of eight and will serve as reference and k=1011101<span style="color: blue">0</span>0101010<span
+                            style="color: blue">1</span>0110010<span style="color: blue">1</span>0101101<span
+                            style="color: blue">0</span>1110100<span style="color: blue">1</span>0011001<span
+                            style="color: blue">1</span>0000110<span style="color: blue">1</span>1100111<span
+                            style="color: blue">1</span> those blue bits are the multiples of 8 and these will not
+                    appear in the key to be used. but we will do that later. Now we use the IP permutation table to make
+                    the first permutation of the elements of M, this table is standard and is easily found on the
+                    internet.</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">M</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">IP</td>
+                            <td style="text-align: center;">58</td>
+                            <td style="text-align: center;">50</td>
+                            <td style="text-align: center;">42</td>
+                            <td style="text-align: center;">34</td>
+                            <td style="text-align: center;">26</td>
+                            <td style="text-align: center;">18</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">60</td>
+                            <td style="text-align: center;">52</td>
+                            <td style="text-align: center;">44</td>
+                            <td style="text-align: center;">36</td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">62</td>
+                            <td style="text-align: center;">54</td>
+                            <td style="text-align: center;">46</td>
+                            <td style="text-align: center;">38</td>
+                            <td style="text-align: center;">30</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>M</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">M</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">IP</td>
+                            <td style="text-align: center;">22</td>
+                            <td style="text-align: center;">14</td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">64</td>
+                            <td style="text-align: center;">56</td>
+                            <td style="text-align: center;">48</td>
+                            <td style="text-align: center;">40</td>
+                            <td style="text-align: center;">32</td>
+                            <td style="text-align: center;">24</td>
+                            <td style="text-align: center;">16</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: center;">57</td>
+                            <td style="text-align: center;">49</td>
+                            <td style="text-align: center;">41</td>
+                            <td style="text-align: center;">33</td>
+                            <td style="text-align: center;">25</td>
+                            <td style="text-align: center;">17</td>
+                            <td style="text-align: center;">9</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">59</td>
+                            <td style="text-align: center;">51</td>
+                            <td style="text-align: center;">43</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>M</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">M</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">IP</td>
+                            <td style="text-align: center;">35</td>
+                            <td style="text-align: center;">27</td>
+                            <td style="text-align: center;">19</td>
+                            <td style="text-align: center;">11</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">61</td>
+                            <td style="text-align: center;">53</td>
+                            <td style="text-align: center;">45</td>
+                            <td style="text-align: center;">37</td>
+                            <td style="text-align: center;">29</td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;">13</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">63</td>
+                            <td style="text-align: center;">55</td>
+                            <td style="text-align: center;">47</td>
+                            <td style="text-align: center;">39</td>
+                            <td style="text-align: center;">31</td>
+                            <td style="text-align: center;">23</td>
+                            <td style="text-align: center;">15</td>
+                            <td style="text-align: center;">7</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>M</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>And now we divide <span class="math inline"><em>M</em><sub>0</sub></span> into two 32-bit blocks that
+                    we will call <span class="math inline"><em>L</em><sub>0</sub></span> (the first 32 bits) and <span
+                            class="math inline"><em>R</em><sub>0</sub></span> (the last 32 bits) and so:<br>
+                <p class="text-center"><span class="math display"><em>L</em><sub>0</sub> = 01010100011110111100000110000110   <em>R</em><sub>0</sub> = 10100110111010001011100011011101</span>
+                </p>
+                Now, with the key we had we are going to find the key to be implemented using table PC-1 which is also
+                provided by the general algorithm and is easily found</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">K</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">PC-1</td>
+                            <td style="text-align: center;">57</td>
+                            <td style="text-align: center;">49</td>
+                            <td style="text-align: center;">41</td>
+                            <td style="text-align: center;">31</td>
+                            <td style="text-align: center;">25</td>
+                            <td style="text-align: center;">17</td>
+                            <td style="text-align: center;">9</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">58</td>
+                            <td style="text-align: center;">50</td>
+                            <td style="text-align: center;">42</td>
+                            <td style="text-align: center;">34</td>
+                            <td style="text-align: center;">26</td>
+                            <td style="text-align: center;">18</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">59</td>
+                            <td style="text-align: center;">51</td>
+                            <td style="text-align: center;">43</td>
+                            <td style="text-align: center;">35</td>
+                            <td style="text-align: center;">27</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">K</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">PC-1</td>
+                            <td style="text-align: center;">19</td>
+                            <td style="text-align: center;">11</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">60</td>
+                            <td style="text-align: center;">52</td>
+                            <td style="text-align: center;">44</td>
+                            <td style="text-align: center;">36</td>
+                            <td style="text-align: center;">63</td>
+                            <td style="text-align: center;">55</td>
+                            <td style="text-align: center;">47</td>
+                            <td style="text-align: center;">39</td>
+                            <td style="text-align: center;">31</td>
+                            <td style="text-align: center;">23</td>
+                            <td style="text-align: center;">15</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">62</td>
+                            <td style="text-align: center;">54</td>
+                            <td style="text-align: center;">46</td>
+                            <td style="text-align: center;">38</td>
+                            <td style="text-align: center;">30</td>
+                            <td style="text-align: center;">22</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;">K</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">PC-1</td>
+                            <td style="text-align: center;">14</td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">61</td>
+                            <td style="text-align: center;">53</td>
+                            <td style="text-align: center;">45</td>
+                            <td style="text-align: center;">37</td>
+                            <td style="text-align: center;">29</td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;">13</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>And we divide this key in two keys of 28 bits each one, the first 28 will be <span
+                        class="math inline"><em>C</em><sub>0</sub></span> and the last 28 <span class="math inline"><em>D</em><sub>0</sub></span>
+                    and therefore we have
+                <p class="text-center"><span class="math inline"><em>C</em><sub>0</sub> = 10010010001100111111000110101101010000</span>
+                    and <span class="math inline"><em>D</em><sub>0</sub> = 101010011111000110110110110011011</span></p>
+                Now, we must make some permutations following the following rules, if the permutation is the first, the
+                second, the ninth or the sixteenth we shift one bit to the left, otherwise we shift two bits to the
+                left, thus, during the 16 iterations we obtain:</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1001000110011110001101010000</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1010100111000110110110011011</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0010001100111100011010100001</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0101001110001101101100110111</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>2</sub></span></td>
+                            <td style="text-align: center;">0100011001111000110101000010</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>2</sub></span></td>
+                            <td style="text-align: center;">1010011100011011011001101110</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>3</sub></span></td>
+                            <td style="text-align: center;">0001100111100011010100001001</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>3</sub></span></td>
+                            <td style="text-align: center;">1001110001101101100110111010</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>4</sub></span></td>
+                            <td style="text-align: center;">0110011110001101010000100100</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>4</sub></span></td>
+                            <td style="text-align: center;">0111000110110110011011101010</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>5</sub></span></td>
+                            <td style="text-align: center;">1001111000110101000010010001</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>5</sub></span></td>
+                            <td style="text-align: center;">1100011011011001101110101001</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>6</sub></span></td>
+                            <td style="text-align: center;">0111100011010100001001000110</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>6</sub></span></td>
+                            <td style="text-align: center;">0001101101100110111010100111</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>7</sub></span></td>
+                            <td style="text-align: center;">1110001101010000100100011001</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>7</sub></span></td>
+                            <td style="text-align: center;">0110110110011011101010011100</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>8</sub></span></td>
+                            <td style="text-align: center;">1000110101000010010001100111</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>8</sub></span></td>
+                            <td style="text-align: center;">1011011001101110101001110001</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>9</sub></span></td>
+                            <td style="text-align: center;">0001101010000100100011001111</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>9</sub></span></td>
+                            <td style="text-align: center;">0110110011011101010011100011</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>10</sub></span>
+                            </td>
+                            <td style="text-align: center;">0110101000010010001100111100</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>10</sub></span>
+                            </td>
+                            <td style="text-align: center;">1011001101110101001110001101</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>11</sub></span>
+                            </td>
+                            <td style="text-align: center;">1010100001001000110011110001</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>11</sub></span>
+                            </td>
+                            <td style="text-align: center;">1100110111010100111000110110</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>12</sub></span>
+                            </td>
+                            <td style="text-align: center;">1010000100100011001111000110</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>12</sub></span>
+                            </td>
+                            <td style="text-align: center;">0011011101010011100011011011</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>13</sub></span>
+                            </td>
+                            <td style="text-align: center;">1000010010001100111100011010</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>13</sub></span>
+                            </td>
+                            <td style="text-align: center;">1101110101001110001101101100</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>14</sub></span>
+                            </td>
+                            <td style="text-align: center;">0001001000110011110001101010</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>14</sub></span>
+                            </td>
+                            <td style="text-align: center;">0111010100111000110110110011</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>15</sub></span>
+                            </td>
+                            <td style="text-align: center;">0100100011001111000110101000</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>15</sub></span>
+                            </td>
+                            <td style="text-align: center;">1101010011100011011011001101</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline"><em>C</em><sub>16</sub></span>
+                            </td>
+                            <td style="text-align: center;">1001000110011110001101010000</td>
+                            <td style="text-align: center;"><span class="math inline"><em>D</em><sub>16</sub></span>
+                            </td>
+                            <td style="text-align: center;">1010100111000110110110011011</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>Now we form the keys for each of the iterations with the help of the PC-2 table, what we do is to
+                    pass <span class="math inline"><em>C</em><sub><em>n</em></sub><em>D</em><sub><em>n</em></sub>(56 bits) ⇒ <em>K</em><sub><em>n</em></sub>(48 bits)</span>:
+                </p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span
+                                    class="math inline"><em>C</em><sub>1</sub><em>D</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">PC-2</td>
+                            <td style="text-align: center;">14</td>
+                            <td style="text-align: center;">17</td>
+                            <td style="text-align: center;">11</td>
+                            <td style="text-align: center;">24</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;">15</td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">23</td>
+                            <td style="text-align: center;">19</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">26</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: center;">16</td>
+                            <td style="text-align: center;">7</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span
+                                    class="math inline"><em>C</em><sub>1</sub><em>D</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">PC-2</td>
+                            <td style="text-align: center;">27</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;">13</td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">41</td>
+                            <td style="text-align: center;">52</td>
+                            <td style="text-align: center;">31</td>
+                            <td style="text-align: center;">37</td>
+                            <td style="text-align: center;">47</td>
+                            <td style="text-align: center;">55</td>
+                            <td style="text-align: center;">30</td>
+                            <td style="text-align: center;">40</td>
+                            <td style="text-align: center;">51</td>
+                            <td style="text-align: center;">45</td>
+                            <td style="text-align: center;">33</td>
+                            <td style="text-align: center;">48</td>
+                            <td style="text-align: center;">44</td>
+                            <td style="text-align: center;">49</td>
+                            <td style="text-align: center;">39</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span
+                                    class="math inline"><em>C</em><sub>1</sub><em>D</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">PC-2</td>
+                            <td style="text-align: center;">56</td>
+                            <td style="text-align: center;">34</td>
+                            <td style="text-align: center;">53</td>
+                            <td style="text-align: center;">46</td>
+                            <td style="text-align: center;">42</td>
+                            <td style="text-align: center;">50</td>
+                            <td style="text-align: center;">36</td>
+                            <td style="text-align: center;">29</td>
+                            <td style="text-align: center;">32</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>We already did the process for <span class="math inline"><em>K</em><sub>1</sub></span> but it must be
+                    done for each <span class="math inline"><em>K</em><sub><em>n</em></sub></span> up to <span
+                            class="math inline"><em>n</em> = 16</span> and with all the keys we start the 16 rounds of
+                    the cipher. The operations to be performed in each round are two and are described as follows <span
+                            class="math inline"><em>L</em><sub><em>n</em></sub> = <em>R</em><sub><em>n</em> − 1</sub></span>
+                    and <span class="math inline"><em>R</em><sub><em>n</em></sub> = <em>L</em><sub><em>n</em> − 1</sub> ⊕ <em>F</em>(<em>R</em><sub><em>n</em> − 1</sub>,<em>K</em><sub><em>n</em></sub>)</span>.
+                    First we must expand each block <span class="math inline"><em>R</em><sub><em>n</em> − 1</sub></span>
+                    from 32 bits to 48 bits, starting with <span class="math inline"><em>R</em><sub>0</sub></span>.</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>R</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">E</td>
+                            <td style="text-align: center;">32</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: center;">9</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: center;">9</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">11</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">13</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">13</td>
+                            <td style="text-align: center;">14</td>
+                            <td style="text-align: center;">15</td>
+                            <td style="text-align: center;">16</td>
+                            <td style="text-align: center;">17</td>
+                            <td style="text-align: center;">16</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;">17</td>
+                            <td style="text-align: center;">18</td>
+                            <td style="text-align: center;">19</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;">22</td>
+                            <td style="text-align: center;">23</td>
+                            <td style="text-align: center;">24</td>
+                            <td style="text-align: center;">25</td>
+                            <td style="text-align: center;">24</td>
+                            <td style="text-align: center;">25</td>
+                            <td style="text-align: center;">26</td>
+                            <td style="text-align: center;">27</td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;">29</td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;">29</td>
+                            <td style="text-align: center;">30</td>
+                            <td style="text-align: center;">31</td>
+                            <td style="text-align: center;">32</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>and we get <span class="math inline"><em>E</em>(<em>R</em><sub>0</sub>) = 110100001101010111101000010100001010111111111000101101111111011</span>
+                    of 48 bits. Now we do an XOR operation between <span
+                            class="math inline"><em>K</em><sub><em>n</em></sub></span> and <span
+                            class="math inline"><em>E</em>(<em>R</em><sub><em>n</em> − 1</sub>)</span>, for the example
+                    we will use <span
+                            class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)</span> the
+                    XOR operation works like an addition, the only difference is that <span class="math inline">1 ⊕ 1 = 0</span>,
+                    with that in mind we do the operation</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">⊕</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">=</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <th style="text-align: center;"><span
+                                    class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">⊕</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">=</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <th style="text-align: center;"><span
+                                    class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>K</em><sub>1</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">⊕</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">=</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <th style="text-align: center;"><span
+                                    class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)</span>
+                            </th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>Already with the group of 48 bits we divide them in 8 boxes of 6 bits, boxes that will be transformed
+                    each one in a box of 4 bits and no longer of 6, so that <span
+                            class="math inline"><em>K</em><sub><em>n</em></sub> ⊕ <em>E</em>(<em>R</em><sub><em>n</em> − 1</sub>)</span>
+                    will no longer have 48 bits but 32. We will call the boxes <span class="math inline"><em>B</em><sub><em>n</em></sub></span>
+                    with <span class="math inline"><em>n</em></span> from 1 to 8 and to each box we will make a
+                    permutation <span class="math inline"><em>S</em><sub><em>n</em></sub></span> that appears in the
+                    following tables.</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="{% static 'img/imagedes.png' %}"
+                                alt="wrapkit"  style="width:80%" class="img-fluid mx-auto d-block" />
+                        </div>
+                <p>Now, each six-bit box is going to give us two pieces of data, the first and the last bit are going to
+                    give us the row and the middle 4 are going to give us the column, all this taking into account the
+                    binary configuration of the numbers up to 15, for <span class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)</span>
+                    we see:</p>
+                <p class="text-center"><span
+                        class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)=</span> <span
+                        style="color: purple">0</span><span style="color: cyan">1001</span><span
+                        style="color: purple">0</span> 000101 000011 100111 001010 110110 100110 010111</p>
+                <p>Where 00 is 0 and therefore for <span
+                        class="math inline"><em>S</em><sub>1</sub>(<em>B</em><sub>1</sub>)</span> we are in the first
+                    row and 1001 is 9 so <span class="math inline"><em>S</em><sub>1</sub>(<em>B</em><sub>1</sub>)</span>
+                    is the number located in row 0 column 9, i.e. 10, which in binary is written 1010 so <span
+                            class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)</span> is
+                    left:</p>
+                <p class="text-center"><span
+                        class="math inline"><em>K</em><sub>1</sub> ⊕ <em>E</em>(<em>R</em><sub>0</sub>)=</span> <span
+                        style="color: teal">1010</span> 000101 000011 100111 001010 110110 100110 010111</p>
+                <p>and repeat the process until we obtain</p>
+                <p class="text-center"><span
+                        class="math inline"><em>S</em><sub>1</sub>(<em>B</em><sub>1</sub>)<em>S</em><sub>2</sub>(<em>B</em><sub>2</sub>)<em>S</em><sub>3</sub>(<em>B</em><sub>3</sub>)<em>S</em><sub>4</sub>(<em>B</em><sub>4</sub>)<em>S</em><sub>5</sub>(<em>B</em><sub>5</sub>)<em>S</em><sub>6</sub>(<em>B</em><sub>6</sub>)<em>S</em><sub>7</sub>(<em>B</em><sub>7</sub>)<em>S</em><sub>8</sub>(<em>B</em><sub>8</sub>)=</span>
+                    1010 0100 0111 0110 1010 1010 1101 1011</p>
+                <p>and now we make a permutation P for the previous result, this permutation also yields a result of 32
+                    bits.</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span
+                                    class="math inline"><em>S</em><sub><em>n</em></sub>(<em>B</em><sub><em>n</em></sub>)</span>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">P</td>
+                            <td style="text-align: center;">16</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;">29</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;">17</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">15</td>
+                            <td style="text-align: center;">23</td>
+                            <td style="text-align: center;">26</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">18</td>
+                            <td style="text-align: center;">31</td>
+                            <td style="text-align: center;">10</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>F</em></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span
+                                    class="math inline"><em>S</em><sub><em>n</em></sub>(<em>B</em><sub><em>n</em></sub>)</span>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;">P</td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: center;">24</td>
+                            <td style="text-align: center;">14</td>
+                            <td style="text-align: center;">32</td>
+                            <td style="text-align: center;">27</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">9</td>
+                            <td style="text-align: center;">19</td>
+                            <td style="text-align: center;">13</td>
+                            <td style="text-align: center;">30</td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">22</td>
+                            <td style="text-align: center;">11</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">25</td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>F</em></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>and since <span
+                        class="math inline"><em>R</em><sub><em>n</em></sub> = <em>L</em><sub><em>n</em> − 1</sub> ⊕ <em>F</em>(<em>R</em><sub><em>n</em> − 1</sub>,<em>K</em><sub><em>n</em></sub>)</span>
+                    we have for our first case that <span class="math inline"><em>R</em><sub>1</sub></span> is</p>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>L</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">⊕</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>F</em></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">=</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <th style="text-align: center;"><span class="math inline"><em>R</em><sub>1</sub></span></th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="center">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>L</em><sub>0</sub></span></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">⊕</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: center;"><span class="math inline"><em>F</em></span></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                        </tr>
+                        <tr class="even">
+                            <td style="text-align: center;"><span class="math inline">=</span></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr class="odd">
+                            <th style="text-align: center;"><span class="math inline"><em>R</em><sub>1</sub></span></th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">0</th>
+                            <th style="text-align: center;">1</th>
+                            <th style="text-align: center;">1</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>So, we have <span class="math inline"><em>L</em><sub>1</sub> = 101001101110111011101000101010111000110111011101110111011101110111011101110111011111</span>
+                    and <span
+                            class="math inline"><em>R</em><sub>1</sub> = 0100101111100010001000110110110110001001111</span>
+                    and we repeat this process 16 times until we get <span
+                            class="math inline"><em>L</em><sub>16</sub></span> and <span
+                            class="math inline"><em>R</em><sub>16</sub></span>, already with the two 32-bit blocks, we
+                    join them to obtain a single block of 64 bits but they will be first those of the <span
+                            class="math inline"><em>R</em><sub>16</sub></span> block and then those of the <span
+                            class="math inline"><em>L</em><sub>16</sub></span> block, and when we join the two blocks we
+                    only need to apply the permutation <span
+                            class="math inline"><em>I</em><em>P</em><sup>−1</sup></span> in the same way that we apply
+                    the rest of the permutations and so we finish with the example.<br/>
+                <p class="text-center">To decrypt the text we only need to apply the same procedure but in reverse, that
+                    is, apply the steps from <span class="math inline"><em>L</em><sub>16</sub></span> and <span
+                            class="math inline"><em>R</em><sub>16</sub></span> to <span
+                            class="math inline"><em>L</em><sub>0</sub></span> and <span
+                            class="math inline"><em>R</em><sub>0</sub></span>.</p>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+<!-- </body> -->

@@ -21,6 +21,8 @@ import utils.affine_Cryptoanalisys as affineA
 import utils.affine_system as afs
 import utils.hill_image_system as his
 import utils.Substitution_Cryptoanalisys as susan
+import utils.gammaPentagonal as gp
+import utils.DES as DES
 
 def home(request):
     return render(request, 'index.html')
@@ -120,6 +122,36 @@ def affine_view(request, *textC):
             return render(request, 'affine_system.html', {'data':data, 'cipher': message, 'k2':request.POST['k2']})
 
     return render(request, 'affine_system.html')
+
+def gammaPentagonal_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            data = gp.encryptGammaPentagonal(message)
+            return render(request, 'gamapentagonal_system.html', {'data':data, 'clear': message})
+
+        if 'desencrypt' in request.POST:
+            message = request.POST['textE']
+            k= afs.k(request.POST['k2'])
+            data = gp.decryptGammaPentagonal(message, k)
+            return render(request, 'gamapentagonal_system.html', {'data':data, 'cipher': message, 'k2':request.POST['k2']})
+
+    return render(request, 'gamapentagonal_system.html')
+
+def DES_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            message = request.POST['textC']
+            k= DES.K(request.POST['k2'])
+            data = DES.DESEncrypt(message, k)
+            return render(request, 'DES_system.html', {'data':data[0], 'clear': message, 'k1':k})
+
+        if 'desencrypt' in request.POST:
+            message = request.POST['textE']
+            k= DES.K(request.POST['k2'])
+            data = DES.DESDecrypt(message, k)
+            return render(request, 'DES_system.html', {'data':data[0], 'cipher': message, 'k2':request.POST['k2']})
+    return render(request, 'DES_system.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":

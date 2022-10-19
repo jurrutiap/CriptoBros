@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from views.views_home import home, shift_view, multiplicative_view, sustitutive_view, vigenere_view, hill_view, substitution_view, shiftcryptoanalisis_view, vigenerecryptoanalisis_view, affine_view, affinecryptoanalisis_view, substitutioncryptoanalisis_view, download_file
+from views.views_home import home, shift_view, multiplicative_view, DES_view, sustitutive_view, vigenere_view, hill_view, substitution_view, shiftcryptoanalisis_view, vigenerecryptoanalisis_view, affine_view, affinecryptoanalisis_view, substitutioncryptoanalisis_view, gammaPentagonal_view, download_file
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -27,6 +27,8 @@ urlpatterns = [
     path('vigenere/', vigenere_view, name='vigenere_view'),
     path('hill/', hill_view, name='hill_view'),
     path('substitution/', substitution_view, name='substitution_view'),
+    path('gammaPentagonal/', gammaPentagonal_view, name='gammaPentagonal_view'),
+    path('DES/', DES_view, name='DES_view'),
     path('shiftcryptoanalisis/', shiftcryptoanalisis_view, name='shiftcryptoanalisis_view'),
     path('vigenerecryptoanalisis/', vigenerecryptoanalisis_view, name='vigenerecryptoanalisis_view'),
     path('affinecryptoanalisis/', affinecryptoanalisis_view, name='affinecryptoanalisis_view'),
