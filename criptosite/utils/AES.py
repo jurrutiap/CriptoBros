@@ -1,4 +1,4 @@
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 from PIL import Image
 import requests
 from PIL import ImageOps
