@@ -6,7 +6,7 @@ import numpy as np
 def encrypt_img():
     #Leer imagen y transformarla en cuadrada
 
-    img = imageio.imread('criptosite/static/img/clean.png')
+    img = imageio.imread('criptosite/static/img/clean.png', pilmode="RGB")
     ##dimensiones de la imagen
     l = img.shape[0]
     w = img.shape[1]
