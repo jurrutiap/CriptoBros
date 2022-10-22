@@ -206,32 +206,29 @@ def DESimage_view(request, *textC):
 
     return render(request, 'DESimage_system.html')
 
-""" def AESECB_view(request, *textC):
-    if request.method == "POST":
-       if 'encrypt' in request.POST:
-         if os.path.exists("criptosite/static/img/AES/AES image.jpg"):
-                os.remove("criptosite/static/img/AES/AES image.jpg")
-    return render(request, 'AES_ECB.html')
-
-def AESCBC_view(request, *textC):
+"""  def AES_view(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
-    return render(request, 'AES_CBC.html')
-
-def AESOFB_view(request, *textC):
-    if request.method == "POST":
-        if 'encrypt' in request.POST:
-    return render(request, 'AES_OFB.html')
-
-def AESCFB_view(request, *textC):
-    if request.method == "POST":
-        if 'encrypt' in request.POST:
-    return render(request, 'AES_CFB.html')
-
-def AESCTR_view(request, *textC):
-    if request.method == "POST":
-        if 'encrypt' in request.POST:
-    return render(request, 'AES_CTR.html') """
+            if os.path.exists("criptosite/static/img/AES/AES_image.png"):
+                os.remove("criptosite/static/img/AES/AES_image.png")
+            upload = request.FILES['im1']
+            fss = FileSystemStorage()
+            fss.save('criptosite/static/img/clean.png', upload)
+            his.encrypt_img()
+            return render(request, 'hill_system.html', {'encrypted_image':'aaaaa'})
+        if 'decrypt' in request.POST:
+            if os.path.exists("criptosite/static/img/Key.png"):
+                os.remove("criptosite/static/img/Key.png")
+                os.remove("criptosite/static/img/Encrypted.png")
+            fss = FileSystemStorage()
+            upload = request.FILES['im2']
+            fss.save('criptosite/static/img/Encrypted.png', upload)
+            upload = request.FILES['key']
+            fss.save('criptosite/static/img/Key.png', upload)
+            his.decript_img()
+            time.sleep(5)
+            return render(request, 'hill_system.html', {'decrypted_image':'aaaaa'})
+    return render(request, 'AES.html') """
 
 
 def shiftcryptoanalisis_view(request, *textC):
