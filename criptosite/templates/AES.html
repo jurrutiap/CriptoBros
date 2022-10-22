@@ -45,9 +45,15 @@
                             </select>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Enter a cipher key of 16 bytes in hexadecimal</span>
                                 </div>
                                 <input type="text" name='k1' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Initialization vector 16 bytes in hexadecimal</span>
+                                </div>
+                                <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                             </div>
                             <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Encrypt">
                         </form>
@@ -70,9 +76,13 @@
                     <div class="card-body">
                         <div class="chart-area">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">K used to encrypt</span>
-                                <textarea class="form-control" rows="1">{{ k1 }}</textarea>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Key of 16 bytes in hexadecimal</span>
                             </div>
+                            <textarea class="form-control" rows="3">{{ k1 }}</textarea>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Initialization vector 16 bytes in hexadecimal</span>
+                            </div>
+                            <textarea class="form-control" rows="3">{{ k2 }}</textarea>
                             <div class="chart-area">
                                 <a class="btn btn-success btn-sm btn-block" href="{% url 'downloadimg_file'%}" target="_blank">Download Results</a>
                             </div> 
@@ -100,11 +110,25 @@
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <p> Encrypted image: <input type="file" name="im2" accept="image/*"></p>
+                            <label for="mode">Choose AES mode:</label>
+                            <select name="mode" id="mode">
+                                <option value="ECB">ECB</option>
+                                <option value="CBC">CBC</option>
+                                <option value="OFB">OFB</option>
+                                <option value="CFB">CFB</option>
+                                <option value="CTR">CTR</option>
+                            </select>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Enter a cipher key of 16 bytes in hexadecimal</span>
                                 </div>
-                                <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                <input type="text" name='k3' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Initialization vector 16 bytes in hexadecimal</span>
+                                </div>
+                                <input type="text" name='k4' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                             </div>
                             <input name="decrypt" class="btn btn-primary btn-block" type="submit" value="Decrypt">
                         </form>
@@ -127,9 +151,13 @@
                     <div class="card-body">
                         <div class="chart-area">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">K used to decrypt</span>
-                                <textarea class="form-control" rows="1">{{ k2 }}</textarea>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Key of 16 bytes in hexadecimal</span>
                             </div>
+                            <textarea class="form-control" rows="3">{{ k3 }}</textarea>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Initialization vector 16 bytes in hexadecimal</span>
+                            </div>
+                            <textarea class="form-control" rows="3">{{ k4 }}</textarea>
                             <div class="chart-area">
                                 <a class="btn btn-success btn-sm btn-block" href="{% url 'downloadimge_file'%}" target="_blank">Download Results</a>
                             </div> 

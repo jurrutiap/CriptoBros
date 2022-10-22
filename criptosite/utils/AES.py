@@ -29,7 +29,7 @@ def HexToDecimal(s):
 # ECB
 def encode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
-	img = Image.open("criptosite\criptosite\static\img\clean.png")
+	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -56,11 +56,11 @@ def encode_aes_img_ECB(key):
 	
 	# Show the image and save it in a .pgm file
 	# encryptedImg.show()
-	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
+	encryptedImg.save("criptosite/static/img/Encrypted.png")
 
 def decode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
-	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
+	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -81,12 +81,12 @@ def decode_aes_img_ECB(key):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png") 
+	decryptedImg.save("criptosite/static/img/Decrypted.png") 
 #CBC
 def encode_aes_img_CBC(key,iv):
 
 	cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
-	img = Image.open("criptosite\criptosite\static\img\clean.png")
+	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -113,13 +113,13 @@ def encode_aes_img_CBC(key,iv):
 	
 	# Show the image and save it in a .pgm file
 	# encryptedImg.show()
-	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
+	encryptedImg.save("criptosite/static/img/Encrypted.png")
 	return (cipher.iv).hex()
 
 def decode_aes_img_CBC(key,iv):
 	
 	cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
-	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
+	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -140,12 +140,12 @@ def decode_aes_img_CBC(key,iv):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png")
+	decryptedImg.save("criptosite/static/img/Decrypted.png")
 
  #OFB
 def encode_aes_img_OFB(key,iv):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_OFB, iv.encode("utf8"))
-	img = Image.open("criptosite\criptosite\static\img\clean.png")
+	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
