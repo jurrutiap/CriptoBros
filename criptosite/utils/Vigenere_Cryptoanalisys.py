@@ -11,8 +11,68 @@ def k(k):
         K = 5
     return K
 
-def VigenereCryptoanalisys(possibleKeyLen, text):
-    possibleKeyLen = k(possibleKeyLen)
+def preProcessText(text):
+    text = text.replace(' ', '')
+    text = text.lower()
+    processedText = ""
+    for c in text:
+        if ord(c) >= 97 and ord(c) <= 97 + 25:
+            processedText += c
+    return processedText
+
+def IsValidMatrix(m):
+    if len(m) != len(m[0]):
+        raise "The matrix is not square"
+
+def CreateSubstrings(m, text):
+    text = preProcessText(text)
+    substrings = []
+    for i in range(0, m):
+        currSubstring = ""
+        for j in range(i, len(text), m):
+            currSubstring += text[j]
+        substrings.append(currSubstring)
+    return substrings
+
+def GuessKeywordLength(k, text):
+    lessDiff = 3
+    guess = 0
+    for m in range(1, k + 1):
+        y_m = CreateSubstrings(m, text)
+        IOCs = []
+        for y in y_m:
+            IOCs.append(GetIndexOfCoincidence(y))
+        iocsAverage = sum(IOCs) / len(IOCs)
+        diff = abs(0.065 - iocsAverage)
+        if diff < lessDiff:
+            lessDiff = diff
+            guess = m
+    return guess
+
+def GetIndexOfCoincidence(text):
+    n = len(text)
+    IOC = 0
+    frequencies = GetFrequencies(text)
+    for c in frequencies:
+        IOC += frequencies[c]*(frequencies[c] - 1)
+    return IOC/(n*(n - 1))
+
+
+def GenerateAlphabet():
+    alphabet = {}
+    for i in range(97, 97 + 26):
+        alphabet[chr(i)] = 0
+    return alphabet
+
+def GetFrequencies(text):
+    frequencies = GenerateAlphabet()
+    for c in text:
+        frequencies[c] += 1
+    return frequencies
+
+
+def VigenereCryptoanalisys(text):
+    possibleKeyLen = GuessKeywordLength(15, text)
     f= open("utils/results.txt", "w")
     f.write(f'VIGENERE CRIPTO ANALYSIS\n\nENCRIPTED TEXT: {text}\nKEY LENGHT: {possibleKeyLen}\n-------------------------------------------------\n\n')
     #Clear text from non alphabet characters
@@ -122,4 +182,4 @@ UTDQQNEIXPBVUNDFTRWITRSZBEUTEWTHRUSUDWOEIOILQSTMFNEFAPITLQPIIIBTDTHCMFTN
 COUOSNLCSGSUAFNHQRWOWFHRAUUWEFKCJEDPGVFFLTDGGMQECOWCMJDGLFKUTJFDHQEOIXPHNEP"""
 
 
-VigenereCryptoanalisys(7,message3)
+VigenereCryptoanalisys(message3)

@@ -192,8 +192,7 @@ def vigenerecryptoanalisis_view(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
             message = request.POST['textC']
-            key_length = request.POST['k1']
-            vigenereA.VigenereCryptoanalisys(key_length, message)
+            vigenereA.VigenereCryptoanalisys(message)
             return render(request, 'vigenere_crypto_analisis.html', {'clear': message})
 
     return render(request, 'vigenere_crypto_analisis.html')
