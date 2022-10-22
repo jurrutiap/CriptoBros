@@ -12,7 +12,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Hill Image Encryption</h1>
+    <h1 class="h3 mb-2 text-gray-800">DES Image Encryption</h1>
     <p class="mb-4">Using random involutory matrixes, we cipher the image as shown bellow:</p>
 
     <!-- Content Row -->
@@ -31,6 +31,12 @@
                         <form method="POST" action="" target="_self" enctype="multipart/form-data">
                             {% csrf_token %}
                             <p> Encrypt image: <input type="file" name="im1" accept="image/*"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                                </div>
+                                <input type="text" name='k1' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{ k1 }}</input>
+                            </div>
                             <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Encrypt">
                         </form>
                     </div>         
@@ -40,7 +46,6 @@
         {% if encrypted_image %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
                 <p><img src="{% static 'img/Encrypted.png' %}" class="img-fluid"></p>
-                <img src="{% static 'img/Key.png' %}" class="img-fluid">
         {% else %}
             <p>No movies posters added.</p>
         {% endif %}
@@ -60,7 +65,12 @@
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <p> Encrypted image: <input type="file" name="im2" accept="image/*"></p>
-                            <p> Decrypt key: <input type="file" name="key" accept="image/*"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                                </div>
+                                <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">{{ k2 }}</input>
+                            </div>
                             <input name="decrypt" class="btn btn-primary btn-block" type="submit" value="Decrypt">
                         </form>
                     </div>         

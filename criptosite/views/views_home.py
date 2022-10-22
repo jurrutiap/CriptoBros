@@ -23,6 +23,7 @@ import utils.hill_image_system as his
 import utils.Substitution_Cryptoanalisys as susan
 import utils.gammaPentagonal as gp
 import utils.DES as DES
+import utils.DESImage as DESi
 
 def home(request):
     return render(request, 'index.html')
@@ -142,7 +143,7 @@ def DES_view(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
             message = request.POST['textC']
-            k= DES.K(request.POST['k2'])
+            k= DES.K(request.POST['k1'])
             data = DES.DESEncrypt(message, k)
             return render(request, 'DES_system.html', {'data':data[0], 'clear': message, 'k1':k})
 
@@ -178,6 +179,31 @@ def hill_view(request, *textC):
             return render(request, 'hill_system.html', {'decrypted_image':'aaaaa'})
 
     return render(request, 'hill_system.html')
+
+def DESimage_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+            if os.path.exists("criptosite/static/img/clean.png"):
+                os.remove("criptosite/static/img/clean.png")
+            upload = request.FILES['im1']
+            k= request.POST['k1']
+            fss = FileSystemStorage()
+            fss.save('criptosite/static/img/clean.png', upload)
+            k= DESi.encryptDESImage(k)
+            return render(request, 'DESimage_system.html', {'encrypted_image':'aaaaa', 'k1':k})
+
+        if 'decrypt' in request.POST:
+            if os.path.exists("criptosite/static/img/Encrypted.png"):
+                os.remove("criptosite/static/img/Encrypted.png")
+            fss = FileSystemStorage()
+            k= request.POST['k2']
+            upload = request.FILES['im2']
+            fss.save('criptosite/static/img/Encrypted.png', upload)
+            k= DESi.decryptDESImage(k)
+            time.sleep(5)
+            return render(request, 'DESimage_system.html', {'decrypted_image':'aaaaa', 'k2':k})
+
+    return render(request, 'DESimage_system.html')
 
 def shiftcryptoanalisis_view(request, *textC):
     if request.method == "POST":
