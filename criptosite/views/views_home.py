@@ -206,7 +206,7 @@ def DESimage_view(request, *textC):
 
     return render(request, 'DESimage_system.html')
 
-"""  def AES_view(request, *textC):
+def AESimage_view(request, *textC):
     if request.method == "POST":
         if 'encrypt' in request.POST:
             if os.path.exists("criptosite/static/img/AES/AES_image.png"):
@@ -215,7 +215,7 @@ def DESimage_view(request, *textC):
             fss = FileSystemStorage()
             fss.save('criptosite/static/img/clean.png', upload)
             his.encrypt_img()
-            return render(request, 'hill_system.html', {'encrypted_image':'aaaaa'})
+            return render(request, 'AES.html', {'encrypted_image':'aaaaa'})
         if 'decrypt' in request.POST:
             if os.path.exists("criptosite/static/img/Key.png"):
                 os.remove("criptosite/static/img/Key.png")
@@ -227,8 +227,8 @@ def DESimage_view(request, *textC):
             fss.save('criptosite/static/img/Key.png', upload)
             his.decript_img()
             time.sleep(5)
-            return render(request, 'hill_system.html', {'decrypted_image':'aaaaa'})
-    return render(request, 'AES.html') """
+            return render(request, 'AES.html', {'decrypted_image':'aaaaa'})
+    return render(request, 'AES.html')
 
 
 def shiftcryptoanalisis_view(request, *textC):
