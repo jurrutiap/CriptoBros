@@ -208,14 +208,16 @@ def DESimage_view(request, *textC):
 
 def AESimage_view(request, *textC):
     if request.method == "POST":
+        Mode= request.POST['mode']
         if 'encrypt' in request.POST:
-            if os.path.exists("criptosite/static/img/AES/AES_image.png"):
-                os.remove("criptosite/static/img/AES/AES_image.png")
-            upload = request.FILES['im1']
-            fss = FileSystemStorage()
-            fss.save('criptosite/static/img/clean.png', upload)
-            his.encrypt_img()
-            return render(request, 'AES.html', {'encrypted_image':'aaaaa'})
+            if Mode == "ECB":
+                if os.path.exists("criptosite/static/img/AES/AES_image.png"):
+                    os.remove("criptosite/static/img/AES/AES_image.png")
+                upload = request.FILES['im1']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                his.encrypt_img()
+                return render(request, 'AES.html', {'encrypted_image':'aaaaa'})
         if 'decrypt' in request.POST:
             if os.path.exists("criptosite/static/img/Key.png"):
                 os.remove("criptosite/static/img/Key.png")
@@ -228,6 +230,7 @@ def AESimage_view(request, *textC):
             his.decript_img()
             time.sleep(5)
             return render(request, 'AES.html', {'decrypted_image':'aaaaa'})
+            
     return render(request, 'AES.html')
 
 
