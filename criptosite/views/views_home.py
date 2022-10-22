@@ -24,6 +24,7 @@ import utils.Substitution_Cryptoanalisys as susan
 import utils.gammaPentagonal as gp
 import utils.DES as DES
 import utils.DESImage as DESi
+import utils.AES as AES 
 
 def home(request):
     return render(request, 'index.html')
@@ -204,6 +205,33 @@ def DESimage_view(request, *textC):
             return render(request, 'DESimage_system.html', {'decrypted_image':'aaaaa', 'k2':k})
 
     return render(request, 'DESimage_system.html')
+
+##def AESECB_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+
+    return render(request, 'AES_ECB.html')
+
+##def AESCBC_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+    return render(request, 'AES_CBC.html')
+
+##def AESOFB_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+    return render(request, 'AES_OFB.html')
+
+##def AESCFB_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+    return render(request, 'AES_CFB.html')
+
+##def AESCTR_view(request, *textC):
+    if request.method == "POST":
+        if 'encrypt' in request.POST:
+    return render(request, 'AES_CTR.html')
+
 
 def shiftcryptoanalisis_view(request, *textC):
     if request.method == "POST":
