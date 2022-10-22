@@ -26,7 +26,7 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        CryptoSystems
+        Classic CryptoSystems
     </div>
 
     <!-- Nav Item - Shift Collapse Menu -->
@@ -159,6 +159,14 @@
         </div>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        BlockCipher CryptoSystems
+    </div>
+
     <!-- Nav Item - Gamma Pentagonal Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'gammaPentagonal_view'%}" data-toggle="collapse" data-target="#collapseUtilities"
@@ -184,6 +192,43 @@
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fa-solid fa-code-compare"></i>
             <span>DES cipher</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Custom Utilities:</h6>
+                <a class="collapse-item" href="utilities-color.html">Colors</a>
+                <a class="collapse-item" href="utilities-border.html">Borders</a>
+                <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                <a class="collapse-item" href="utilities-other.html">Other</a>
+            </div>
+        </div>
+    </li>
+    <!-- Nav Item - DESimage Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'DESimage_view'%}" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fa-solid fa-code-merge"></i>
+            <span>DESimage cipher</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Custom Utilities:</h6>
+                <a class="collapse-item" href="utilities-color.html">Colors</a>
+                <a class="collapse-item" href="utilities-border.html">Borders</a>
+                <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                <a class="collapse-item" href="utilities-other.html">Other</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - AESimage Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'AESimage_view'%}" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fa-solid fa-code-merge"></i>
+            <span>AESimage cipher</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">

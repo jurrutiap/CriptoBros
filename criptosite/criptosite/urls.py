@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from views.views_home import home, shift_view, multiplicative_view, DES_view, sustitutive_view, vigenere_view, hill_view, substitution_view, shiftcryptoanalisis_view, vigenerecryptoanalisis_view, affine_view, affinecryptoanalisis_view, substitutioncryptoanalisis_view, gammaPentagonal_view, download_file
+from views.views_home import home, shift_view, multiplicative_view, DES_view, DESimage_view,AESimage_view, downloadimg_file, downloadimge_file, sustitutive_view, vigenere_view, hill_view, substitution_view, shiftcryptoanalisis_view, vigenerecryptoanalisis_view, affine_view, affinecryptoanalisis_view, substitutioncryptoanalisis_view, gammaPentagonal_view, download_file
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -29,11 +29,15 @@ urlpatterns = [
     path('substitution/', substitution_view, name='substitution_view'),
     path('gammaPentagonal/', gammaPentagonal_view, name='gammaPentagonal_view'),
     path('DES/', DES_view, name='DES_view'),
+    path('DESimage/', DESimage_view, name='DESimage_view'),
+    path('AESimage/', AESimage_view, name='AESimage_view'),
     path('shiftcryptoanalisis/', shiftcryptoanalisis_view, name='shiftcryptoanalisis_view'),
     path('vigenerecryptoanalisis/', vigenerecryptoanalisis_view, name='vigenerecryptoanalisis_view'),
     path('affinecryptoanalisis/', affinecryptoanalisis_view, name='affinecryptoanalisis_view'),
     path('substitutioncryptoanalisis/', substitutioncryptoanalisis_view, name='substitutioncryptoanalisis_view'),
     path('affine/', affine_view, name='affine_view'),
     path('download/', download_file, name='download_file'),
+    path('downloadimg/', downloadimg_file, name='downloadimg_file'),
+    path('downloadimge/', downloadimge_file, name='downloadimge_file'),
 ]
 urlpatterns += staticfiles_urlpatterns()
