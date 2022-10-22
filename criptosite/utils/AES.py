@@ -1,3 +1,4 @@
+from re import A
 from Cryptodome.Cipher import AES
 from PIL import Image
 import requests
@@ -54,7 +55,7 @@ def encode_aes_img_ECB(key):
 			rowPixels += encryptedImg.getpixel((x,y))
 	
 	# Show the image and save it in a .pgm file
-	encryptedImg.show()
+	# encryptedImg.show()
 	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
 
 def decode_aes_img_ECB(key):
@@ -79,11 +80,11 @@ def decode_aes_img_ECB(key):
 			
 			rowPixels += decryptedImg.getpixel((x,y))
 	
-	decryptedImg.show()
+	#decryptedImg.show()
 	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png") 
 #CBC
-def encode_aes_img_CBC(key):
-	iv = "A"*16
+def encode_aes_img_CBC(key,iv):
+
 	cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
 	img = Image.open("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
@@ -111,12 +112,12 @@ def encode_aes_img_CBC(key):
 			rowPixels += encryptedImg.getpixel((x,y))
 	
 	# Show the image and save it in a .pgm file
-	encryptedImg.show()
+	# encryptedImg.show()
 	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
 	return (cipher.iv).hex()
 
-def decode_aes_img_CBC(key):
-	iv = "A"*16
+def decode_aes_img_CBC(key,iv):
+	
 	cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
 	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
@@ -138,14 +139,13 @@ def decode_aes_img_CBC(key):
 			
 			rowPixels += decryptedImg.getpixel((x,y))
 	
-	decryptedImg.show()
+	#decryptedImg.show()
 	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png")
 
  #OFB
-def encode_aes_img_OFB(key):
-	iv = "A"*16
+def encode_aes_img_OFB(key,iv):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_OFB, iv.encode("utf8"))
-	img = Image.open("criptosite/static/img/clean.png")
+	img = Image.open("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -172,11 +172,10 @@ def encode_aes_img_OFB(key):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESOFB.png")
+	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
 	return (cipher.iv).hex()
 
-def decode_aes_img_OFB(key):
-	iv = "A"*16
+def decode_aes_img_OFB(key,iv):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_OFB, iv.encode("utf8"))
 	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
@@ -199,12 +198,12 @@ def decode_aes_img_OFB(key):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAESOFB.png")
+	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png")
 
 #CFB
-def encode_aes_img_CFB(key, url, iv=None):
-	cipher = AES.new(key, AES.MODE_CFB, iv, segment_size=128)
-	img = Image.open("criptosite/static/img/AES/AES_image.jpg")
+def encode_aes_img_CFB(key,iv):
+	cipher = AES.new(key.encode("utf8"), AES.MODE_CFB, iv.encode("utf8"), segment_size=128)
+	img = Image.open("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -231,12 +230,12 @@ def encode_aes_img_CFB(key, url, iv=None):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAES.png")
+	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
 	return (cipher.iv).hex()
 
-def decode_aes_img_CFB(key, url, iv):
-	cipher = AES.new(key, AES.MODE_CFB, iv, segment_size=128)
-	img = Image.open("criptosite/static/img/Encrypted.png")
+def decode_aes_img_CFB(key,iv):
+	cipher = AES.new(key.encode("utf8"), AES.MODE_CFB, iv.encode("utf8"), segment_size=128)
+	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -257,12 +256,12 @@ def decode_aes_img_CFB(key, url, iv):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAES.png")
+	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png")
 
 #CTR
-def encode_aes_img_CTR(key, url, nonce=None):
-	cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
-	img = Image.open("criptosite/static/img/AES/AES_image.jpg")
+def encode_aes_img_CTR(key):
+	cipher = AES.new(key.encode("utf8"), AES.MODE_CTR)
+	img = Image.open("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -289,12 +288,12 @@ def encode_aes_img_CTR(key, url, nonce=None):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("criptosite/static/img/AES/Encrypted.png")
-	return (cipher.nonce).hex()
+	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
+	#return (cipher.nonce).hex()
 
-def decode_aes_image_ctr(key, url, nonce):
-	cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
-	img = Image.open(url)
+def decode_aes_img_CTR(key):
+	cipher = AES.new(key.encode("utf8"), AES.MODE_CTR)
+	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -311,15 +310,13 @@ def decode_aes_image_ctr(key, url, nonce):
 				for i in range(x - 4, x):
 					decryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
 				rowPixels = []
-			
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/AES/Decrypted.png") 
+	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png") 
+
 key = "7EAB923792032CBA5F6046022B963826"
-bin_key = codecs.decode(key, 'hex_codec')
-print(bin_key)
-encode_aes_img_CBC(key)
-decode_aes_img_CBC(key)
+iv = "A"*16
+
 #iv = encode_aes_image_ofb(bin_key, "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg?20090323211402")
 #decode_aes_image_ofb(bin_key, "result.png", codecs.decode(iv, 'hex_codec'))
