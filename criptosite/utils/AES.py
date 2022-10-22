@@ -1,5 +1,4 @@
 from Crypto.Cipher import AES
-import imageio
 from PIL import Image
 import requests
 from PIL import ImageOps
@@ -29,7 +28,7 @@ def HexToDecimal(s):
 # ECB
 def encode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
-	img = imageio.imread("criptosite\criptosite\static\img\clean.png")
+	img = Image.open("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -60,7 +59,7 @@ def encode_aes_img_ECB(key):
 
 def decode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
-	img = imageio.imread("criptosite\criptosite\static\img\Encrypted.png")
+	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -85,8 +84,8 @@ def decode_aes_img_ECB(key):
 #CBC
 def encode_aes_img_CBC(key):
 	iv = "A"*16
-	cipher = AES.new(key, AES.MODE_CBC, iv)
-	img = imageio.imread("criptosite\criptosite\static\img\clean.png")
+	cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
+	img = Image.open("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -118,8 +117,8 @@ def encode_aes_img_CBC(key):
 
 def decode_aes_img_CBC(key):
 	iv = "A"*16
-	cipher = AES.new(key, AES.MODE_CBC, iv)
-	img = imageio.imread("criptosite\criptosite\static\img\Encrypted.png")
+	cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
+	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
