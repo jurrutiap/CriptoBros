@@ -142,8 +142,9 @@ def decode_aes_img_CBC(key):
 	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png")
 
  #OFB
-def encode_aes_img_OFB(key, url, iv=None):
-	cipher = AES.new(key, AES.MODE_OFB, iv)
+def encode_aes_img_OFB(key):
+	iv = "A"*16
+	cipher = AES.new(key.encode("utf8"), AES.MODE_OFB, iv.encode("utf8"))
 	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
@@ -174,9 +175,10 @@ def encode_aes_img_OFB(key, url, iv=None):
 	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESOFB.png")
 	return (cipher.iv).hex()
 
-def decode_aes_img_OFB(key, url, iv):
-	cipher = AES.new(key, AES.MODE_OFB, iv)
-	img = Image.open(url)
+def decode_aes_img_OFB(key):
+	iv = "A"*16
+	cipher = AES.new(key.encode("utf8"), AES.MODE_OFB, iv.encode("utf8"))
+	img = Image.open("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
