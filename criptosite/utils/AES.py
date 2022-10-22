@@ -29,11 +29,11 @@ def HexToDecimal(s):
 	return result
 
 # ECB
-def encode_aes_image_ecb(key, url):
+def encode_aes_img_ECB(key, url):
 	cipher = AES.new(key, AES.MODE_ECB)
 
-	urllib.request.urlretrieve(url,"static/images/image.jpg")
-	img = Image.open("static/images/image.jpg")
+	urllib.request.urlretrieve(url,"criptosite/static/img/AES/AES image.jpg")
+	img = Image.open("criptosite/static/img/AES/AES image.jpg")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -60,9 +60,9 @@ def encode_aes_image_ecb(key, url):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("static/images/result.png")
+	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESECB.png")
 
-def decode_aes_image_ecb(key, url):
+def decode_aes_img_ECB(key, url):
 	cipher = AES.new(key, AES.MODE_ECB)
 	img = Image.open(url)
 	decryptedImg = img
@@ -85,14 +85,14 @@ def decode_aes_image_ecb(key, url):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("static/images/out.png")
+	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAESECB.png")
 
 #CBC
-def encode_aes_image_cbc(key, url, iv=None):
+def encode_aes_img_CBC(key, url, iv=None):
 	cipher = AES.new(key, AES.MODE_CBC, iv)
 
-	urllib.request.urlretrieve(url,"static/images/image.jpg")
-	img = Image.open("static/images/image.jpg")
+	urllib.request.urlretrieve(url,"criptosite/static/img/AES/AES image.jpg")
+	img = Image.open("criptosite/static/img/AES/AES image.jpg")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -119,10 +119,10 @@ def encode_aes_image_cbc(key, url, iv=None):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("static/images/result.png")
+	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESCBC.png")
 	return (cipher.iv).hex()
 
-def decode_aes_image_cbc(key, url, iv):
+def decode_aes_img_CBC(key, url, iv):
 	cipher = AES.new(key, AES.MODE_CBC, iv)
 	img = Image.open(url)
 	decryptedImg = img
@@ -145,14 +145,14 @@ def decode_aes_image_cbc(key, url, iv):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("static/images/out.png")
+	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAESCBC.png")
 
 #OFB
-def encode_aes_image_ofb(key, url, iv=None):
+def encode_aes_img_OFB(key, url, iv=None):
 	cipher = AES.new(key, AES.MODE_OFB, iv)
 
-	urllib.request.urlretrieve(url,"static/images/image.jpg")
-	img = Image.open("static/images/image.jpg")
+	urllib.request.urlretrieve(url,"criptosite/static/img/AES/AES image.jpg")
+	img = Image.open("criptosite/static/img/AES/AES image.jpg")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -179,10 +179,10 @@ def encode_aes_image_ofb(key, url, iv=None):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("static/images/result.png")
+	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESOFB.png")
 	return (cipher.iv).hex()
 
-def decode_aes_image_ofb(key, url, iv):
+def decode_aes_img_OFB(key, url, iv):
 	cipher = AES.new(key, AES.MODE_OFB, iv)
 	img = Image.open(url)
 	decryptedImg = img
@@ -205,14 +205,14 @@ def decode_aes_image_ofb(key, url, iv):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("static/images/out.png")
+	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAESOFB.png")
 
 #CFB
-def encode_aes_image_cfb(key, url, iv=None):
+def encode_aes_img_CFB(key, url, iv=None):
 	cipher = AES.new(key, AES.MODE_CFB, iv, segment_size=128)
 
-	urllib.request.urlretrieve(url,"static/images/image.jpg")
-	img = Image.open("static/images/image.jpg")
+	urllib.request.urlretrieve(url,"img/AES/AES image.jpg")
+	img = Image.open("criptosite/static/img/AES/AES image.jpg")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -239,10 +239,10 @@ def encode_aes_image_cfb(key, url, iv=None):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("static/images/result.png")
+	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESCFB.png")
 	return (cipher.iv).hex()
 
-def decode_aes_image_cfb(key, url, iv):
+def decode_aes_img_CFB(key, url, iv):
 	cipher = AES.new(key, AES.MODE_CFB, iv, segment_size=128)
 	img = Image.open(url)
 	decryptedImg = img
@@ -265,14 +265,14 @@ def decode_aes_image_cfb(key, url, iv):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("static/images/out.png")
+	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAESCFB.png")
 
 #CTR
-def encode_aes_image_ctr(key, url, nonce=None):
+def encode_aes_img_CTR(key, url, nonce=None):
 	cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
 
-	urllib.request.urlretrieve(url,"static/images/image.jpg")
-	img = Image.open("static/images/image.jpg")
+	urllib.request.urlretrieve(url,"criptosite/static/img/AES/AES image.jpg")
+	img = Image.open("criptosite/static/img/AES/AES image.jpg")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -299,7 +299,7 @@ def encode_aes_image_ctr(key, url, nonce=None):
 	
 	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
-	encryptedImg.save("static/images/result.png")
+	encryptedImg.save("criptosite/static/img/AES/EncryptedImgAESCTR.png")
 	return (cipher.nonce).hex()
 
 def decode_aes_image_ctr(key, url, nonce):
@@ -325,7 +325,7 @@ def decode_aes_image_ctr(key, url, nonce):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("static/images/out.png")
+	decryptedImg.save("criptosite/static/img/AES/DecryptedImgAESCTR.png")
 
 
 key = "7EAB923792032CBA5F6046022B963826"
