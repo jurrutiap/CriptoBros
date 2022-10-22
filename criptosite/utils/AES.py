@@ -1,8 +1,8 @@
 from Crypto.Cipher import AES
+import imageio
 from PIL import Image
 import requests
 from PIL import ImageOps
-import numpy as np
 import codecs
 from secrets import token_bytes
 
@@ -29,7 +29,7 @@ def HexToDecimal(s):
 # ECB
 def encode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
-	img = Image.open("criptosite/static/img/clean.png")
+	img = imageio.imread("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -56,11 +56,11 @@ def encode_aes_img_ECB(key):
 	
 	# Show the image and save it in a .pgm file
 	encryptedImg.show()
-	encryptedImg.save("criptosite/static/img/Decrypted.png")
+	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
 
 def decode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
-	img = Image.open("criptosite/static/img/Encrypted.png")
+	img = imageio.imread("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -81,12 +81,12 @@ def decode_aes_img_ECB(key):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/Encrypted.png")
-
-""" #CBC
-def encode_aes_img_CBC(key,iv=None):
+	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png") 
+#CBC
+def encode_aes_img_CBC(key):
+	iv = "A"*16
 	cipher = AES.new(key, AES.MODE_CBC, iv)
-	img = Image.open("criptosite/static/img/clean.png")
+	img = imageio.imread("criptosite\criptosite\static\img\clean.png")
 	encryptedImg = img.convert("RGBA")
 
 	# Resize image as needed, the image width must be a multiple
@@ -112,13 +112,14 @@ def encode_aes_img_CBC(key,iv=None):
 			rowPixels += encryptedImg.getpixel((x,y))
 	
 	# Show the image and save it in a .pgm file
-	#encryptedImg.show()
-	encryptedImg.save("criptosite/static/img/Encrypted.png")
+	encryptedImg.show()
+	encryptedImg.save("criptosite\criptosite\static\img\Encrypted.png")
 	return (cipher.iv).hex()
 
-def decode_aes_img_CBC(key, url, iv):
+def decode_aes_img_CBC(key):
+	iv = "A"*16
 	cipher = AES.new(key, AES.MODE_CBC, iv)
-	img = Image.open(url)
+	img = imageio.imread("criptosite\criptosite\static\img\Encrypted.png")
 	decryptedImg = img
 
 	# Iterate over each row of the image height taking at each step
@@ -138,10 +139,10 @@ def decode_aes_img_CBC(key, url, iv):
 			
 			rowPixels += decryptedImg.getpixel((x,y))
 	
-	#decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/Decrypted.png")
+	decryptedImg.show()
+	decryptedImg.save("criptosite\criptosite\static\img\Decrypted.png")
 
-#OFB
+ #OFB
 def encode_aes_img_OFB(key, url, iv=None):
 	cipher = AES.new(key, AES.MODE_OFB, iv)
 	img = Image.open("criptosite/static/img/clean.png")
@@ -313,11 +314,11 @@ def decode_aes_image_ctr(key, url, nonce):
 			rowPixels += decryptedImg.getpixel((x,y))
 	
 	#decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/AES/Decrypted.png")
- """
-
+	decryptedImg.save("criptosite/static/img/AES/Decrypted.png") 
 key = "7EAB923792032CBA5F6046022B963826"
 bin_key = codecs.decode(key, 'hex_codec')
 print(bin_key)
+encode_aes_img_CBC(key)
+decode_aes_img_CBC(key)
 #iv = encode_aes_image_ofb(bin_key, "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg?20090323211402")
 #decode_aes_image_ofb(bin_key, "result.png", codecs.decode(iv, 'hex_codec'))
