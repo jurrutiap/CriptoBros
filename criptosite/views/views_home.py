@@ -281,3 +281,31 @@ def download_file(request):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     # Return the response value
     return response
+
+def downloadimg_file(request):
+    # Define text file name
+    filename = 'criptosite/static/img/Encrypted.png'
+    # Open the file for reading content
+    path = open(filename, 'rb')
+    # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filename)
+    # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type=mime_type)
+    # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # Return the response value
+    return response
+
+def downloadimge_file(request):
+    # Define text file name
+    filename = 'criptosite/static/img/Decrypted.png'
+    # Open the file for reading content
+    path = open(filename, 'rb')
+    # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filename)
+    # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type=mime_type)
+    # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # Return the response value
+    return response

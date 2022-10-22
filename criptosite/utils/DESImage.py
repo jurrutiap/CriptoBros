@@ -59,12 +59,3 @@ def decryptDESImage(key):
     with open('criptosite/static/img/Decrypted.png', 'wb') as image_file:
         image_file.write(plaintext1)
     return key
-
-
-def finalDESImage(file_name, key):
-    encryptDESImage(file_name, key)
-    decryptDESImage(file_name, key)
-
-# a = encryptDESImage('lena.jpg', 'aBcdefghfegrds54')
-# print(a)
-# b = decryptDESImage('lena.jpg', 'aBcdefghfegrds54')
