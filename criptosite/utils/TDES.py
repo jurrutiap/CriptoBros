@@ -4,6 +4,8 @@ from Crypto.Cipher import DES3
 from Crypto.Random import get_random_bytes
 
 
+MODES = [DES3.MODE_ECB, DES3.MODE_CBC, DES3.MODE_CFB, DES3.MODE_OFB, DES3.MODE_CTR, DES3.MODE_OPENPGP, DES3.MODE_EAX]
+
 def rgb2hex(rgb):
 
     """
@@ -47,7 +49,7 @@ def hexToRGB(hexadecimal):
 
 
 
-def EncryptImage(imageToEncrypt,key):
+def EncryptImage(imageToEncrypt,key,mode):
     """
     Function to encrypt
     imageToEncrypt: a string, representing the direction of the image
@@ -73,7 +75,7 @@ def EncryptImage(imageToEncrypt,key):
 
     data = bytes.fromhex(hexToEncrypt)
     iv = b"00000000"
-    cipher = DES3.new(bytes(key), DES3.MODE_CFB,iv)
+    cipher = DES3.new(bytes(key), mode,iv)
 
 
     d = cipher.encrypt(data)
@@ -106,7 +108,7 @@ def EncryptImage(imageToEncrypt,key):
 
 
 
-def DecryptImage(imageToEncrypt,key):
+def DecryptImage(imageToEncrypt,key,mode):
     """
     Function to decrypt
     imageToEncrypt: a string, representing the direction of the image
@@ -132,7 +134,7 @@ def DecryptImage(imageToEncrypt,key):
 
     data = bytes.fromhex(hexToEncrypt)
     iv = b"00000000"
-    cipher = DES3.new(bytes(key), DES3.MODE_CFB,iv)
+    cipher = DES3.new(bytes(key), mode,iv)
 
 
     d = cipher.decrypt(data)
