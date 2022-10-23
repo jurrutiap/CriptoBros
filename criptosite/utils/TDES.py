@@ -4,28 +4,56 @@ from Crypto.Cipher import DES3
 from Crypto.Random import get_random_bytes
 
 
-
 def rgb2hex(rgb):
+
+    """
+    convert a list or tuple of RGB values
+    to a string in hex
+    """
+
     r,g,b = rgb
     return '{:02x}{:02x}{:02x}'.format(r, g, b)
 
+
 def arrayToString(array):
+    """
+    convert an array to a string
+    """
+
     string = ""
     for element in array:
         string += str(element)
 
     return string
 
+
 def sliceStr(string,sliceLenght):
+    """
+    slice a string in chunks of sliceLenght lenght
+    """
+
     string = str(string)
     array = np.array([string[i:i+sliceLenght] for i in range(0,len(string),sliceLenght)])
     return array
 
+
+
 def hexToRGB(hexadecimal):
+    """
+    convert a hex string to an array of RGB values
+    """
     h = hexadecimal.lstrip('#')
     return [int(h[i:i+2], 16) for i in (0, 2, 4)]
 
+
+
 def EncryptImage(imageToEncrypt,key):
+    """
+    Function to encrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
     dataToEncrypt =imageio.imread(imageToEncrypt)
 
     if dataToEncrypt.shape[2] ==4:
@@ -80,6 +108,12 @@ def EncryptImage(imageToEncrypt,key):
 
 
 def DecryptImage(imageToEncrypt,key):
+    """
+    Function to decrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
     dataToEncrypt =imageio.imread(imageToEncrypt)
 
     if dataToEncrypt.shape[2] ==4:
