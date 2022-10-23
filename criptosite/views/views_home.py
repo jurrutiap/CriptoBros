@@ -230,6 +230,26 @@ def AESimage_view(request, *textC):
                 fss.save('criptosite/static/img/clean.png', upload)
                 AES.encode_aes_img_CBC(k1,k2)
                 return render(request, 'AES.html', {'encrypted_image':'aaaaa', 'k1':k1, 'k2':k2})
+            if Mode == "OFB":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                k2= request.POST['k2']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                AES.encode_aes_img_OFB(k1,k2)
+                return render(request, 'AES.html', {'encrypted_image':'aaaaa', 'k1':k1, 'k2':k2})
+            if Mode == "CFB":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                k2= request.POST['k2']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                AES.encode_aes_img_CFB(k1,k2)
+                return render(request, 'AES.html', {'encrypted_image':'aaaaa', 'k1':k1, 'k2':k2})
         if 'decrypt' in request.POST:
             Mode= request.POST['mode']
             if Mode == "ECB":
@@ -252,6 +272,27 @@ def AESimage_view(request, *textC):
                 k4= request.POST['k4']
                 fss.save('criptosite/static/img/Encrypted.png', upload)
                 AES.decode_aes_img_CBC(k3,k4)
+                time.sleep(5)
+            if Mode == "OFB":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k3= request.POST['k3']
+                k4= request.POST['k4']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                AES.decode_aes_img_OFB(k3,k4)
+                time.sleep(5)
+                return render(request, 'AES.html', {'decrypted_image':'aaaaa', 'k3':k3, 'k4':k4})
+            if Mode == "CFB":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k3= request.POST['k3']
+                k4= request.POST['k4']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                AES.decode_aes_img_CFB(k3,k4)
                 time.sleep(5)
                 return render(request, 'AES.html', {'decrypted_image':'aaaaa', 'k3':k3, 'k4':k4})
             
