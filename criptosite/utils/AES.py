@@ -32,14 +32,9 @@ def encode_aes_img_ECB(key):
 	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
-	# Resize image as needed, the image width must be a multiple
-	# of 4
 	if encryptedImg.width % 4 != 0:
 		diff = 4 - (encryptedImg.width % 4)
 		encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
-	
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, encryptedImg.height):
 		rowPixels = []
 		for x in range(0, encryptedImg.width):
@@ -54,7 +49,6 @@ def encode_aes_img_ECB(key):
 				rowPixels = []
 			rowPixels += encryptedImg.getpixel((x,y))
 	
-	# Show the image and save it in a .pgm file
 	# encryptedImg.show()
 	encryptedImg.save("criptosite/static/img/Encrypted.png")
 
@@ -63,8 +57,6 @@ def decode_aes_img_ECB(key):
 	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, decryptedImg.height):
 		rowPixels = []
 		for x in range(0, decryptedImg.width):
@@ -89,14 +81,9 @@ def encode_aes_img_CBC(key,iv):
 	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
-	# Resize image as needed, the image width must be a multiple
-	# of 4
 	if encryptedImg.width % 4 != 0:
 		diff = 4 - (encryptedImg.width % 4)
 		encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
-	
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, encryptedImg.height):
 		rowPixels = []
 		for x in range(0, encryptedImg.width):
@@ -111,7 +98,6 @@ def encode_aes_img_CBC(key,iv):
 				rowPixels = []
 			rowPixels += encryptedImg.getpixel((x,y))
 	
-	# Show the image and save it in a .pgm file
 	# encryptedImg.show()
 	encryptedImg.save("criptosite/static/img/Encrypted.png")
 	return (cipher.iv).hex()
@@ -122,8 +108,6 @@ def decode_aes_img_CBC(key,iv):
 	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, decryptedImg.height):
 		rowPixels = []
 		for x in range(0, decryptedImg.width):
@@ -148,14 +132,9 @@ def encode_aes_img_OFB(key,iv):
 	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
-	# Resize image as needed, the image width must be a multiple
-	# of 4
 	if encryptedImg.width % 4 != 0:
 		diff = 4 - (encryptedImg.width % 4)
 		encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
-	
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, encryptedImg.height):
 		rowPixels = []
 		for x in range(0, encryptedImg.width):
@@ -170,7 +149,6 @@ def encode_aes_img_OFB(key,iv):
 				rowPixels = []
 			rowPixels += encryptedImg.getpixel((x,y))
 	
-	# Show the image and save it in a .pgm file
 	#encryptedImg.show()
 	encryptedImg.save("criptosite/static/img/Encrypted.png")
 	return (cipher.iv).hex()
@@ -180,8 +158,6 @@ def decode_aes_img_OFB(key,iv):
 	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, decryptedImg.height):
 		rowPixels = []
 		for x in range(0, decryptedImg.width):
@@ -206,14 +182,9 @@ def encode_aes_img_CFB(key,iv):
 	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
-	# Resize image as needed, the image width must be a multiple
-	# of 4
 	if encryptedImg.width % 4 != 0:
 		diff = 4 - (encryptedImg.width % 4)
 		encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
-	
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, encryptedImg.height):
 		rowPixels = []
 		for x in range(0, encryptedImg.width):
@@ -236,8 +207,6 @@ def decode_aes_img_CFB(key,iv):
 	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, decryptedImg.height):
 		rowPixels = []
 		for x in range(0, decryptedImg.width):
@@ -262,14 +231,9 @@ def encode_aes_img_CTR(key):
 	img = Image.open("criptosite/static/img/clean.png")
 	encryptedImg = img.convert("RGBA")
 
-	# Resize image as needed, the image width must be a multiple
-	# of 4
 	if encryptedImg.width % 4 != 0:
 		diff = 4 - (encryptedImg.width % 4)
 		encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
-	
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, encryptedImg.height):
 		rowPixels = []
 		for x in range(0, encryptedImg.width):
@@ -283,8 +247,7 @@ def encode_aes_img_CTR(key):
 					encryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
 				rowPixels = []
 			rowPixels += encryptedImg.getpixel((x,y))
-	
-	# Show the image and save it in a .pgm file
+
 	#encryptedImg.show()
 	encryptedImg.save("criptosite/static/img/Encrypted.png")
 	#return (cipher.nonce).hex()
@@ -294,8 +257,6 @@ def decode_aes_img_CTR(key):
 	img = Image.open("criptosite/static/img/Encrypted.png")
 	decryptedImg = img
 
-	# Iterate over each row of the image height taking at each step
-	# 4 pixels to transform them into a new 4 pixels
 	for y in range(0, decryptedImg.height):
 		rowPixels = []
 		for x in range(0, decryptedImg.width):
@@ -309,12 +270,8 @@ def decode_aes_img_CTR(key):
 					decryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
 				rowPixels = []
 			rowPixels += decryptedImg.getpixel((x,y))
-	
 	#decryptedImg.show()
 	decryptedImg.save("criptosite/static/img/Decrypted.png") 
 
 key = "7EAB923792032CBA5F6046022B963826"
 iv = "A"*16
-
-#iv = encode_aes_image_ofb(bin_key, "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg?20090323211402")
-#decode_aes_image_ofb(bin_key, "result.png", codecs.decode(iv, 'hex_codec'))
