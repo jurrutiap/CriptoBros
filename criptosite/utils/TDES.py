@@ -100,7 +100,6 @@ def EncryptImage(imageToEncrypt,key):
 
         encryptedImg = np.asarray(stepThree)
 
-    print(stepThree)
     imageio.imwrite("destest.png",encryptedImg)
     return stepThree
 
@@ -160,11 +159,10 @@ def DecryptImage(imageToEncrypt,key):
 
         encryptedImg = np.asarray(stepThree)
 
-    print(stepThree)
+
     imageio.imwrite("decryptstest.png",encryptedImg)
     return stepThree
 
-b = DecryptImage("destest.png", key = b"DESCRYPTDESCRYPPDESCRYYT")
 
 
 
