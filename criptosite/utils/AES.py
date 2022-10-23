@@ -6,26 +6,6 @@ from PIL import ImageOps
 import codecs
 from secrets import token_bytes
 
-def DecimalToHex(l):
-	result = ""
-	for i in l:
-		if len(hex(i).split('x')[-1]) != 1:
-			result += hex(i).split('x')[-1]
-		else:
-			result += '0' + hex(i).split('x')[-1]
-	return result.upper()
-
-def HexToDecimal(s):
-	result = []
-	while len(s) != 32:
-		s = '0' + s
-	for i in range(0, 32, 8):
-		pixel = []
-		for j in range(i, i+8, 2):
-			pixel.append(int(s[j]+s[j+1], base=16))
-		result.append(tuple(pixel))
-	return result
-
 # ECB
 def encode_aes_img_ECB(key):
 	cipher = AES.new(key.encode("utf8"), AES.MODE_ECB)
@@ -272,6 +252,27 @@ def decode_aes_img_CTR(key):
 			rowPixels += decryptedImg.getpixel((x,y))
 	#decryptedImg.show()
 	decryptedImg.save("criptosite/static/img/Decrypted.png") 
+
+def DecimalToHex(l):
+	result = ""
+	for i in l:
+		if len(hex(i).split('x')[-1]) != 1:
+			result += hex(i).split('x')[-1]
+		else:
+			result += '0' + hex(i).split('x')[-1]
+	return result.upper()
+
+def HexToDecimal(s):
+	result = []
+	while len(s) != 32:
+		s = '0' + s
+	for i in range(0, 32, 8):
+		pixel = []
+		for j in range(i, i+8, 2):
+			pixel.append(int(s[j]+s[j+1], base=16))
+		result.append(tuple(pixel))
+	return result
+
 
 key = "7EAB923792032CBA5F6046022B963826"
 iv = "A"*16
