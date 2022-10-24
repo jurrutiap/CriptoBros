@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block head_content %}
-<title>CriptoBros - Shift Analysis</title>
+<title>CriptoBros - Triple DES Image Encryption</title>
 {% endblock %}
 
 {% block main %}
@@ -12,8 +12,8 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">DES Image Encryption</h1>
-    <p class="mb-4">The standard DES data encryption encrypts a message of 64 bits or 12.8 letters.</p>
+    <h1 class="h3 mb-2 text-gray-800">Triple DES Image Encryption</h1>
+    <p class="mb-4">In cryptography, Triple DES is called the algorithm that triple-encrypts DES. It is also known as TDES or 3DES, in 1998 IBM developed 3DES or Triple DES which would be a direct successor to DES.</p>
 
     <!-- Content Row -->
     <div class="row">
@@ -31,9 +31,17 @@
                         <form method="POST" action="" target="_self" enctype="multipart/form-data">
                             {% csrf_token %}
                             <p> Encrypt image: <input type="file" name="im1" accept="image/*"></p>
+                            <label for="mode">Choose Triple DES mode:</label>
+                            <select name="mode" id="mode">
+                                <option value="ECB">ECB</option>
+                                <option value="CBC">CBC</option>
+                                <option value="OFB">OFB</option>
+                                <option value="CFB">CFB</option>
+                                <option value="CTR">CTR</option>
+                            </select>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroup-sizing-default">Key of 8 bytes (if fails will pick a default key)</span>
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Key of 24 bytes (if fails will pick a default key)</span>
                                 </div>
                                 <input type="text" name='k1' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                             </div>
@@ -47,7 +55,6 @@
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
                 <p><img src="{% static 'img/Encrypted.png' %}" class="img-fluid"></p>
             </div>
-
             <div class="col-xl-3 col-lg-5">
                 <!-- Outputs Chart -->
                 <div class="card shadow mb-4">
@@ -59,9 +66,9 @@
                     <div class="card-body">
                         <div class="chart-area">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">K used to encrypt</span>
-                                <textarea class="form-control" rows="1">{{ k1 }}</textarea>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Key of 24 bytes use to encrypt</span>
                             </div>
+                            <textarea class="form-control" rows="3">{{ k1 }}</textarea>
                             <div class="chart-area">
                                 <a class="btn btn-success btn-sm btn-block" href="{% url 'downloadimg_file'%}" target="_blank">Download Results</a>
                             </div> 
@@ -69,6 +76,7 @@
                     </div>
                 </div>
             </div>
+                
         {% else %}
             <p>No movies posters added.</p>
         {% endif %}
@@ -88,9 +96,17 @@
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <p> Encrypted image: <input type="file" name="im2" accept="image/*"></p>
+                            <label for="mode">Choose AES mode:</label>
+                            <select name="mode" id="mode">
+                                <option value="ECB">ECB</option>
+                                <option value="CBC">CBC</option>
+                                <option value="OFB">OFB</option>
+                                <option value="CFB">CFB</option>
+                                <option value="CTR">CTR</option>
+                            </select>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroup-sizing-default">Key of 8 bytes(if fails will pick a default key)</span>
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Key of 24 bytes (if fails will pick a default key)</span>
                                 </div>
                                 <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                             </div>
@@ -104,7 +120,6 @@
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
                 <p><img src="{% static 'img/Decrypted.png' %}" class="img-fluid"></p>
             </div>
-
             <div class="col-xl-3 col-lg-5">
                 <!-- Outputs Chart -->
                 <div class="card shadow mb-4">
@@ -116,10 +131,9 @@
                     <div class="card-body">
                         <div class="chart-area">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">K used to decrypt</span>
-                                <textarea class="form-control" rows="1">{{ k2 }}</textarea>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Key of 24 bytes use to decrypt</span>
                             </div>
-                            <div class="chart-area">
+                            <textarea class="form-control" rows="3">{{ k2 }}</textarea>
                                 <a class="btn btn-success btn-sm btn-block" href="{% url 'downloadimge_file'%}" target="_blank">Download Results</a>
                             </div> 
                         </div>         
@@ -135,4 +149,4 @@
 
 <!-- /.container-fluid -->
 {% endblock %}
-<!-- </body> -->
+<!-- </body> -->    
