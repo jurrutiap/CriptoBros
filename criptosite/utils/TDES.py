@@ -49,14 +49,14 @@ def hexToRGB(hexadecimal):
 
 
 
-def EncryptImage(imageToEncrypt,key,mode):
+def EncryptImage(key,mode):
     """
     Function to encrypt
     imageToEncrypt: a string, representing the direction of the image
     key: a key. MUST be an 8 byte long bytes object
     """
 
-    dataToEncrypt =imageio.imread(imageToEncrypt)
+    dataToEncrypt =imageio.imread('criptosite/static/img/clean.png')
 
     if dataToEncrypt.shape[2] ==4:
         dataToEncrypt = np.delete(dataToEncrypt,3,2)
@@ -75,7 +75,7 @@ def EncryptImage(imageToEncrypt,key,mode):
 
     data = bytes.fromhex(hexToEncrypt)
     iv = b"00000000"
-    cipher = DES3.new(bytes(key), mode,iv)
+    cipher = DES3.new(key.encode(),DES3.MODE_ECB)
 
 
     d = cipher.encrypt(data)
@@ -102,20 +102,20 @@ def EncryptImage(imageToEncrypt,key,mode):
 
         encryptedImg = np.asarray(stepThree)
 
-    imageio.imwrite("destest.png",encryptedImg)
+    imageio.imwrite('criptosite/static/img/Encrypted.png',encryptedImg)
     return stepThree
 
 
 
 
-def DecryptImage(imageToEncrypt,key,mode):
+def DecryptImage(key,mode):
     """
     Function to decrypt
     imageToEncrypt: a string, representing the direction of the image
     key: a key. MUST be an 8 byte long bytes object
     """
 
-    dataToEncrypt =imageio.imread(imageToEncrypt)
+    dataToEncrypt =imageio.imread('criptosite/static/img/Encrypted.png')
 
     if dataToEncrypt.shape[2] ==4:
         dataToEncrypt = np.delete(dataToEncrypt,3,2)
@@ -134,7 +134,7 @@ def DecryptImage(imageToEncrypt,key,mode):
 
     data = bytes.fromhex(hexToEncrypt)
     iv = b"00000000"
-    cipher = DES3.new(bytes(key), mode,iv)
+    cipher = DES3.new(key.encode(), mode,iv)
 
 
     d = cipher.decrypt(data)
@@ -162,7 +162,7 @@ def DecryptImage(imageToEncrypt,key,mode):
         encryptedImg = np.asarray(stepThree)
 
 
-    imageio.imwrite("decryptstest.png",encryptedImg)
+    imageio.imwrite('criptosite/static/img/Decrypted.png',encryptedImg)
     return stepThree
 
 

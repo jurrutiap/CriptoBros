@@ -25,6 +25,7 @@ import utils.gammaPentagonal as gp
 import utils.DES as DES
 import utils.DESImage as DESi
 import utils.AES as AES 
+import utils.TDES as TDES
 
 def home(request):
     return render(request, 'index.html')
@@ -187,7 +188,7 @@ def DESimage_view(request, *textC):
             if os.path.exists("criptosite/static/img/clean.png"):
                 os.remove("criptosite/static/img/clean.png")
             upload = request.FILES['im1']
-            k= request.POST['k1']
+            k= DESi.K(request.POST['k1'])
             fss = FileSystemStorage()
             fss.save('criptosite/static/img/clean.png', upload)
             k= DESi.encryptDESImage(k)
@@ -197,11 +198,10 @@ def DESimage_view(request, *textC):
             if os.path.exists("criptosite/static/img/Encrypted.png"):
                 os.remove("criptosite/static/img/Encrypted.png")
             fss = FileSystemStorage()
-            k= request.POST['k2']
+            k= DESi.K(request.POST['k2'])
             upload = request.FILES['im2']
             fss.save('criptosite/static/img/Encrypted.png', upload)
             k= DESi.decryptDESImage(k)
-            time.sleep(5)
             return render(request, 'DESimage_system.html', {'decrypted_image':'aaaaa', 'k2':k})
 
     return render(request, 'DESimage_system.html')
@@ -250,6 +250,16 @@ def AESimage_view(request, *textC):
                 fss.save('criptosite/static/img/clean.png', upload)
                 AES.encode_aes_img_CFB(k1,k2)
                 return render(request, 'AES.html', {'encrypted_image':'aaaaa', 'k1':k1, 'k2':k2})
+            if Mode == "CTR":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                k2= request.POST['k2']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                AES.encode_aes_img_CTR(k1,k2)
+                return render(request, 'AES.html', {'encrypted_image':'aaaaa', 'k1':k1, 'k2':k2})
         if 'decrypt' in request.POST:
             Mode= request.POST['mode']
             if Mode == "ECB":
@@ -295,8 +305,123 @@ def AESimage_view(request, *textC):
                 AES.decode_aes_img_CFB(k3,k4)
                 time.sleep(5)
                 return render(request, 'AES.html', {'decrypted_image':'aaaaa', 'k3':k3, 'k4':k4})
+            if Mode == "CTR":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k3= request.POST['k3']
+                k4= request.POST['k4']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                AES.decode_aes_img_CTR(k3,k4)
+                time.sleep(5)
+                return render(request, 'AES.html', {'decrypted_image':'aaaaa', 'k3':k3, 'k4':k4})
             
     return render(request, 'AES.html')
+
+def TDESimage_view(request, *textC):
+    if request.method == "POST":       
+        if 'encrypt' in request.POST:
+            Mode= request.POST['mode']
+            if Mode == "ECB":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                TDES.EncryptImage(k1,"ECB")
+                return render(request, 'TDES.html', {'encrypted_image':'aaaaa', 'k1':k1})
+            if Mode == "CBC":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                TDES.EncryptImage(k1,"CBC")
+                return render(request, 'TDES.html', {'encrypted_image':'aaaaa', 'k1':k1})
+            if Mode == "OFB":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                TDES.EncryptImage(k1,"OFB")
+                return render(request, 'TDES.html', {'encrypted_image':'aaaaa', 'k1':k1})
+            if Mode == "CFB":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                TDES.EncryptImage(k1,"CFB")
+                return render(request, 'TDES.html', {'encrypted_image':'aaaaa', 'k1':k1})
+            if Mode == "CTR":
+                if os.path.exists("criptosite/static/img/clean.png"):
+                    os.remove("criptosite/static/img/clean.png")
+                upload = request.FILES['im1']
+                k1= request.POST['k1']
+                fss = FileSystemStorage()
+                fss.save('criptosite/static/img/clean.png', upload)
+                TDES.EncryptImage(k1,"CTR")
+                return render(request, 'TDES.html', {'encrypted_image':'aaaaa', 'k1':k1})
+        if 'decrypt' in request.POST:
+            Mode= request.POST['mode']
+            if Mode == "ECB":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k2= request.POST['k2']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                TDES.DecryptImage(k2, "ECB")
+                time.sleep(5)
+                return render(request, 'TDES.html', {'decrypted_image':'aaaaa', 'k2':k2})
+            if Mode == "CBC":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k2= request.POST['k2']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                TDES.DecryptImage(k2, "CBC")
+                time.sleep(5)
+                return render(request, 'TDES.html', {'decrypted_image':'aaaaa', 'k2':k2})
+            if Mode == "OFB":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k2= request.POST['k2']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                TDES.DecryptImage(k2, "OFB")
+                time.sleep(5)
+                return render(request, 'TDES.html', {'decrypted_image':'aaaaa', 'k2':k2})
+            if Mode == "CFB":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k2= request.POST['k2']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                TDES.DecryptImage(k2, "CFB")
+                time.sleep(5)
+                return render(request, 'TDES.html', {'decrypted_image':'aaaaa', 'k2':k2})
+            if Mode == "CTR":
+                if os.path.exists("criptosite/static/img/Encrypted.png"):
+                    os.remove("criptosite/static/img/Encrypted.png")
+                fss = FileSystemStorage()
+                upload = request.FILES['im2']
+                k2= request.POST['k2']
+                fss.save('criptosite/static/img/Encrypted.png', upload)
+                TDES.DecryptImage(k2, "CTR")
+                time.sleep(5)
+                return render(request, 'TDES.html', {'decrypted_image':'aaaaa', 'k2':k2})
+            
+    return render(request, 'TDES.html')
 
 
 def shiftcryptoanalisis_view(request, *textC):

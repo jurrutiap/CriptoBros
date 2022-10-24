@@ -9,6 +9,12 @@ salt_const = b"$ez*}-d3](%d%$#*!)$#%s45le$*fhucdivyanshu75456dgfdrrrrfgfs^"
 pi = 100005
 
 
+def K(k):
+    if (len(k) == 8):
+        return k
+    else:
+        return "ABCDEFGH"
+
 def rgb2hex(rgb):
 
     """
@@ -56,7 +62,7 @@ def ImageToBytes(image):
     """
     Image to convert from image to bytes
     """
-    dataToEncrypt =imageio.imread(image)
+    dataToEncrypt =imageio.imread("criptosite/static/img/"+image)
 
     if dataToEncrypt.shape[2] ==4:
         dataToEncrypt = np.delete(dataToEncrypt,3,2)
@@ -106,11 +112,11 @@ def BytesToImage(byteToConvert,originalRows,originalColumns,name):
         encryptedImg = np.asarray(stepThree)
 
 
-    imageio.imwrite(name,encryptedImg)
+    imageio.imwrite("criptosite/static/img/"+name,encryptedImg)
 
 def encryptDESImage(key):
     # opening the image file
-    image = ImageToBytes("image.png")
+    image = ImageToBytes("clean.png")
 
     oriRows = image[1][0]
     oriCols = image[1][1]
