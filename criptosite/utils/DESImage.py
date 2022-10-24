@@ -1,7 +1,7 @@
-from Crypto.Cipher import DES
-from Crypto.Hash import SHA256
+from Cryptodome.Cipher import DES
+from Cryptodome.Hash import SHA256
 from getpass import getpass
-from Crypto.Protocol.KDF import PBKDF2
+from Cryptodome.Protocol.KDF import PBKDF2
 import imageio
 import numpy as np
 

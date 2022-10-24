@@ -140,7 +140,7 @@ def decript(encripted, permutation, graph):
     return clear_text.upper()
     
 def draw_perm(arrangement, permutation):
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(10,5.5))
     plt.style.use('classic')
     current = 0
     for n in range(0, len(arrangement)):
@@ -155,11 +155,11 @@ def draw_perm(arrangement, permutation):
     for a in range(0, 55):
         for b in range(0, 27, 5):
             plt.plot(a*0.2, b, marker="_", markersize = 3, color="#BABABA")
-    plt.savefig("criptosite/criptosite/static/img/GP_perm.png")
+    plt.savefig("criptosite/static/img/GP_perm.png")
 
 
 def draw_graph(graph, x, y):
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(10,5.5))
     plt.style.use('classic')
     plt.title(f"Graph starting at ({x}, {y})", fontsize=12)
 
@@ -190,7 +190,25 @@ def draw_graph(graph, x, y):
             plt.plot([x_coord-1, x_coord], [y_coord-slope, y_coord],  marker = 'o', markersize = 5)
 
     plt.plot(x, y, marker="*", markersize = 10, color="red")
-    plt.savefig("criptosite/criptosite/static/img/GP_graph.png")
+    plt.savefig("criptosite/static/img/GP_graph.png")
+
+def drive_encript(initial_coords, perm, text):
+    graph = generateGraph(initial_coords[0],initial_coords[1])
+    equiv = genEquivClass(perm, graph)
+    ciphered = encript(text, equiv)
+    draw_perm(equiv, perm)
+    draw_graph(graph, initial_coords[0],initial_coords[1])
+
+    return ciphered
+
+def drive_decript(initial_coords, perm, encripted):
+    graph = generateGraph(initial_coords[0],initial_coords[1])
+    equiv = genEquivClass(perm, graph)
+    clear = decript(encripted, perm, graph)
+    draw_perm(equiv, perm)
+    draw_graph(graph, initial_coords[0],initial_coords[1])
+
+    return clear
 
 if __name__ == "__main__":
     # Encript
@@ -198,12 +216,7 @@ if __name__ == "__main__":
     perm = parsePermutation(str(input()))
     print(perm)
     initial_coords = parseCoords(str(input()))
-    graph = generateGraph(initial_coords[0],initial_coords[1])
-    equiv = genEquivClass(perm, graph)
-    ciphered = encript(text, equiv)
-    print(ciphered)
-    draw_perm(equiv, perm)
-    draw_graph(graph, initial_coords[0],initial_coords[1])
+    drive_encript(initial_coords, perm, text)
 
     # Decript
     encripted = str(input())

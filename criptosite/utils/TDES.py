@@ -1,7 +1,7 @@
 import numpy as np
 import imageio
-from Crypto.Cipher import DES3
-from Crypto.Random import get_random_bytes
+from Cryptodome.Cipher import DES3
+from Cryptodome.Random import get_random_bytes
 
 
 def K(k):

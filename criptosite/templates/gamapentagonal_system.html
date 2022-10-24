@@ -13,7 +13,7 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Gamma Pentagonal Cipher</h1>
-    <p class="mb-4">The standard DES data encryption encrypts a message of 64 bits or 12.8 letters.</p>
+    <p class="mb-4">The gamma-pentagonal cryptographic system has the property of probabilistic security since it is associated with a difficult problem of number theory. The difficult problem is to determine in how many ways a positive integer can be written as a sum of at least three square numbers. The above problem can be restated by asking how many admissible trajectories such as the ones we will illustrate later, connect the origin with a point in the usual plane.</p>
 
     <!-- Content Row -->
     <div class="row">
@@ -32,19 +32,20 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">Text</label>
-                                <textarea type="text" name='text' class="form-control" rows="5"></textarea>
+                                <textarea type="text" name='text' class="form-control" rows="5">{{ clear }}</textarea>
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroup-sizing-default">Permutation</span>
                                 </div>
-                                <input type="text" name='perm' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                <textarea type="text" name='perm' class="form-control" rows="1">{{ perm }}</textarea>
+                                
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroup-sizing-default">Start</span>
                                 </div>
-                                <input type="text" name='start' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                <textarea type="text" name='start' class="form-control" rows="1">{{ coord }}</textarea>
                             </div>
                             <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Encrypt">
                         </form>
@@ -54,26 +55,26 @@
         </div>
         {% if encrypted_image %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
-                <p><img src="{% static 'img/clean.png' %}" class="img-fluid"></p>
+                <p><img src="{% static 'img/GP_graph.png' %}" class="img-fluid"></p>
             </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+                <p><img src="{% static 'img/GP_perm.png' %}" class="img-fluid"></p>
+            </div>
+
 
             <div class="col-xl-3 col-lg-5">
                 <!-- Outputs Chart -->
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" style="text-align:center">Encrypt Outputs</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" style="text-align:center">Encrypt Output</h6>
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-area">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">K used to encrypt</span>
-                                <textarea class="form-control" rows="1">{{ k1 }}</textarea>
+                            <div class="form-group">
+                                <textarea type="text" name='text' class="form-control" rows="10">{{ data }}</textarea>
                             </div>
-                            <div class="chart-area">
-                                <a class="btn btn-success btn-sm btn-block" href="{% url 'downloadimg_file'%}" target="_blank">Download Results</a>
-                            </div> 
                         </div>         
                     </div>
                 </div>
@@ -94,14 +95,24 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <form method="post" enctype="multipart/form-data">
+                        <form method="POST" action="" target="_self">
                             {% csrf_token %}
-                            <p> Encrypted image: <input type="file" name="im2" accept="image/*"></p>
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Ciphered coordinates</label>
+                                <textarea type="text" name='cipher' class="form-control" rows="5">{{ cipher }}</textarea>
+                            </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroup-sizing-default">K</span>
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Permutation</span>
                                 </div>
-                                <input type="text" name='k2' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                <textarea type="text" name='d_perm' class="form-control" rows="1">{{ d_perm }}</textarea>
+                                
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Start</span>
+                                </div>
+                                <textarea type="text" name='d_start' class="form-control" rows="1">{{ d_coord }}</textarea>
                             </div>
                             <input name="decrypt" class="btn btn-primary btn-block" type="submit" value="Decrypt">
                         </form>
@@ -111,7 +122,10 @@
         </div>
         {% if decrypted_image %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
-                <p><img src="{% static 'img/Decrypted.png' %}" class="img-fluid"></p>
+                <p><img src="{% static 'img/GP_graph.png' %}" class="img-fluid"></p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+                <p><img src="{% static 'img/GP_perm.png' %}" class="img-fluid"></p>
             </div>
 
             <div class="col-xl-3 col-lg-5">
@@ -119,18 +133,14 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" style="text-align:center">Decrypt Outputs</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" style="text-align:center">Clear Text Output</h6>
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-area">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">K used to decrypt</span>
-                                <textarea class="form-control" rows="1">{{ k2 }}</textarea>
+                            <div class="form-group">
+                                <textarea type="text" name='text' class="form-control" rows="10">{{ result }}</textarea>
                             </div>
-                            <div class="chart-area">
-                                <a class="btn btn-success btn-sm btn-block" href="{% url 'downloadimge_file'%}" target="_blank">Download Results</a>
-                            </div> 
                         </div>         
                     </div>
                 </div>

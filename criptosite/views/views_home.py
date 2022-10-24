@@ -126,18 +126,21 @@ def affine_view(request, *textC):
 
     return render(request, 'affine_system.html')
 
-def gammaPentagonal_view(request, *textC):
+def gammaPentagonal_view(request):
     if request.method == "POST":
         if 'encrypt' in request.POST:
-            message = request.POST['textC']
-            data = gp.encryptGammaPentagonal(message)
-            return render(request, 'gamapentagonal_system.html', {'data':data, 'clear': message})
+            message = request.POST['text']
+            perm = gp.parsePermutation(request.POST['perm'])
+            initial_coords = gp.parseCoords(request.POST['start'])
+            data = gp.drive_encript(initial_coords, perm, message)
+            return render(request, 'gamapentagonal_system.html', {'encrypted_image':'aaaaa', 'clear':message, 'data':data, 'clear': message, 'perm':perm, 'coord':initial_coords})
 
-        if 'desencrypt' in request.POST:
-            message = request.POST['textE']
-            k= afs.k(request.POST['k2'])
-            data = gp.decryptGammaPentagonal(message, k)
-            return render(request, 'gamapentagonal_system.html', {'data':data, 'cipher': message, 'k2':request.POST['k2']})
+        if 'decrypt' in request.POST:
+            cipher = request.POST['cipher']
+            d_perm = gp.parsePermutation(request.POST['d_perm'])
+            d_initial_coords = gp.parseCoords(request.POST['d_start'])
+            result = gp.drive_decript(d_initial_coords, d_perm, cipher)
+            return render(request, 'gamapentagonal_system.html', {'decrypted_image':'aaaaa', 'result':result, 'cipher': cipher, 'd_perm':d_perm, 'd_coord':d_initial_coords})
 
     return render(request, 'gamapentagonal_system.html')
 
