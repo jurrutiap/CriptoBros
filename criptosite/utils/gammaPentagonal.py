@@ -1,196 +1,214 @@
 import matplotlib.pyplot as plt
-from random import randrange
-import json
+import random
 
-matrixAlph = list()
+class Found(Exception): pass
 
-
-def genPermutation():
-    permutation = list()
-    for i in range(10):
-        permutation.append(str(randrange(10)))
-    return permutation
-
-
-def initializeMatrix():
-    del matrixAlph[:]
-    for i in range(10):
-        aux = list()
-        for j in range(20):
-            aux.append(j)
-        matrixAlph.append(aux)
-
-
-def loadPermutation(permut):
-    for i in range(len(permut)):
-        for j in range(20):
-            matrixAlph[i][j] = (int(permut[i]) + matrixAlph[i][j]) % 26
-
-
-def plotGraph(x, y):
-    n = 10
-    vect = None
-    edges = set()
-    curr = (x, y)
-    for i in range(n + 1):
-        next = (curr[0] + 1, curr[1] + i)
-        segment = (curr, next)
-        curr = next
-        edges.add(segment)
-    dirA = edges
-    edges = set()
-    for segment in dirA:
-        last = segment[1]
-        edgetm = set()
-        curr = (*last, n)
-        for i in range(n + 1):
-            next = (curr[0] + 1, curr[1] + i)
-            segment = (curr, next)
-            curr = next
-            edgetm.add(segment)
-        temp = edgetm
-        edges = edges.union(temp)
-    dirB = edges
-    edges = set()
-    for segment in dirB:
-        last = segment[1]
-        pendiente = segment[1][1] - segment[0][1]
-        edgetm = set()
-        curr = (*last, pendiente)
-        for i in range(n + 1):
-            next = (curr[0] + 1, curr[1] + i)
-            segment = (curr, next)
-            curr = next
-            edgetm.add(segment)
-        temp = edgetm
-        edges = edges.union(temp)
-    dirC = edges
-    total = set()
-    vect = ((total.union(dirA)).union(dirB)).union(dirC)
-    return vect
-
-
-def createGraph(x,y,mode):
-    vect= plotGraph(x, y)
-    plt.axis('equal')
-    for segment in vect:
-        p0 = segment[0]
-        p1 = segment[1]
-        if(mode==1):
-            xs = [p0[0]+x, p1[0]+x]
-            ys = [p0[1]+y, p1[1]+y]
-        else:
-            xs = [p0[0] , p1[0] ]
-            ys = [p0[1] , p1[1] ]
-        plt.xlim(x-5, x + 15)
-        plt.ylim(y-5, y + 20)
-        plt.plot(xs, ys, color='r', linestyle="-", marker='o',
-                linewidth=1, markersize=2)
-
-def getVector(x, y):
-    n = 10
-    edges = set()
-    curr = (x, y)
-    for i in range(n + 1):
-        next = (curr[0] + 1, curr[1] + i)
-        segment = (curr, next)
-        curr = next
-        edges.add(segment)
-    dirA = edges
-    edges = set()
-    for segment in dirA:
-        last = segment[1]
-        edgetm = set()
-        curr = (*last, n)
-        for i in range(n + 1):
-            next = (curr[0] + 1, curr[1] + i)
-            segment = (curr, next)
-            curr = next
-            edgetm.add(segment)
-        temp = edgetm
-        edges = edges.union(temp)
-    dirB = edges
-    edges = set()
-    for segment in dirB:
-        last = segment[1]
-        pendiente = segment[1][1] - segment[0][1]
-        edgetm = set()
-        curr = (*last, pendiente)
-        for i in range(n + 1):
-            next = (curr[0] + 1, curr[1] + i)
-            segment = (curr, next)
-            curr = next
-            edgetm.add(segment)
-        temp = edgetm
-        edges = edges.union(temp)
-    dirC = edges
-    total = set()
-    vect = ((total.union(dirA)).union(dirB)).union(dirC)
-    return vect
-
-
-def count(x, y, path):
-    count = 0
-    for segment in path:
-        if (x, y) == segment[1]:
-            count += 1
-    return count
-
-
-def increaseAlph(x, y):
-    pathh = getVector(x, y)
-    for i in range(10):
-        for j in range(20):
-            n = count(i, j, pathh)  # n es lo que se desplaza
-            matrixAlph[i][j] = (matrixAlph[i][j] + n) % 26
-
-
-def encryptGammaPentagonal(plain_text):
-    plain_text = plain_text.lower()
-    env = setEnviroment(10, 5)
-    text = plain_text
+# Parse permutation
+def parsePermutation(perm):
     try:
-        cifrado = ""
-        text = list(text)
-        k = len(text)
-        while k > 0:
-            for i in range(10):
-                for j in range(20):
-                    # print(i,j, k)
-                    if (chr(matrixAlph[i][j] + 97) == text[len(text) - k]):
-                        cifrado += ('(' + str(i) + ',' + str(j) + ');')
-                        k -= 1
-                    if (k == 0):
-                        break
-                if (k == 0):
-                    break
-        return cifrado, json.dumps(matrixAlph)
-
+        poss = [int(x) for x in perm.replace('[','').replace(']','').split(',')]
+        if (len(poss) != 10) or not all(isinstance(n, int) for n in poss):
+            raise
     except:
-        print('Something bad ocurred, try again')
+        poss = generatePermutation()
+    return poss
 
-
-def decryptGammaPentagonal(a, matrixAlph):
-    a = a[0:len(a) - 1]
+# Parse initial coords
+def parseCoords(perm):
     try:
-        text = a.split(";")
-        descifrado = ""
-        for coord in text:
-            coords = coord.split(',')
-            descifrado += chr(matrixAlph[int(coords[0][1:])][int(coords[1][:-1])] + 97)
-        return descifrado.upper(), matrixAlph
+        poss = [int(x) for x in perm.split(',')]
+        if (len(poss) != 2) or not all(isinstance(n, int) for n in poss):
+            raise
+    except:
+        poss = [0,0]
+    return poss
 
-    except Exception as e:
-        print(e)
-        print('Something bad ocurred, try again')
+# Generate random perm (size=10)
+def generatePermutation():
+    perm=[]
+    for i in range(10):
+        perm.append(random.randint(0, 25))
+    return perm
+
+# Generate encription Graph (size=26x26)
+def generateGraph(start_x, start_y):
+    graph = {}
+        
+    #1ST GEN
+    slope = 0
+    x = start_x
+    y = start_y
+    graph[(start_x, start_y)] = []
+    while x < 26 and y < 26:
+        if (x+1, y+slope) in graph.keys():
+            graph[(x+1, y+slope)].append(slope)
+        else:
+            graph[(x+1, y+slope)]=[slope]
+        x+=1
+        y+=slope
+        slope+=1
+    first_gen = list(graph.keys())
+    
+    
+    #2ND GEN
+    # queue stores the 2ND GEN nodes
+    queue=[]
+    for key in first_gen:
+        slope = 0
+        x=key[0]
+        y=key[1]
+        if x < 26 and y < 26:
+            while x < 26 and y < 26:
+                if (x+1, y+slope) in graph.keys():
+                    graph[(x+1, y+slope)].append(slope)
+                else:
+                    graph[(x+1, y+slope)]=[slope]
+                queue.append((x+1, y+slope))
+                x+=1
+                y+=slope
+                slope+=1
+    
+    
+    #3RD GEN, slope no higher than parent's slope
+    while len(queue)!= 0:
+        (x, y)=queue[0]
+        coord_slopes = graph[(x, y)]
+        max_slope=max(coord_slopes)
+        if x < 26 and y < 26:
+            for slope in range(0, max_slope+1):
+                if (x+1, y+slope) in graph.keys():
+                    graph[(x+1, y+slope)].append(slope)
+                else:
+                    graph[(x+1, y+slope)]=[slope]
+                x+=1
+                y+=slope
+                if x>=26 or y>=26:
+                    break
+        queue.pop(0)
+    return graph
+
+def genEquivClass(permutation, graph):
+
+    # Calculate slope overall weights
+    weight = {}
+    for coord in graph.keys():
+        if coord[0]+coord[1] in weight.keys():
+            weight[coord[0]+coord[1]] += len(graph[(coord[0],coord[1])])
+        else:
+            weight[coord[0]+coord[1]] = len(graph[(coord[0],coord[1])])
+
+    # Create letter matrix
+    arrangement = [[chr(x) for x in range(97,123)] for y in range(10)]
+
+    # Shift matrix w/ perm, then add weights to each letter
+    for column in range(0, len(arrangement)):
+        arrangement[column] = [chr(ord(x)+permutation[column]) for x in arrangement[column]]
+        for row in range(0, len(arrangement[column])):
+            try:
+                arrangement[column][row] = chr(((ord(arrangement[column][row])-97 + weight[column + row])%26)+97)
+            except:
+                arrangement[column][row] = chr(((ord(arrangement[column][row])-97)%26)+97)
+
+    return arrangement
+
+def encript(text, arrangement):
+    # Parse clean text
+    tokens = list(filter((' ').__ne__, [x for x in ''.join([i for i in text if i.isalpha()]).lower()]))
+    result = ''
+    counter = 0
+
+    for letter in range(0, len(tokens)):
+        start = letter % 10
+        try:
+            for i in range(0, len(arrangement)):
+                for j in range(0, len(arrangement[i])):
+                    if arrangement[(i+start) % 10][j] ==tokens[letter]:
+                        raise Found
+        except Found:
+            result += f'({(i+start) % 10},{j});'
+            counter += 1
+    #print(f'{counter}/{len(tokens)}')
+    return result
+
+def decript(encripted, permutation, graph):
+    arrangement = genEquivClass(permutation, graph)
+    text = encripted.replace('(', '').replace(')', '').split(";")[:-1]
+    clear_text = ''
+    for letter in text:
+        coord = letter.split(',')
+        clear_text += arrangement[int(coord[0])][int(coord[1])]
+    return clear_text.upper()
+    
+def draw_perm(arrangement, permutation):
+    plt.figure(figsize=(10,6))
+    plt.style.use('classic')
+    current = 0
+    for n in range(0, len(arrangement)):
+        for i in range(0, 26):
+            letter = arrangement[n][i]
+            plt.text(current, i, letter, fontsize=10, color="black", verticalalignment ='bottom', horizontalalignment ='center') 
+        current+=1           
+            
+    plt.title(f"Permutation: {str(permutation)}", fontsize=12)
+    plt.xlim(-0.5, 9.2)
+    plt.ylim(-0.5, 26.5)
+    for a in range(0, 55):
+        for b in range(0, 27, 5):
+            plt.plot(a*0.2, b, marker="_", markersize = 3, color="#BABABA")
+    plt.savefig("criptosite/criptosite/static/img/GP_perm.png")
 
 
-def setEnviroment(x, y):
-    global matrixAlph
-    permutation = list()
-    permutation = genPermutation()
-    matrixAlph = list()
-    initializeMatrix()
-    loadPermutation(permutation)
-    createGraph(x,y,0)
-    return x, y, permutation
+def draw_graph(graph, x, y):
+    plt.figure(figsize=(10,6))
+    plt.style.use('classic')
+    plt.title(f"Graph starting at ({x}, {y})", fontsize=12)
+
+    if x <=0:
+        plt.xlim(x-0.5, 10.2)
+        plt.plot([x-1, 10], [0, 0], color="red")
+    else:
+        plt.xlim(x-0.5, x+10)
+        plt.plot([-1, 10], [0, 0], color="red")
+        
+    if y <=0:
+        plt.ylim(y-0.5, 26)
+        plt.plot([0, 0], [y-1, 26], color="red")
+    else:
+        plt.ylim(y-0.5, y+26)
+        plt.plot([0, 0], [-1, 26], color="red")
+
+    for a in range(x-1, x+11):
+        for b in range(y-1, y+27):
+            plt.plot(a, b, marker=".", markersize = 3, color="#BABABA")
+
+            
+    coord = list(graph.keys())
+    for i in coord:
+        x_coord=i[0]
+        y_coord=i[1]
+        for slope in graph[i]:
+            plt.plot([x_coord-1, x_coord], [y_coord-slope, y_coord],  marker = 'o', markersize = 5)
+
+    plt.plot(x, y, marker="*", markersize = 10, color="red")
+    plt.savefig("criptosite/criptosite/static/img/GP_graph.png")
+
+if __name__ == "__main__":
+    # Encript
+    text = str(input())
+    perm = parsePermutation(str(input()))
+    print(perm)
+    initial_coords = parseCoords(str(input()))
+    graph = generateGraph(initial_coords[0],initial_coords[1])
+    equiv = genEquivClass(perm, graph)
+    ciphered = encript(text, equiv)
+    print(ciphered)
+    draw_perm(equiv, perm)
+    draw_graph(graph, initial_coords[0],initial_coords[1])
+
+    # Decript
+    encripted = str(input())
+    perm = parsePermutation(str(input()))
+    print(perm)
+    initial_coords = parseCoords(str(input()))
+    graph = generateGraph(initial_coords[0],initial_coords[1])
+    print(decript(encripted, perm, graph))
