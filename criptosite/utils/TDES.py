@@ -4,8 +4,6 @@ from Crypto.Cipher import DES3
 from Crypto.Random import get_random_bytes
 
 
-MODES = [DES3.MODE_ECB, DES3.MODE_CBC, DES3.MODE_CFB, DES3.MODE_OFB, DES3.MODE_CTR, DES3.MODE_OPENPGP, DES3.MODE_EAX]
-
 def rgb2hex(rgb):
 
     """
@@ -45,130 +43,358 @@ def hexToRGB(hexadecimal):
     convert a hex string to an array of RGB values
     """
     h = hexadecimal.lstrip('#')
+    if len(h)%6 != 0:
+        return
     return [int(h[i:i+2], 16) for i in (0, 2, 4)]
 
+def ImageToBytes(image):
+    """
+    Image to convert from image to bytes
+    """
+    dataToEncrypt =imageio.imread(image)
+
+    if dataToEncrypt.shape[2] ==4:
+        dataToEncrypt = np.delete(dataToEncrypt,3,2)
+
+    originalRows, originalColumns,_ = dataToEncrypt.shape
 
 
-def EncryptImage(key,mode):
+    #converting rgb to hex
+    hexToEncrypt = np.apply_along_axis(rgb2hex, 2, dataToEncrypt)
+    hexToEncrypt = np.apply_along_axis(arrayToString, 1, hexToEncrypt)
+    hexToEncrypt = str(np.apply_along_axis(arrayToString, 0, hexToEncrypt))
+
+    byteImage = bytes.fromhex(hexToEncrypt)
+
+    return (byteImage, [originalRows,originalColumns])
+
+def BytesToImage(byteToConvert,originalRows,originalColumns,name):
+
+    """
+    Convert from Bytes to Image
+    """
+    encryptedData = byteToConvert.hex()
+
+
+    stepOne = sliceStr(encryptedData,originalColumns*6)
+
+    stepTwo = []
+
+    for i in stepOne:
+        step = sliceStr(i,6)
+
+        #Add lost pixels
+        while len(step) != originalColumns:
+            step = np.append(step,"ffffff")
+        stepTwo.append(step)
+
+
+    stepThree = []
+    for i in stepTwo:
+        d = []
+        for j in i:
+            d.append(hexToRGB(j))
+
+        if len(stepThree) < originalRows:
+            stepThree.append(d)
+
+        encryptedImg = np.asarray(stepThree)
+
+
+    imageio.imwrite(name,encryptedImg)
+
+
+def EncryptECB(key):
     """
     Function to encrypt
     imageToEncrypt: a string, representing the direction of the image
     key: a key. MUST be an 8 byte long bytes object
     """
 
-    dataToEncrypt =imageio.imread('criptosite/static/img/clean.png')
-
-    if dataToEncrypt.shape[2] ==4:
-        dataToEncrypt = np.delete(dataToEncrypt,3,2)
-
-    originalRows, originalColumns,_ = dataToEncrypt.shape
+    dataToEncrypt = ImageToBytes('criptosite/static/img/clean.png')
 
 
-    #converting rgb to hex
-    hexToEncrypt = np.apply_along_axis(rgb2hex, 2, dataToEncrypt)
-    hexToEncrypt = np.apply_along_axis(arrayToString, 1, hexToEncrypt)
-    hexToEncrypt = str(np.apply_along_axis(arrayToString, 0, hexToEncrypt))
+    data = dataToEncrypt[0]
 
 
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
 
-
-
-    data = bytes.fromhex(hexToEncrypt)
     iv = b"00000000"
+
     cipher = DES3.new(key.encode(),DES3.MODE_ECB)
 
+    #padding
+    if len(data)%cipher.block_size != 0:
+        data +=  b"f" * (cipher.block_size - len(data)%cipher.block_size)
 
     d = cipher.encrypt(data)
 
-
-    encryptedData = d.hex()
-
-
-    stepOne = sliceStr(encryptedData,originalColumns*6)
-
-    stepTwo = []
-
-    for i in stepOne:
-        stepTwo.append(sliceStr(i,6))
-
-    stepThree = []
-    for i in stepTwo:
-        d = []
-        for j in i:
-            d.append(hexToRGB(j))
-
-        if len(stepThree) != originalRows:
-            stepThree.append(d)
-
-        encryptedImg = np.asarray(stepThree)
-
-    imageio.imwrite('criptosite/static/img/Encrypted.png',encryptedImg)
-    return stepThree
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Encrypted.png')
 
 
 
 
-def DecryptImage(key,mode):
+
+
+def DecryptECB(key):
     """
     Function to decrypt
     imageToEncrypt: a string, representing the direction of the image
     key: a key. MUST be an 8 byte long bytes object
     """
 
-    dataToEncrypt =imageio.imread('criptosite/static/img/Encrypted.png')
-
-    if dataToEncrypt.shape[2] ==4:
-        dataToEncrypt = np.delete(dataToEncrypt,3,2)
-
-    originalRows, originalColumns,_ = dataToEncrypt.shape
+    dataToEncrypt = ImageToBytes('criptosite/static/img/Encrypted.png')
+    data = dataToEncrypt[0]
 
 
-    #converting rgb to hex
-    hexToEncrypt = np.apply_along_axis(rgb2hex, 2, dataToEncrypt)
-    hexToEncrypt = np.apply_along_axis(arrayToString, 1, hexToEncrypt)
-    hexToEncrypt = str(np.apply_along_axis(arrayToString, 0, hexToEncrypt))
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
 
-
-
-
-
-    data = bytes.fromhex(hexToEncrypt)
     iv = b"00000000"
-    cipher = DES3.new(key.encode(), mode,iv)
+    cipher = DES3.new(key.encode(), DES3.MODE_ECB)
+
+    #padding
+    if len(data)%cipher.block_size != 0:
+        data +=  b"f" * (cipher.block_size - len(data)%cipher.block_size)
+
+    d = cipher.decrypt(data)
+
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Decrypted.png')
+
+
+
+def EncryptCBC(key):
+    """
+    Function to encrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/clean.png')
+
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+
+    cipher = DES3.new(key.encode(),DES3.MODE_CBC, iv= iv)
+
+    #padding
+    if len(data)%cipher.block_size != 0:
+        data +=  b"f" * (cipher.block_size - len(data)%cipher.block_size)
+
+    d = cipher.encrypt(data)
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Encrypted.png')
+
+
+
+
+
+
+
+def DecryptCBC(key):
+    """
+    Function to decrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/Encrypted.png')
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+    cipher = DES3.new(key.encode(), DES3.MODE_CBC, iv = iv)
+
+    #padding
+    if len(data)%cipher.block_size != 0:
+        data +=  b"f" * (cipher.block_size - len(data)%cipher.block_size)
+
+    d = cipher.decrypt(data)
+
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Decrypted.png')
+
+
+
+def EncryptCFB(key):
+    """
+    Function to encrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/clean.png')
+
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+
+    cipher = DES3.new(key.encode(),DES3.MODE_CFB, iv= iv)
+
+
+    d = cipher.encrypt(data)
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Encrypted.png')
+
+
+
+
+def DecryptCFB(key):
+    """
+    Function to decrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/Encrypted.png')
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+    cipher = DES3.new(key.encode(), DES3.MODE_CFB, iv = iv)
 
 
     d = cipher.decrypt(data)
 
 
-    encryptedData = d.hex()
-
-
-    stepOne = sliceStr(encryptedData,originalColumns*6)
-
-    stepTwo = []
-
-    for i in stepOne:
-        stepTwo.append(sliceStr(i,6))
-
-    stepThree = []
-    for i in stepTwo:
-        d = []
-        for j in i:
-            d.append(hexToRGB(j))
-
-        if len(stepThree) != originalRows:
-            stepThree.append(d)
-
-        encryptedImg = np.asarray(stepThree)
-
-
-    imageio.imwrite('criptosite/static/img/Decrypted.png',encryptedImg)
-    return stepThree
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Decrypted.png')
 
 
 
+def EncryptOFB(key):
+    """
+    Function to encrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/clean.png')
 
 
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+
+    cipher = DES3.new(key.encode(),DES3.MODE_OFB, iv= iv)
+
+
+    d = cipher.encrypt(data)
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Encrypted.png')
+
+
+
+
+
+
+
+def DecryptOFB(key):
+    """
+    Function to decrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/Encrypted.png')
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+    cipher = DES3.new(key.encode(), DES3.MODE_OFB, iv = iv)
+
+
+    d = cipher.decrypt(data)
+
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Decrypted.png')
+
+
+def EncryptCTR(key):
+    """
+    Function to encrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/clean.png')
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+
+    cipher = DES3.new(key.encode(),DES3.MODE_CTR,nonce=iv[:len(iv)//2])
+
+    #padding
+    if len(data)%cipher.block_size != 0:
+        data +=  b"f" * (cipher.block_size - len(data)%cipher.block_size)
+
+    d = cipher.encrypt(data)
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Encrypted.png')
+
+
+
+
+
+
+
+def DecryptCTR(key):
+    """
+    Function to decrypt
+    imageToEncrypt: a string, representing the direction of the image
+    key: a key. MUST be an 8 byte long bytes object
+    """
+
+    dataToEncrypt = ImageToBytes('criptosite/static/img/Encrypted.png')
+
+
+    data = dataToEncrypt[0]
+
+
+    originalRows, originalColumns = dataToEncrypt[1][0],dataToEncrypt[1][1]
+
+    iv = b"00000000"
+    cipher = DES3.new(key.encode(), DES3.MODE_CTR,nonce=iv[:len(iv)//2])
+
+    #padding
+    if len(data)%cipher.block_size != 0:
+        data +=  b"f" * (cipher.block_size - len(data)%cipher.block_size)
+
+    d = cipher.decrypt(data)
+
+
+    BytesToImage(d,originalRows,originalColumns,'criptosite/static/img/Decrypted.png')
 
 
 
