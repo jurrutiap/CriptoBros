@@ -4,6 +4,12 @@ from Crypto.Cipher import DES3
 from Crypto.Random import get_random_bytes
 
 
+def K(k):
+    if len(k) == 24:
+        return k
+    else:
+        return "ABCDEFGHIJKLMNOPQRSTUVXY"
+
 def rgb2hex(rgb):
 
     """
