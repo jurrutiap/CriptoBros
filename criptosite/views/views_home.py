@@ -1,3 +1,4 @@
+from email.message import Message
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.shortcuts import render
@@ -26,6 +27,7 @@ import utils.DES as DES
 import utils.DESImage as DESi
 import utils.AES as AES 
 import utils.TDES as TDES
+import utils.SDES as SDES
 
 def home(request):
     return render(request, 'index.html')
@@ -158,6 +160,24 @@ def DES_view(request, *textC):
             data = DES.DESDecrypt(message, k)
             return render(request, 'DES_system.html', {'data':data[0], 'cipher': message, 'k2':request.POST['k2']})
     return render(request, 'DES_system.html')
+
+def SDES_view(request, *textC):
+    if request.method == "POST":
+        try:
+            if 'encrypt' in request.POST:
+                message = request.POST['textC']
+                k= SDES.K(request.POST['k1'])
+                data = SDES.SDESEncryption(message, k)
+                return render(request, 'SDES_system.html', {'data':data[0], 'clear': message, 'k1':k})
+
+            if 'desencrypt' in request.POST:
+                message = request.POST['textE']
+                k= SDES.K(request.POST['k2'])
+                data = SDES.SDESDecryption(message, k)
+                return render(request, 'SDES_system.html', {'data':data[0], 'cipher': message, 'k2':k})
+        except:
+            return render(request, 'SDES_system.html')
+    return render(request, 'SDES_system.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":
