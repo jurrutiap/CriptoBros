@@ -207,51 +207,52 @@ def decode_aes_img_CFB(key,iv):
 
 #CTR
 def encode_aes_img_CTR(key):
-	cipher = AES.new(key.encode("utf8"), AES.MODE_CTR)
-	img = Image.open("criptosite/static/img/clean.png")
-	encryptedImg = img.convert("RGBA")
+    iv2 = b"00000000"
+    cipher = AES.new(key.encode("utf8"),AES.MODE_CTR,nonce=iv2[:len(iv)//2])
+    img = Image.open("criptosite/static/img/clean.png")
+    encryptedImg = img.convert("RGBA")   
 
-	if encryptedImg.width % 4 != 0:
-		diff = 4 - (encryptedImg.width % 4)
-		encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
-	for y in range(0, encryptedImg.height):
-		rowPixels = []
-		for x in range(0, encryptedImg.width):
-			if x % 4 == 0 and x > 0:
-				# Transform the 4 pixels using AES cipher
-				#print(hex(int.from_bytes(bytes(rowPixels), "big")))
-				newRowPixels = cipher.encrypt(bytes(rowPixels))
-				#print(hex(int.from_bytes(newRowPixels, "big")))
-				newRowPixels = HexToDecimal(hex(int.from_bytes(newRowPixels, "big"))[2:])
-				for i in range(x - 4, x):
-					encryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
-				rowPixels = []
-			rowPixels += encryptedImg.getpixel((x,y))
-
-	#encryptedImg.show()
-	encryptedImg.save("criptosite/static/img/Encrypted.png")
-	#return (cipher.nonce).hex()
+	# Resize image as needed, the image width must be a multiple
+	# of 4
+    if encryptedImg.width % 4 != 0:
+        diff=4-(encryptedImg.width %4)
+        encryptedImg = ImageOps.expand(encryptedImg, border=(0,0, diff, 0), fill = 0)
+    for y in range(0, encryptedImg.height):
+        rowPixels = []
+        for x in range(0, encryptedImg.width):
+            if x % 4 == 0 and x > 0:
+                newRowPixels = cipher.encrypt(bytes(rowPixels))
+                newRowPixels = HexToDecimal(hex(int.from_bytes(newRowPixels, "big"))[2:])
+                for i in range(x - 4, x):
+                    encryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
+                rowPixels = []
+            rowPixels += encryptedImg.getpixel((x,y))
+	
+	# Show the image and save it in a .pgm file
+    #encryptedImg.show()
+    encryptedImg.save("criptosite/static/img/Encrypted.png")
 
 def decode_aes_img_CTR(key):
-	cipher = AES.new(key.encode("utf8"), AES.MODE_CTR)
-	img = Image.open("criptosite/static/img/Encrypted.png")
-	decryptedImg = img
+    iv2 = b"00000000"
+    cipher = AES.new(key.encode("utf8"),AES.MODE_CTR,nonce=iv2[:len(iv)//2])
+    img = Image.open("criptosite/static/img/Encrypted.png")
+    decryptedImg = img
 
-	for y in range(0, decryptedImg.height):
-		rowPixels = []
-		for x in range(0, decryptedImg.width):
-			if x % 4 == 0 and x > 0:
-				# Transform the 4 pixels using AES cipher
-				#print(hex(int.from_bytes(bytes(rowPixels), "big")))
-				newRowPixels = cipher.decrypt(bytes(rowPixels))
-				#print(hex(int.from_bytes(newRowPixels, "big")))
-				newRowPixels = HexToDecimal(hex(int.from_bytes(newRowPixels, "big"))[2:])
-				for i in range(x - 4, x):
-					decryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
-				rowPixels = []
-			rowPixels += decryptedImg.getpixel((x,y))
-	#decryptedImg.show()
-	decryptedImg.save("criptosite/static/img/Decrypted.png") 
+	# Iterate over each row of the image height taking at each step
+	# 4 pixels to transform them into a new 4 pixels
+    for y in range(0, decryptedImg.height):
+        rowPixels = []
+        for x in range(0, decryptedImg.width):
+            if x % 4 == 0 and x > 0:
+                newRowPixels = cipher.encrypt(bytes(rowPixels))
+                newRowPixels = HexToDecimal(hex(int.from_bytes(newRowPixels, "big"))[2:])
+                for i in range(x - 4, x):
+                    decryptedImg.putpixel((i,y), newRowPixels[i - (x-4)])
+                rowPixels = []
+            rowPixels += decryptedImg.getpixel((x,y))
+
+    #decryptedImg.show()
+    decryptedImg.save("criptosite/static/img/Decrypted.png")
 
 def DecimalToHex(l):
 	result = ""
