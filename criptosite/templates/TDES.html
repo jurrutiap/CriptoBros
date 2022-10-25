@@ -96,7 +96,7 @@
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <p> Encrypted image: <input type="file" name="im2" accept="image/*"></p>
-                            <label for="mode">Choose AES mode:</label>
+                            <label for="mode">Choose Triple DES mode:</label>
                             <select name="mode" id="mode">
                                 <option value="ECB">ECB</option>
                                 <option value="CBC">CBC</option>
