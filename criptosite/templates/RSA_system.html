@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block head_content %}
-<title>CriptoBros - Substitution</title>
+<title>CriptoBros - RSA Cipher</title>
 {% endblock %}
 
 {% block main %}
@@ -11,41 +11,8 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">RSA Cipher</h1>
-    <div class="card-body">
-        <h5 class="card-title">Explanation</h5>
-        <h6 class="card-subtitle mb-2 text-muted">How does this work?</h6>
-        <p>The RSA cryptographic system named after its three creators Ron Rivest, Adi Shamir and Leonard Adleman of the Massachusetts Institute of Technology (MIT) is a public key cryptographic system that was described in 1977 and developed in 1979. It was the first algorithm of its kind and is still the most widely used among several reasons because it is valid for both encryption and digital signing.</p>
-        <p>The security of this algorithm lies in the problem of integer factorization. The messages sent are represented by numbers, and the operation is based on the known product of two large prime numbers chosen at random and kept secret. Currently these primes are of the order of <span class="math inline">10<sup>300</sup></span>, and it is expected that their size will continue to grow as the computing power of computers increases.</p>
-        <p>As in any public key system, each user has two encryption keys: one public and one private. When a message is to be sent, the sender looks for the receiver’s public key, encrypts his message with that key, and once the encrypted message reaches the receiver, he decrypts it using his private key.</p>
-        <p>The algorithm consists of three steps: key generation, encryption and decryption. Suppose <span style="color: blue">Juan</span> wants to send <span style="color: brown">Andrés</span> a secret message that only he can read. <span style="color: brown">Andrés</span> sends to <span style="color: blue">Juan</span> a box with an open padlock, of which only <span style="color: brown">Andrés</span> has the key. <span style="color: blue">Juan</span> receives the box, writes the message, puts it in the box and closes it with his padlock (now <span style="color: blue">Juan</span> cannot read the message). <span style="color: blue">Juan</span> sends the box to <span style="color: brown">Andrés</span> and he opens it with his key. In this example, the box with the padlock is <span style="color: brown">Andrés’s</span> "public key", and the key to the padlock is his "private key".</p>
-        <p>Technically, <span style="color: blue">Juan</span> sends <span style="color: brown">Andrés</span> a flat <span class="math inline"><em>M</em></span> message in the form of a number <span class="math inline"><em>m</em></span> less than another number <span class="math inline"><em>n</em></span>, using a reversible protocol known as a padding scheme. It then generates the encrypted message <span class="math inline"><em>c</em></span> using the following operation: <span class="math display"><em>c</em> ≡ <em>m</em><sup><em>e</em></sup> mod  <em>n</em></span> where <span class="math inline"><em>e</em></span> is the public key of <span style="color: brown">Andrés</span>. Now <span style="color: brown">Andrés</span> decrypts the message in key <span class="math inline"><em>c</em></span> by the inverse operation given by <span class="math display"><em>m</em> ≡ <em>c</em><sup><em>d</em></sup> mod  <em>n</em></span> where <span class="math inline"><em>d</em></span> is the private key that only <span style="color: brown">Andrés</span> knows.</p>
-        <p>For key generation, two distinct prime numbers <span class="math inline"><em>p</em></span> and <span class="math inline"><em>q</em></span> are chosen.</p>
-        <ul>
-        <li><p>security reasons, these numbers should be chosen randomly and should be of similar bit length. Primes can be found easily by primality test.</p></li>
-        <li><p>We compute <span class="math inline"><em>n</em> = <em>p</em> ⋅ <em>q</em></span> where we already saw that <span class="math inline"><em>n</em></span> is used as the modulus for both the public and the private key.</p></li>
-        <li><p>With the Euler function <span class="math inline"><em>φ</em></span> calculate <span class="math inline"><em>φ</em>(<em>n</em>) = (<em>p</em>−1) ⋅ (<em>q</em>−1)</span> taking advantage of the two properties of the Euler function where <span class="math inline"><em>φ</em>(<em>p</em>) = <em>p</em> − 1</span> if <span class="math inline"><em>p</em></span> is prime and that if <span class="math inline"><em>m</em></span> and <span class="math inline"><em>n</em></span> are relative primes, then <span class="math inline"><em>φ</em>(<em>m</em><em>n</em>) = <em>φ</em>(<em>m</em>)<em>φ</em>(<em>n</em>)</span>.</p></li>
-        <li><p>A positive integer <span class="math inline"><em>e</em></span> less than <span class="math inline"><em>φ</em>(<em>n</em>)</span> is chosen, which is relative prime with <span class="math inline"><em>φ</em>(<em>n</em>)</span> where <span class="math inline"><em>e</em></span> is given to be known as the exponent of the public key.</p></li>
-        <li><p>A <span class="math inline"><em>d</em></span> is determined using modular arithmetic that satisfies the congruence <span class="math inline"><em>e</em> ⋅ <em>d</em> ≡ 1 mod  <em>φ</em>(<em>n</em>)</span>, i.e., let <span class="math inline"><em>d</em></span> be the inverse modular multiplier of <span class="math inline"><em>e</em> mod  <em>φ</em>(<em>n</em>)</span> and is stored as the exponent of the private key.</p></li>
-        </ul>
-        <p>The public key is <span class="math inline">(<em>n</em>,<em>e</em>)</span> and the private key is <span class="math inline">(<em>n</em>,<em>d</em>)</span> which must be kept secret. Now let us present a more formal definition of the cryptosystem.</p>
-        <p>Let <span class="math inline"><em>n</em> = <em>p</em><em>q</em></span>, where <span class="math inline"><em>p</em></span> and <span class="math inline"><em>q</em></span> are primes and where <span class="math inline">𝒫 = 𝒞 = ℤ<sub><em>n</em></sub></span> we define <span class="math display">𝒦 = {(<em>n</em>,<em>p</em>,<em>q</em>,<em>a</em>,<em>b</em>):<em>a</em><em>b</em>≡1 mod  <em>φ</em>(<em>n</em>)}.</span> and for a key <span class="math inline"><em>K</em> = (<em>n</em>,<em>p</em>,<em>q</em>,<em>a</em>,<em>b</em>)</span> we define.
-            <p class="text-center"><span
-                class="math display"><em>e</em><sub><em>K</em></sub>(<em>x</em>) = <em>x<sup>b</sup></em> mod n       
-                    <em>d</em><sub><em>K</em></sub>(<em>y</em>) = <em>y</em><sup>a</sup> mod n</span></p>
-        </span> where <span class="math inline"><em>x</em>, <em>y</em> ∈ ℤ<sub><em>n</em></sub></span>. The values <span class="math inline"><em>n</em></span> and <span class="math inline"><em>b</em></span> comprise the public key and the values <span class="math inline"><em>p</em></span>, <span class="math inline"><em>q</em></span> and <span class="math inline"><em>a</em></span> comprise the private key.<br />
-        <br>
-        <strong>Example:</strong> Let’s encrypt the key text "she" using <span class="math inline"><em>p</em> = 71</span>, <span class="math inline"><em>q</em> = 103</span>, <span class="math inline"><em>n</em> = <em>p</em><em>q</em> = 7313</span>, <span class="math inline"><em>φ</em>(<em>n</em>) = (71−1)(103−1) = 7140</span>, <span class="math inline"><em>e</em> = 523</span> and <span class="math inline"><em>d</em> ⋅ 523 ≡ 1 mod  7140 → <em>d</em> ≡ 3727 mod  7140</span>, with these data and taking into account that "she" is transformed in 1874 we have:
-        </p>
-        <p class="text-center"><span
-            class="math display"><em>c</em> = 1874<sup>523</sup> mod  7313 = 2958</span></p>
-        And to decrypt the ciphertext 2958 we do: 
-        <p class="text-center"><span
-            class="math display"><em>m</em> = 2958<sup>3727</sup> mod  3727 = 1874</span></p>
-        <p class="card-text">
-
-        </p>
+    <div class="row">
+        <h1 class="h3 mb-2 text-gray-800">RSA Cipher</h1>
     </div>
 
     <!-- Content Row -->
@@ -102,6 +69,43 @@
                     </div>         
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Explanation</h5>
+            <h6 class="card-subtitle mb-2 text-muted">How does this work?</h6>
+            <p>The RSA cryptographic system named after its three creators Ron Rivest, Adi Shamir and Leonard Adleman of the Massachusetts Institute of Technology (MIT) is a public key cryptographic system that was described in 1977 and developed in 1979. It was the first algorithm of its kind and is still the most widely used among several reasons because it is valid for both encryption and digital signing.</p>
+            <p>The security of this algorithm lies in the problem of integer factorization. The messages sent are represented by numbers, and the operation is based on the known product of two large prime numbers chosen at random and kept secret. Currently these primes are of the order of <span class="math inline">10<sup>300</sup></span>, and it is expected that their size will continue to grow as the computing power of computers increases.</p>
+            <p>As in any public key system, each user has two encryption keys: one public and one private. When a message is to be sent, the sender looks for the receiver’s public key, encrypts his message with that key, and once the encrypted message reaches the receiver, he decrypts it using his private key.</p>
+            <p>The algorithm consists of three steps: key generation, encryption and decryption. Suppose <span style="color: blue">Juan</span> wants to send <span style="color: brown">Andrés</span> a secret message that only he can read. <span style="color: brown">Andrés</span> sends to <span style="color: blue">Juan</span> a box with an open padlock, of which only <span style="color: brown">Andrés</span> has the key. <span style="color: blue">Juan</span> receives the box, writes the message, puts it in the box and closes it with his padlock (now <span style="color: blue">Juan</span> cannot read the message). <span style="color: blue">Juan</span> sends the box to <span style="color: brown">Andrés</span> and he opens it with his key. In this example, the box with the padlock is <span style="color: brown">Andrés’s</span> "public key", and the key to the padlock is his "private key".</p>
+            <p>Technically, <span style="color: blue">Juan</span> sends <span style="color: brown">Andrés</span> a flat <span class="math inline"><em>M</em></span> message in the form of a number <span class="math inline"><em>m</em></span> less than another number <span class="math inline"><em>n</em></span>, using a reversible protocol known as a padding scheme. It then generates the encrypted message <span class="math inline"><em>c</em></span> using the following operation: <span class="math display"><em>c</em> ≡ <em>m</em><sup><em>e</em></sup> mod  <em>n</em></span> where <span class="math inline"><em>e</em></span> is the public key of <span style="color: brown">Andrés</span>. Now <span style="color: brown">Andrés</span> decrypts the message in key <span class="math inline"><em>c</em></span> by the inverse operation given by <span class="math display"><em>m</em> ≡ <em>c</em><sup><em>d</em></sup> mod  <em>n</em></span> where <span class="math inline"><em>d</em></span> is the private key that only <span style="color: brown">Andrés</span> knows.</p>
+            <p>For key generation, two distinct prime numbers <span class="math inline"><em>p</em></span> and <span class="math inline"><em>q</em></span> are chosen.</p>
+            <ul>
+            <li><p>security reasons, these numbers should be chosen randomly and should be of similar bit length. Primes can be found easily by primality test.</p></li>
+            <li><p>We compute <span class="math inline"><em>n</em> = <em>p</em> ⋅ <em>q</em></span> where we already saw that <span class="math inline"><em>n</em></span> is used as the modulus for both the public and the private key.</p></li>
+            <li><p>With the Euler function <span class="math inline"><em>φ</em></span> calculate <span class="math inline"><em>φ</em>(<em>n</em>) = (<em>p</em>−1) ⋅ (<em>q</em>−1)</span> taking advantage of the two properties of the Euler function where <span class="math inline"><em>φ</em>(<em>p</em>) = <em>p</em> − 1</span> if <span class="math inline"><em>p</em></span> is prime and that if <span class="math inline"><em>m</em></span> and <span class="math inline"><em>n</em></span> are relative primes, then <span class="math inline"><em>φ</em>(<em>m</em><em>n</em>) = <em>φ</em>(<em>m</em>)<em>φ</em>(<em>n</em>)</span>.</p></li>
+            <li><p>A positive integer <span class="math inline"><em>e</em></span> less than <span class="math inline"><em>φ</em>(<em>n</em>)</span> is chosen, which is relative prime with <span class="math inline"><em>φ</em>(<em>n</em>)</span> where <span class="math inline"><em>e</em></span> is given to be known as the exponent of the public key.</p></li>
+            <li><p>A <span class="math inline"><em>d</em></span> is determined using modular arithmetic that satisfies the congruence <span class="math inline"><em>e</em> ⋅ <em>d</em> ≡ 1 mod  <em>φ</em>(<em>n</em>)</span>, i.e., let <span class="math inline"><em>d</em></span> be the inverse modular multiplier of <span class="math inline"><em>e</em> mod  <em>φ</em>(<em>n</em>)</span> and is stored as the exponent of the private key.</p></li>
+            </ul>
+            <p>The public key is <span class="math inline">(<em>n</em>,<em>e</em>)</span> and the private key is <span class="math inline">(<em>n</em>,<em>d</em>)</span> which must be kept secret. Now let us present a more formal definition of the cryptosystem.</p>
+            <p>Let <span class="math inline"><em>n</em> = <em>p</em><em>q</em></span>, where <span class="math inline"><em>p</em></span> and <span class="math inline"><em>q</em></span> are primes and where <span class="math inline">𝒫 = 𝒞 = ℤ<sub><em>n</em></sub></span> we define <span class="math display">𝒦 = {(<em>n</em>,<em>p</em>,<em>q</em>,<em>a</em>,<em>b</em>):<em>a</em><em>b</em>≡1 mod  <em>φ</em>(<em>n</em>)}.</span> and for a key <span class="math inline"><em>K</em> = (<em>n</em>,<em>p</em>,<em>q</em>,<em>a</em>,<em>b</em>)</span> we define.
+                <p class="text-center"><span
+                    class="math display"><em>e</em><sub><em>K</em></sub>(<em>x</em>) = <em>x<sup>b</sup></em> mod n       
+                        <em>d</em><sub><em>K</em></sub>(<em>y</em>) = <em>y</em><sup>a</sup> mod n</span></p>
+            </span> where <span class="math inline"><em>x</em>, <em>y</em> ∈ ℤ<sub><em>n</em></sub></span>. The values <span class="math inline"><em>n</em></span> and <span class="math inline"><em>b</em></span> comprise the public key and the values <span class="math inline"><em>p</em></span>, <span class="math inline"><em>q</em></span> and <span class="math inline"><em>a</em></span> comprise the private key.<br />
+            <br>
+            <strong>Example:</strong> Let’s encrypt the key text "she" using <span class="math inline"><em>p</em> = 71</span>, <span class="math inline"><em>q</em> = 103</span>, <span class="math inline"><em>n</em> = <em>p</em><em>q</em> = 7313</span>, <span class="math inline"><em>φ</em>(<em>n</em>) = (71−1)(103−1) = 7140</span>, <span class="math inline"><em>e</em> = 523</span> and <span class="math inline"><em>d</em> ⋅ 523 ≡ 1 mod  7140 → <em>d</em> ≡ 3727 mod  7140</span>, with these data and taking into account that "she" is transformed in 1874 we have:
+            </p>
+            <p class="text-center"><span
+                class="math display"><em>c</em> = 1874<sup>523</sup> mod  7313 = 2958</span></p>
+            And to decrypt the ciphertext 2958 we do: 
+            <p class="text-center"><span
+                class="math display"><em>m</em> = 2958<sup>3727</sup> mod  3727 = 1874</span></p>
+            <p class="card-text">
+    
+            </p>
         </div>
     </div>
 

@@ -28,6 +28,7 @@ import utils.DESImage as DESi
 import utils.AES as AES 
 import utils.TDES as TDES
 import utils.SDES as SDES
+import utils.RSA as RSA
 
 def home(request):
     return render(request, 'index.html')
@@ -178,6 +179,22 @@ def SDES_view(request, *textC):
         except:
             return render(request, 'SDES_system.html')
     return render(request, 'SDES_system.html')
+
+def RSA_view(request, *textC):
+    if request.method == "POST":
+        try:
+            if 'encrypt' in request.POST:
+                message = request.POST['textC']
+                data = RSA.RSAEncryption(message)
+                return render(request, 'RSA_system.html', {'data':data[0], 'clear': message})
+
+            if 'desencrypt' in request.POST:
+                message = request.POST['textE']
+                data = RSA.RSADecryption(message)
+                return render(request, 'RSA_system.html', {'data':data[0], 'cipher': message})
+        except:
+            return render(request, 'RSA_system.html')
+    return render(request, 'RSA_system.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":
