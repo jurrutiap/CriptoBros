@@ -48,26 +48,26 @@ def primeFactors(n):
     return factors
 
 # Encontrar las raices primitivas (explicacion adentro)
-def primitiveRoot(n , allRoots = False):
+def primitiveRoot(n, allRoots=False):
     if type(n) != int or n <= 1:
         return
     if is_prime(n):
-        s = n-1 #phi function
+        s = n-1  # phi function
         factors = primeFactors(s)
-        powers = [(s // f) for f in factors] #powers for testing
-        roots = [] # list of primitive roots
-        while(True):
-            g = np.random.randint( 2, n-1 )
+        powers = [(s // f) for f in factors]  # powers for testing
+        roots = []  # list of primitive roots
+        while (True):
+            g = np.random.randint(2, n-1)
             primitiveRoot = True
             for p in powers:
-                if pow(g,p,n) == 1:
+                if pow(g, p, n) == 1:
                     primitiveRoot = False
                     break
             if primitiveRoot:
-                if not allRoots: #if we want only 1 primitive root
+                if not allRoots:  # if we want only 1 primitive root
                     return g
                 roots.append(g)
-                break #we found smallest primitive root
+                break  # we found smallest primitive root
         return roots
 
 # generar llave publica y privada
@@ -90,43 +90,43 @@ def decode(ciphered_text):
 
 # Elgamal para cada letra, retorna array de parejas
 def encrypt(public_key, sPlaintext):
-		text_array = encode(sPlaintext)
+	text_array = encode(sPlaintext)
 
-	#cipher_pairs list will hold pairs (c, d) corresponding to each integer in text_array
-		cipher_pairs = []
-		#i is an integer in z
-		for i in text_array:
-			#pick random y from (0, p-1) inclusive
-			y = np.random.randint(0, public_key[0])
-			#c = g^y mod p
-			c = pow(public_key[1], y, public_key[0])
-			#d = ih^y mod p
-			d = (i*pow(public_key[2], y, public_key[0])) % public_key[0]
-			# add the pair to the cipher pairs list
-			cipher_pairs.append([c, d])
-	
-		return cipher_pairs
+	# cipher_pairs list will hold pairs (c, d) corresponding to each integer in text_array
+	cipher_pairs = []
+	# i is an integer in z
+	for i in text_array:
+		# pick random y from (0, p-1) inclusive
+		y = np.random.randint(0, public_key[0])
+		# c = g^y mod p
+		c = pow(public_key[1], y, public_key[0])
+		# d = ih^y mod p
+		d = (i*pow(public_key[2], y, public_key[0])) % public_key[0]
+		# add the pair to the cipher pairs list
+		cipher_pairs.append([c, d])
+
+	return cipher_pairs
 
 # Desencripta cada pareja y rearma el string
 def decrypt(private_key, cipher):
-		#decrpyts each pair and adds the decrypted integer to list of plaintext integers
-		plaintext = []
-		for i in range(0, len(cipher)):
-				#c = first number in pair
-				c = int(cipher[i][0])
-				#d = second number in pair
-				d = int(cipher[i][1])
+	#decrpyts each pair and adds the decrypted integer to list of plaintext integers
+	plaintext = []
+	for i in range(0, len(cipher)):
+		#c = first number in pair
+		c = int(cipher[i][0])
+		#d = second number in pair
+		d = int(cipher[i][1])
 
-				#s = c^x mod p
-				s = pow(c, private_key[0]-1-private_key[2], private_key[0])
-				#plaintext integer = ds^-1 mod p
-				plain = s*d  % private_key[0]
-				#add plain to list of plaintext integers
-				plaintext.append(plain)
+		#s = c^x mod p
+		s = pow(c, private_key[0]-1-private_key[2], private_key[0])
+		#plaintext integer = ds^-1 mod p
+		plain = s*d  % private_key[0]
+		#add plain to list of plaintext integers
+		plaintext.append(plain)
 
-		decryptedText = decode([chr(x) for x in plaintext])
+	decryptedText = decode([chr(x) for x in plaintext])
 
-		return decryptedText
+	return decryptedText
 
 if __name__ == "__main__":
     text = '星を出ていくのに、王子さまは渡り鳥の旅を利用したのだと思う'
