@@ -1,0 +1,105 @@
+{% extends "base_template.html" %}
+
+{% load static %}
+
+{% block head_content %}
+<title>CriptoBros - Rabin Cipher</title>
+{% endblock %}
+
+{% block main %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <div class="row">
+        <h1 class="h3 mb-2 text-gray-800">Rabin Cipher</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <div class="col-xl-8 col-lg-7">
+
+            <!-- Encrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Encrypt</h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="" target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='textC' class="form-control" rows="11" required>{{ clear }}</textarea>
+                        </div>
+                        <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Decrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-1 font-weight-bold text-primary">Decrypt</h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="", target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='textE' class="form-control" rows="11" required>{{ cipher }}</textarea>
+                        </div>
+                        <input name="desencrypt"class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Inputs Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <!-- Outputs Chart -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Outputs</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <textarea class="form-control" rows="10">{{ data }}</textarea>
+                    </div>         
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Explanation</h5>
+            <h6 class="card-subtitle mb-2 text-muted">How does this work?</h6>
+
+            <p class="card-text">
+            <p>The Rabin cryptosystem is a computationally secure asymmetric cipher against a chosen plaintext attack provided that modulo <span class="math inline"><em>n</em> = <em>p</em><em>q</em></span> cannot be factored. Therefore, the Rabin cryptosystem is an example of a provably secure cryptosystem assuming the computationally infeasible factorization problem, the Rabin cryptosystem is secure. A drawback of the Rabin cryptosystem is that the encryption function <span class="math inline"><em>e</em><sub><em>K</em></sub></span> is not an injection, so decryption cannot be performed unambiguously. We define the cryptosystem more formally as follows:</p>
+            <p>Let <span class="math inline"><em>n</em> = <em>p</em><em>q</em></span> where <span class="math inline"><em>p</em></span>, and <span class="math inline"><em>q</em></span> are prime and <span class="math inline"><em>p</em>, <em>q</em> ≡ 3 mod  4</span>, then <span class="math inline">𝒫 = 𝒞 = ℤ<sub><em>n</em></sub><sup>*</sup></span>, <span class="math inline">𝒦 = {(<em>n</em>,<em>p</em>,<em>q</em>,<em>B</em>)|0 ≤ <em>B</em> ≤ <em>n</em> − 1}</span>. For <span class="math inline"><em>K</em> = (<em>n</em>,<em>p</em>,<em>q</em>,<em>B</em>)</span>
+            <div class="text-center">
+                <img src="{% static 'img/Rabin1.png' %}" class="img-fluid" class="rounded" alt="Vale">
+            </div>
+            where <span class="math inline"><em>n</em></span> and <span class="math inline"><em>B</em></span> are the public key and <span class="math inline"><em>p</em></span> and <span class="math inline"><em>q</em></span> are the private key.<br />
+            <br>
+            <strong>Example:</strong> Suppose we are going to encrypt the already encrypted text 8491506 with <span class="math inline"><em>n</em> = 25202371 = 4139</span> and <span class="math inline"><em>B</em> = 2161</span>, the resulting ciphertext is: </p>
+            <div class="text-center">
+                <img src="{% static 'img/Rabin2.png' %}" height="350" class="img-fluid" class="rounded" alt="Vale">
+            </div>
+            And to decipher the encoded text we do:
+            <div class="text-center">
+                <img src="{% static 'img/Rabin3.png' %}" height="700" class="img-fluid" class="rounded" alt="Vale">
+            </div>
+            where <span class="math inline"><em>d</em><sub><em>K</em><sub>4</sub></sub></span> matches the text we encrypted in the first part of the example.</p>
+            </p>
+
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+<!-- </body> -->

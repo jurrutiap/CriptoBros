@@ -159,7 +159,7 @@ def add_space(string):
     return string[::-1]
 
 
-def RabinEncrypt():
+def RabinEncrypt(plaintext):
     #p = int(delete_space(input('p = ')), 32)   # p = daaefe652cad1614f17e87f2cd80973f
     #q = int(delete_space(input('q = ')), 32)   # q = f99988626723eef2a54ed484dfa735c7
 
@@ -178,15 +178,16 @@ def RabinEncrypt():
 
 
 
-    plaintext = int(delete_space(input('Plaintext = ')), 32)   # plaintext = be000badbebadbadbad00debdeadfacedeafbeefadd00addbed00bed
+    plaintext = int(delete_space(plaintext), 32)   # plaintext = be000badbebadbadbad00debdeadfacedeafbeefadd00addbed00bed
     ciphertext = encryption(plaintext, n, B)
 
     print(f"plaintext = {plaintext}")
     print("\n")
     print(f'Ciphertext = {ciphertext}')
+    return ciphertext
 
-def RabinDecrypt():
-    ciphertext = int(input('Ciphertext = '))
+def RabinDecrypt(ciphertext):
+    ciphertext = int(ciphertext)
 
     #p = int(delete_space(input('p = ')), 32)
     #q = int(delete_space(input('q = ')), 32)
@@ -199,9 +200,12 @@ def RabinDecrypt():
         B = B%n
 
     plaintext = decryption(ciphertext, p, q,B)
+    textdecrypt= ""
 
     for i in range(4):
+        textdecrypt+= "\n"+ str(int(plaintext[i]))
         print(f"Plaintext {i+1} = {plaintext[i]}")
+    return textdecrypt
 
 
 

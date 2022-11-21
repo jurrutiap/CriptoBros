@@ -29,6 +29,7 @@ import utils.AES as AES
 import utils.TDES as TDES
 import utils.SDES as SDES
 import utils.RSA as RSA
+import utils.RabinSystem as Rabin
 
 def home(request):
     return render(request, 'index.html')
@@ -195,6 +196,22 @@ def RSA_view(request, *textC):
         except:
             return render(request, 'RSA_system.html')
     return render(request, 'RSA_system.html')
+
+def Rabin_view(request, *textC):
+    if request.method == "POST":
+        try:
+            if 'encrypt' in request.POST:
+                message = request.POST['textC']
+                data = Rabin.RabinEncrypt(message)
+                return render(request, 'Rabin_system.html', {'data':data, 'clear': message})
+
+            if 'desencrypt' in request.POST:
+                message = request.POST['textE']
+                data = Rabin.RabinDecrypt(message)
+                return render(request, 'Rabin_system.html', {'data':data, 'cipher': message})
+        except:
+            return render(request, 'Rabin_system.html')
+    return render(request, 'Rabin_system.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":
