@@ -76,7 +76,7 @@ def BytesToImage(byteToConvert, originalRows, originalColumns, name):
         byteToConvert += bytes.fromhex("ff") * usefulLenght
 
     img = np.frombuffer(byteToConvert, np.uint8).reshape(originalRows, originalColumns, 3)
-    imageio.imwrite(name, img)
+    imageio.imwrite("criptosite/static/img/"+name, img)
 
 
 def EncryptECB(key):

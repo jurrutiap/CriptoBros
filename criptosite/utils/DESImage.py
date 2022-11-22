@@ -87,7 +87,7 @@ def BytesToImage(byteToConvert, originalRows, originalColumns, name):
 
 def encryptDESImage(key):
     # opening the image file
-    image = ImageToBytes("0.png")
+    image = ImageToBytes('criptosite/static/img/clean.png')
 
     oriRows = image[1][0]
     oriCols = image[1][1]
@@ -118,7 +118,7 @@ def encryptDESImage(key):
 
 def decryptDESImage(key):
     # opening the image file
-    image = ImageToBytes("Encrypted.png")
+    image = ImageToBytes('criptosite/static/img/Encrypted.png')
 
     oriRows = image[1][0]
     oriCols = image[1][1]
