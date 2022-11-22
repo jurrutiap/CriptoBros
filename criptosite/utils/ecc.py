@@ -1,6 +1,7 @@
 from tinyec import registry
 from Cryptodome.Cipher import AES
 import hashlib, secrets, binascii
+import tinyec.ec as ec
 
 # Code from: https://cryptobook.nakov.com/asymmetric-key-ciphers/ecc-encryption-decryption
 
@@ -30,26 +31,41 @@ def encrypt_ECC(msg, pubKey):
     return (ciphertext, nonce, authTag, ciphertextPubKey)
 
 def decrypt_ECC(encryptedMsg, privKey):
-    (ciphertext, nonce, authTag, ciphertextPubKey) = encryptedMsg
+    #(ciphertext, nonce, authTag, ciphertextPubKey) = encryptedMsg
+    ciphertext = bytes.fromhex(encryptedMsg[0])
+    nonce = bytes.fromhex(encryptedMsg[1])
+    authTag = bytes.fromhex(encryptedMsg[2])
+    ciphertextPubKey = ec.Point(curve=curve,x=int(encryptedMsg[3], 16),y=int(encryptedMsg[4], 16))
     sharedECCKey = privKey * ciphertextPubKey
     secretKey = ecc_point_to_256_bit_key(sharedECCKey)
     plaintext = decrypt_AES_GCM(ciphertext, nonce, authTag, secretKey)
     return plaintext
 
+def get_priv_key():
+    return secrets.randbelow(curve.field.n)
+
+def get_curve():
+    return registry.get_curve('brainpoolP256r1')
+
+def get_obj(encryptedMsg):
+    return {
+        'ciphertext': encryptedMsg[0].hex(),
+        'nonce': encryptedMsg[1].hex(),
+        'authTag': encryptedMsg[2].hex(),
+        'ciphertextPubKey_x': hex(encryptedMsg[3].x),
+        'ciphertextPubKey_y': hex(encryptedMsg[3].y)
+    }
+
+
 if __name__ == "__main__":
-    msg = b'Text to be encrypted by ECC public key and decrypted by its corresponding ECC private key'
+    #msg = b'Text to be encrypted by ECC public key and decrypted by its corresponding ECC private key'
+    msg = bytes('星を出ていくのに、王子さまは渡り鳥の旅を利用したのだと思う', 'utf-16')
     print("original msg:", msg)
-    privKey = secrets.randbelow(curve.field.n)
-    pubKey = privKey * curve.g
+    privKey = get_priv_key()
+    pubKey = privKey * get_curve().g
 
     encryptedMsg = encrypt_ECC(msg, pubKey)
-    encryptedMsgObj = {
-        'ciphertext': binascii.hexlify(encryptedMsg[0]),
-        'nonce': binascii.hexlify(encryptedMsg[1]),
-        'authTag': binascii.hexlify(encryptedMsg[2]),
-        'ciphertextPubKey': hex(encryptedMsg[3].x) + hex(encryptedMsg[3].y % 2)[2:]
-    }
-    print("encrypted msg:", encryptedMsgObj)
+    encryptedMsgObj = get_obj(encryptedMsg)
 
-    decryptedMsg = decrypt_ECC(encryptedMsg, privKey)
-    print("decrypted msg:", decryptedMsg)
+    decryptedMsg = decrypt_ECC(list(encryptedMsgObj.values()), privKey)
+    print("decrypted msg:", decryptedMsg.decode("utf-16") )

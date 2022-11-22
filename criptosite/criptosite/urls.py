@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from views.views_home import home, shift_view, multiplicative_view, DES_view,RSA_view,Rabin_view, elgamal_view, DESimage_view,AESimage_view,SDES_view,TDESimage_view, downloadimg_file, downloadimge_file, sustitutive_view, vigenere_view, hill_view, substitution_view, shiftcryptoanalisis_view, vigenerecryptoanalisis_view, affine_view, affinecryptoanalisis_view, substitutioncryptoanalisis_view, gammaPentagonal_view, download_file
+from views.views_home import home, shift_view, multiplicative_view, DES_view,RSA_view,Rabin_view, elgamal_view, ecc_view, DESimage_view,AESimage_view,SDES_view,TDESimage_view, downloadimg_file, downloadimge_file, sustitutive_view, vigenere_view, hill_view, substitution_view, shiftcryptoanalisis_view, vigenerecryptoanalisis_view, affine_view, affinecryptoanalisis_view, substitutioncryptoanalisis_view, gammaPentagonal_view, download_file
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -33,6 +33,7 @@ urlpatterns = [
     path('RSA/', RSA_view, name='RSA_view'),
     path('Rabin/', Rabin_view, name='Rabin_view'),
     path('Elgamal/', elgamal_view, name='Elgamal_view'),
+    path('ECC/', ecc_view, name='Ecc_view'),
     path('DESimage/', DESimage_view, name='DESimage_view'),
     path('AESimage/', AESimage_view, name='AESimage_view'),
     path('TDESimage/', TDESimage_view, name='TDESimage_view'),

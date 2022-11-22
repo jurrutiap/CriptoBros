@@ -31,6 +31,7 @@ import utils.SDES as SDES
 import utils.RSA as RSA
 import utils.RabinSystem as Rabin
 import utils.elgamal as Elgamal
+import utils.ecc as ECC
 
 def home(request):
     return render(request, 'index.html')
@@ -238,6 +239,23 @@ def elgamal_view(request):
         except:
             return render(request, 'Elgamal.html')
     return render(request, 'Elgamal.html')
+
+def ecc_view(request):
+    if request.method == 'POST':
+        try:
+            if 'encrypt' in request.POST:
+                curve = ECC.get_curve()
+                clear_message = request.POST['input_text']
+                text = bytes(clear_message, 'utf-16')
+                priv_key = ECC.get_priv_key()
+                pubKey = priv_key * curve.g
+                encryptedMsg = ECC.encrypt_ECC(text, pubKey)
+                ECC.placeholder = encryptedMsg[3]
+                encryptedMsgObj = ECC.get_obj(encryptedMsg)
+                return render(request, 'ECC.html', {'result': list(encryptedMsgObj.values()), 'out_pub_key': (pubKey.x, pubKey.y), 'out_priv_key': priv_key})
+        except:
+            return render(request, 'ECC.html')
+    return render(request, 'ECC.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":
