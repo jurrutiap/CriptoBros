@@ -54,60 +54,29 @@ def hexToRGB(hexadecimal):
     return [int(h[i:i+2], 16) for i in (0, 2, 4)]
 
 def ImageToBytes(image):
-    """
-    Image to convert from image to bytes
-    """
-    dataToEncrypt =imageio.imread(image)
+    image = imageio.imread(image)
+    # Drop the alpha channel.
+    if image.shape[2] == 4:
+        image = image[..., :3]
+    # Convert to bytes directly.
 
-    if dataToEncrypt.shape[2] ==4:
-        dataToEncrypt = np.delete(dataToEncrypt,3,2)
-
-    originalRows, originalColumns,_ = dataToEncrypt.shape
-
-
-    #converting rgb to hex
-    hexToEncrypt = np.apply_along_axis(rgb2hex, 2, dataToEncrypt)
-    hexToEncrypt = np.apply_along_axis(arrayToString, 1, hexToEncrypt)
-    hexToEncrypt = str(np.apply_along_axis(arrayToString, 0, hexToEncrypt))
-
-    byteImage = bytes.fromhex(hexToEncrypt)
-
+    originalRows, originalColumns,_ = image.shape
+    byteImage = image.tobytes()
     return (byteImage, [originalRows,originalColumns])
 
-def BytesToImage(byteToConvert,originalRows,originalColumns,name):
+def BytesToImage(byteToConvert, originalRows, originalColumns, name):
+    size = originalRows * originalColumns * 3
 
-    """
-    Convert from Bytes to Image
-    """
-    encryptedData = byteToConvert.hex()
+    if size < len(byteToConvert):
+        usefulLenght = len(byteToConvert)% size
+        byteToConvert = byteToConvert[:-1*usefulLenght]
 
+    elif size > len(byteToConvert):
+        usefulLenght = size - len(byteToConvert)
+        byteToConvert += bytes.fromhex("ff") * usefulLenght
 
-    stepOne = sliceStr(encryptedData,originalColumns*6)
-
-    stepTwo = []
-
-    for i in stepOne:
-        step = sliceStr(i,6)
-
-        #Add lost pixels
-        while len(step) != originalColumns:
-            step = np.append(step,"ffffff")
-        stepTwo.append(step)
-
-
-    stepThree = []
-    for i in stepTwo:
-        d = []
-        for j in i:
-            d.append(hexToRGB(j))
-
-        if len(stepThree) < originalRows:
-            stepThree.append(d)
-
-        encryptedImg = np.asarray(stepThree)
-
-
-    imageio.imwrite(name,encryptedImg)
+    img = np.frombuffer(byteToConvert, np.uint8).reshape(originalRows, originalColumns, 3)
+    imageio.imwrite(name, img)
 
 
 def EncryptECB(key):
