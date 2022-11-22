@@ -31,10 +31,12 @@ def encrypt_ECC(msg, pubKey):
     return (ciphertext, nonce, authTag, ciphertextPubKey)
 
 def decrypt_ECC(encryptedMsg, privKey):
+    privKey = int(privKey)
+    encryptedMsg = [hex(int(x,16)) for x in encryptedMsg.replace('[', '').replace(']','').replace(' ', '').replace("'", "").split(',')]
     #(ciphertext, nonce, authTag, ciphertextPubKey) = encryptedMsg
-    ciphertext = bytes.fromhex(encryptedMsg[0])
-    nonce = bytes.fromhex(encryptedMsg[1])
-    authTag = bytes.fromhex(encryptedMsg[2])
+    ciphertext = bytes.fromhex(encryptedMsg[0][2:])
+    nonce = bytes.fromhex(encryptedMsg[1][2:])
+    authTag = bytes.fromhex(encryptedMsg[2][2:])
     ciphertextPubKey = ec.Point(curve=curve,x=int(encryptedMsg[3], 16),y=int(encryptedMsg[4], 16))
     sharedECCKey = privKey * ciphertextPubKey
     secretKey = ecc_point_to_256_bit_key(sharedECCKey)
@@ -67,5 +69,5 @@ if __name__ == "__main__":
     encryptedMsg = encrypt_ECC(msg, pubKey)
     encryptedMsgObj = get_obj(encryptedMsg)
 
-    decryptedMsg = decrypt_ECC(list(encryptedMsgObj.values()), privKey)
+    decryptedMsg = decrypt_ECC(str(list(encryptedMsgObj.values())), str(privKey))
     print("decrypted msg:", decryptedMsg.decode("utf-16") )
