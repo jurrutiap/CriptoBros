@@ -1,0 +1,106 @@
+{% extends "base_template.html" %}
+
+{% load static %}
+
+{% block head_content %}
+<title>CriptoBros - ECC</title>
+{% endblock %}
+
+{% block main %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Eliptic Curve Criptography</h1>
+    <p class="mb-4">The Elgamal public key encryption algorithm is based on the Discrete logarithm problem (DLP) and is closely related to Diffie-Hellman key exchange method. In this page we implement the version of the Elgamal PKC that is based on the discrete logarithm problem for Fields, but the construction works quite generally using the DLP in any group. In particular, we implemented a version of the Elgamal PKC based on elliptic curve groups in another page.</p>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <div class="col-xl-7 col-lg-7">
+
+            <!-- Encrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Encrypt</h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="" target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='input_text' class="form-control" rows="11" required>{{ clear_text }}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-default">Public Key</span>
+                            </div>
+                            <input type="text" name='in_pub_key' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <input name="encrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 d-flex align-items-stretch">
+            <!-- Outputs Chart -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Outputs</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <textarea class="form-control" rows="12">{{ result }}</textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default" >Public Key used to encrypt</span>
+                            <textarea class="form-control" rows="1" cols="55">{{ out_pub_key }}</textarea>
+                        </div>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Private Key used to decrypt</span>
+                            <textarea class="form-control" rows="1" cols="55">{{ out_priv_key }}</textarea>
+                        </div>
+                    </div>         
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100"></div>
+
+        <div class="col-xl-7 col-lg-7">
+
+            <!-- Decrypt Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-1 font-weight-bold text-primary">Decrypt</h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="", target="_self">
+                        {% csrf_token %} 
+                        <div class="chart-area">
+                            <textarea name='ciphered_text' class="form-control" rows="11" required>{{ cipher }}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-default">Private Key</span>
+                            </div>
+                            <input type="text" name='in_priv_key' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <input name="decrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+        </div>       
+        
+    </div>
+
+
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+<!-- </body> -->
