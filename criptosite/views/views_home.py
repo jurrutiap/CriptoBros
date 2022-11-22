@@ -30,6 +30,7 @@ import utils.TDES as TDES
 import utils.SDES as SDES
 import utils.RSA as RSA
 import utils.RabinSystem as Rabin
+import utils.elgamal as Elgamal
 
 def home(request):
     return render(request, 'index.html')
@@ -212,6 +213,31 @@ def Rabin_view(request, *textC):
         except:
             return render(request, 'Rabin_system.html')
     return render(request, 'Rabin_system.html')
+
+def elgamal_view(request):
+    if request.method == "POST":
+        try:
+            if 'generate' in request.POST:
+                keys = Elgamal.generate_keys()
+                time.sleep(6)
+                return render(request, 'Elgamal.html', {'pub_key':keys[0], 'priv_key':keys[1]})
+            
+            if 'encrypt' in request.POST:
+                clear_message = request.POST['input_text']
+                pub_key = request.POST['in_pub_key']
+                result = Elgamal.encrypt(pub_key, clear_message)
+                return render(request, 'Elgamal.html', {'clear_text': clear_message, 'result':result, 'out_pub_key':pub_key})
+
+            if 'decrypt' in request.POST:
+                ciphered_message = request.POST['ciphered_text']
+                priv_key = request.POST['in_priv_key']
+                result = Elgamal.decrypt(priv_key, ciphered_message)
+                print('entered')
+                return render(request, 'Elgamal.html', {'cipher': ciphered_message, 'result':result, 'out_priv_key':priv_key})
+
+        except:
+            return render(request, 'Elgamal.html')
+    return render(request, 'Elgamal.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":

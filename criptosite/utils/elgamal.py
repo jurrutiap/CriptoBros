@@ -90,49 +90,51 @@ def decode(ciphered_text):
 
 # Elgamal para cada letra, retorna array de parejas
 def encrypt(public_key, sPlaintext):
-	text_array = encode(sPlaintext)
+    public_key = [int(x) for x in public_key.replace('(', '').replace(')', '').replace(' ', '').split(",")]
+    text_array = encode(sPlaintext)
 
 	# cipher_pairs list will hold pairs (c, d) corresponding to each integer in text_array
-	cipher_pairs = []
+    cipher_pairs = []
 	# i is an integer in z
-	for i in text_array:
+    for i in text_array:
 		# pick random y from (0, p-1) inclusive
-		y = np.random.randint(0, public_key[0])
+        y = np.random.randint(0, public_key[0])
 		# c = g^y mod p
-		c = pow(public_key[1], y, public_key[0])
+        c = pow(public_key[1], y, public_key[0])
 		# d = ih^y mod p
-		d = (i*pow(public_key[2], y, public_key[0])) % public_key[0]
+        d = (i*pow(public_key[2], y, public_key[0])) % public_key[0]
 		# add the pair to the cipher pairs list
-		cipher_pairs.append([c, d])
-
-	return cipher_pairs
+        cipher_pairs.append((c, d))
+    return cipher_pairs
 
 # Desencripta cada pareja y rearma el string
 def decrypt(private_key, cipher):
+    cipher = [[int(y) for y in x if y != ''] for x in [x.replace('[', '').replace('(', '').replace(' ', '').split(',') for x in cipher.split(')')[:-1]]]
+    private_key = [int(x) for x in private_key.replace('(', '').replace(')', '').replace(' ', '').split(",")]
 	#decrpyts each pair and adds the decrypted integer to list of plaintext integers
-	plaintext = []
-	for i in range(0, len(cipher)):
+    plaintext = []
+    for i in range(0, len(cipher)):
 		#c = first number in pair
-		c = int(cipher[i][0])
+        c = int(cipher[i][0])
 		#d = second number in pair
-		d = int(cipher[i][1])
+        d = int(cipher[i][1])
 
 		#s = c^x mod p
-		s = pow(c, private_key[0]-1-private_key[2], private_key[0])
+        s = pow(c, private_key[0]-1-private_key[2], private_key[0])
 		#plaintext integer = ds^-1 mod p
-		plain = s*d  % private_key[0]
+        plain = s*d  % private_key[0]
 		#add plain to list of plaintext integers
-		plaintext.append(plain)
+        plaintext.append(plain)
 
-	decryptedText = decode([chr(x) for x in plaintext])
-
-	return decryptedText
+    decryptedText = decode([chr(x) for x in plaintext])
+    
+    return decryptedText
 
 if __name__ == "__main__":
     text = '星を出ていくのに、王子さまは渡り鳥の旅を利用したのだと思う'
     pub_key, priv_key = generate_keys()
     print(f'Public key: P:{pub_key[0]}, G:{pub_key[1]}, H:{pub_key[2]},')
     print(f'Public key: P:{priv_key[0]}, G:{priv_key[1]}, X:{priv_key[2]},')
-    ciphered = encrypt(pub_key, text)
-    print(ciphered)
-    print(decrypt(priv_key, ciphered))
+    ciphered = encrypt(str(pub_key), text)
+    print(str(ciphered))
+    print(decrypt(str(priv_key), str(ciphered)))
