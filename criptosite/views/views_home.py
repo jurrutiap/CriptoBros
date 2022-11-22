@@ -288,7 +288,7 @@ def hill_view(request, *textC):
 
 def DESimage_view(request, *textC):
     if request.method == "POST":
-        try:
+        #try:
             if 'encrypt' in request.POST:
                 if os.path.exists("criptosite/static/img/clean.png"):
                     os.remove("criptosite/static/img/clean.png")
@@ -308,8 +308,8 @@ def DESimage_view(request, *textC):
                 fss.save('criptosite/static/img/Encrypted.png', upload)
                 k= DESi.decryptDESImage(k)
                 return render(request, 'DESimage_system.html', {'decrypted_image':'aaaaa', 'k2':k})
-        except:
-            return render(request, 'DESimage_system.html')
+        #except:
+            #return render(request, 'DESimage_system.html')
 
     return render(request, 'DESimage_system.html')
 

@@ -1,7 +1,7 @@
 import numpy as np
 import imageio
-from Cryptodome.Cipher import DES3
-from Cryptodome.Random import get_random_bytes
+from Crypto.Cipher import DES3
+from Crypto.Random import get_random_bytes
 
 
 def K(k):
@@ -76,7 +76,7 @@ def BytesToImage(byteToConvert, originalRows, originalColumns, name):
         byteToConvert += bytes.fromhex("ff") * usefulLenght
 
     img = np.frombuffer(byteToConvert, np.uint8).reshape(originalRows, originalColumns, 3)
-    imageio.imwrite(name, img)
+    imageio.imwrite("criptosite/static/img/"+name, img)
 
 
 def EncryptECB(key):

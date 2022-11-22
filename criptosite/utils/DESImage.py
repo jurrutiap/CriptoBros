@@ -1,7 +1,7 @@
-from Cryptodome.Cipher import DES
-from Cryptodome.Hash import SHA256
+from Crypto.Cipher import DES
+from Crypto.Hash import SHA256
 from getpass import getpass
-from Cryptodome.Protocol.KDF import PBKDF2
+from Crypto.Protocol.KDF import PBKDF2
 import imageio
 import numpy as np
 
@@ -84,9 +84,10 @@ def BytesToImage(byteToConvert, originalRows, originalColumns, name):
     img = np.frombuffer(byteToConvert, np.uint8).reshape(originalRows, originalColumns, 3)
     imageio.imwrite("criptosite/static/img/"+name,img)
 
+
 def encryptDESImage(key):
     # opening the image file
-    image = ImageToBytes("clean.png")
+    image = ImageToBytes('criptosite/static/img/clean.png')
 
     oriRows = image[1][0]
     oriCols = image[1][1]
@@ -117,7 +118,7 @@ def encryptDESImage(key):
 
 def decryptDESImage(key):
     # opening the image file
-    image = ImageToBytes("Encrypted.png")
+    image = ImageToBytes('criptosite/static/img/Encrypted.png')
 
     oriRows = image[1][0]
     oriCols = image[1][1]
@@ -148,6 +149,5 @@ def decryptDESImage(key):
 
     BytesToImage(plaintext1,oriRows,oriCols,"Decrypted.png")
     return key
-
 
 
