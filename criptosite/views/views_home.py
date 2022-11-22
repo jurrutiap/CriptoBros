@@ -32,6 +32,7 @@ import utils.RSA as RSA
 import utils.RabinSystem as Rabin
 import utils.elgamal as Elgamal
 import utils.ecc as ECC
+import utils.digital_signature as Signature
 
 def home(request):
     return render(request, 'index.html')
@@ -233,7 +234,6 @@ def elgamal_view(request):
                 ciphered_message = request.POST['ciphered_text']
                 priv_key = request.POST['in_priv_key']
                 result = Elgamal.decrypt(priv_key, ciphered_message)
-                print('entered')
                 return render(request, 'Elgamal.html', {'cipher': ciphered_message, 'result':result, 'out_priv_key':priv_key})
 
         except:
@@ -253,9 +253,36 @@ def ecc_view(request):
                 ECC.placeholder = encryptedMsg[3]
                 encryptedMsgObj = ECC.get_obj(encryptedMsg)
                 return render(request, 'ECC.html', {'result': list(encryptedMsgObj.values()), 'out_pub_key': (pubKey.x, pubKey.y), 'out_priv_key': priv_key})
+
+            if 'decrypt' in request.POST:
+                cipher = request.POST['ciphered_text']
+                priv_key = request.POST['in_priv_key']
+                result = ECC.decrypt_ECC(cipher, priv_key)
+                print('entered')
+                return render(request, 'ECC.html', {'cipher': cipher, 'result':result.decode('utf-16'), 'out_priv_key':priv_key})
         except:
             return render(request, 'ECC.html')
     return render(request, 'ECC.html')
+
+def signature_view(request):
+    if request.method == "POST":
+        try:            
+            if 'encrypt' in request.POST:
+                clear_message = request.POST['input_text']
+                pub_key = request.POST['in_priv_key']
+                signature, pk, vk = Signature.sign(clear_message)
+                return render(request, 'DigitalSignature.html', {'clear_text': clear_message, 'result':signature, 'ver_key':vk, 'priv_key':pk})
+
+            if 'decrypt' in request.POST:
+                signature = request.POST['ciphered_text']
+                vk = request.POST['in_pub_key']
+                message = request.POST['in_text']
+                result = Signature.verify(str(signature), str(vk), message)
+                return render(request, 'DigitalSignature.html', {'cipher': signature, 'result':result})
+
+        except:
+            return render(request, 'DigitalSignature.html')
+    return render(request, 'DigitalSignature.html')
 
 def hill_view(request, *textC):
     if request.method == "POST":

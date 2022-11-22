@@ -20,9 +20,11 @@ def verify(signature, vk, message):
     vk = ecdsa.SigningKey.from_string(bytes.fromhex(vk), curve=ecdsa.SECP256k1).get_verifying_key()
     try:
         vk.verify(bytes.fromhex(signature), bytes(message, 'utf-16'))
-        print('Successful')
+        #print('Successful')
+        return 'SUCCESSFUL AUTHENTICATION. ORIGINAL TEXT'
     except:
-        print('Tampered Text')
+        #print('Tampered Text')
+        return 'FAILED AUTHENTICATION. ALTERED TEXT'
 
 if __name__ == "__main__":
     message = '星を出ていくのに、王子さまは渡り鳥の旅を利用したのだと思う'
@@ -30,4 +32,4 @@ if __name__ == "__main__":
     print(f'Signature: {signature}')
     print(f'Private key: {pk}')
     print(f'Verification key: {vk}')
-    verify(signature, vk, message)
+    print(verify(str(signature), str(vk), message))
