@@ -102,12 +102,28 @@ def none_in_x_is_n(x, n):
             return False
     return True
 
+#mark a solution
+def padding(plaintext):
+    binary_str = bin(plaintext)     # convert to a bit string
+    output = binary_str + "0111111"     # add a mark
+    return int(output, 2)       # convert back to integer
+
 # encryption function
 
 def encryption(plaintext, n,B):
     # c = m^2 mod n
-    m = plaintext
-    return (m *(m+B)) % n
+    #m = padding(plaintext)
+    m = padding(plaintext)
+    p = (m *(m+B)) % n
+    return p
+
+def choose(lst):
+
+    for i in lst:
+        binary = bin(i)
+        if "0111111" == binary[-7:]:
+            return int(bin(i)[:-7],2)
+    return "None"
 
 
 # encryption function
@@ -118,7 +134,7 @@ def decryption(a, p, q, B):
     # for p
     addB = B/2
 
-    print(f"a = {a}")
+
     y = int(((B**2)/4 % n) + a)
     if p % 4 == 3:
         r = sqrt_p_3_mod_4(y, p)
@@ -131,17 +147,13 @@ def decryption(a, p, q, B):
         s = sqrt_p_5_mod_8(y, q)
 
     lst = [r, -1*r,s, -1*s]
-    print("lst = ")
-    print(lst)
-    print("\n")
+
     rest = [chinese_remainder([p,q],[a,b]) for a in (r, -1*r) for b in (s, -1*s)]
-    print("rest = ")
-    print(rest)
-    print("\n")
 
 
-    print(f"addB = {addB}")
-    posPlain = [i - addB for i in rest]
+    posPlain = [int(i - addB) for i in rest]
+    if choose(posPlain) != "None":
+        return choose(posPlain)
     return posPlain
 
 
@@ -166,8 +178,11 @@ def RabinEncrypt(plaintext):
     #p = 10000019
     #q = 55555333
 
-    p = 1666043
-    q = 2796203
+    #p = 1666043
+    #q = 2796203
+
+    p = 10092003300140014003
+    q = 36484957213536676883
 
     n = p*q
 
@@ -178,8 +193,10 @@ def RabinEncrypt(plaintext):
 
 
 
-    plaintext = int(delete_space(plaintext), 32)   # plaintext = be000badbebadbadbad00debdeadfacedeafbeefadd00addbed00bed
-    ciphertext = encryption(plaintext, n, B)
+    plaintext = [ord(char) for char in plaintext]
+    ciphertext = []
+    for i in plaintext:
+        ciphertext.append(encryption(i, n, B))
 
     print(f"plaintext = {plaintext}")
     print("\n")
@@ -187,25 +204,28 @@ def RabinEncrypt(plaintext):
     return ciphertext
 
 def RabinDecrypt(ciphertext):
-    ciphertext = int(ciphertext)
+
+    ciphertext = [int(i) for i in ciphertext]
 
     #p = int(delete_space(input('p = ')), 32)
     #q = int(delete_space(input('q = ')), 32)
-    p = 1666043
-    q = 2796203
+    #p = 1666043
+    #q = 2796203
+    p = 10092003300140014003
+    q = 36484957213536676883
 
     B = int(delete_space("daae"), 32)
     n = p * q
     if not 0 <= B < n:
         B = B%n
 
-    plaintext = decryption(ciphertext, p, q,B)
-    textdecrypt= ""
-
-    for i in range(4):
-        textdecrypt+= "\n"+ str(int(plaintext[i]))
-        print(f"Plaintext {i+1} = {plaintext[i]}")
+    plaintext = []
+    for i in ciphertext:
+        plaintext.append(chr(decryption(i, p, q,B)))
+    textdecrypt= "".join(plaintext)
     return textdecrypt
 
 
-
+Cipher = RabinEncrypt("Hola como estas")
+print(Cipher)
+print(f"Message = {RabinDecrypt(Cipher)}")
