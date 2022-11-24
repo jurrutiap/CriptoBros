@@ -1,6 +1,6 @@
-from Cryptodome.PublicKey import RSA
-from Cryptodome.Cipher import PKCS1_OAEP
-from Cryptodome.Util.number import ceil_div, bytes_to_long, long_to_bytes
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Util.number import ceil_div, bytes_to_long, long_to_bytes
 
 public_key_string = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoVlefpIw0RYMWdIn0jCk
@@ -48,35 +48,49 @@ private_key = RSA.importKey(private_key_string)
 
 def RSAEncryption(plain_text):
     cipher_rsa = PKCS1_OAEP.new(public_key)
-    enc_data = cipher_rsa.encrypt(plain_text.encode())
-    enc_data = str(bytes_to_long(enc_data))
-    return enc_data, private_key_string
 
+    if len(plain_text) < 215:
+        enc_data = cipher_rsa.encrypt(plain_text.encode())
+        enc_data = str(bytes_to_long(enc_data))
+        return enc_data, private_key_string
+
+    plain_txt = [plain_text[i:i+214] for i in range(0,len(plain_text),214)]
+    cipher = []
+    for chunk in plain_txt:
+        enc_data = cipher_rsa.encrypt(chunk.encode())
+        enc_data = str(bytes_to_long(enc_data))
+        cipher.append(enc_data)
+    return cipher, private_key_string
 
 def RSADecryption(plain_text):
-    plain_text = long_to_bytes(int(plain_text))
+
     decipher_rsa = PKCS1_OAEP.new(private_key)
-    dec_data = decipher_rsa.decrypt(plain_text)
-    return dec_data.decode(), private_key_string
+    if not isinstance(plain_text, list):
+        plain_text = long_to_bytes(int(plain_text))
+        dec_data = decipher_rsa.decrypt(plain_text)
+        return dec_data.decode(), private_key_string
 
-# def showPublicKey(keys):
-#     return keys.publickey().export_key(key_format).decode()
+    dec_text = ""
+
+    for chunk in plain_text:
+        chunk = long_to_bytes(int(chunk))
+        dec_data = decipher_rsa.decrypt(chunk)
+        dec_text += dec_data.decode()
+    return dec_text, private_key_string
+
+def showPublicKey(keys):
+    return keys.publickey().export_key(key_format).decode()
 #
 #
-# def showPrivateKey(keys):
-#     return keys.export_key(key_format).decode()
+def showPrivateKey(keys):
+    return keys.export_key(key_format).decode()
 
 
-# # encryption/decryption
-# enc = RSAPreviousEncryption('Hola Mundo')
-# print(enc[0])
-# dec = RSAPreviousDecryption(enc[0])
-# print(dec[0])
-# # showing the keys
-# print(showPublicKey(enc[1]))
-# print(showPrivateKey(enc[1]))
+Text = """
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+"""
+a =RSAEncryption(Text)[0]
+print(a)
 
-# enc = RSAEncryption("Hellow World")
-# print(enc)
-# dec = RSADecryption(enc[0])
-# print(dec)
+b = RSADecryption(a)
+print(b[0])

@@ -67,7 +67,7 @@ def generate_a_prime_number(num_of_bits):
     while 1:
 
         num = random.getrandbits(num_of_bits)
-        if isPrime(num):
+        if isPrime(num) and (num%4 == 3 or num%8== 5):
             return num
         else:
             continue
@@ -86,8 +86,6 @@ def sqrt_p_5_mod_8(a, p):
     if d == 1:
         r = pow(a, (p + 3) // 8, p)
     elif d == p - 1:
-        print(f"expo = {(p-5)//8}")
-        print(f"base = {(4*a)}")
         r = 2 * a * pow(4 * a, (p - 5) // 8) % p
 
     return r
@@ -105,24 +103,23 @@ def none_in_x_is_n(x, n):
 #mark a solution
 def padding(plaintext):
     binary_str = bin(plaintext)     # convert to a bit string
-    output = binary_str + "0111111"     # add a mark
+    output = binary_str + "00111111"     # add a mark
     return int(output, 2)       # convert back to integer
 
 # encryption function
 
 def encryption(plaintext, n,B):
     # c = m^2 mod n
-    #m = padding(plaintext)
     m = padding(plaintext)
-    p = (m *(m+B)) % n
-    return p
+    p = (m *(m+B))
+    return p%n
 
 def choose(lst):
 
     for i in lst:
         binary = bin(i)
-        if "0111111" == binary[-7:]:
-            return int(bin(i)[:-7],2)
+        if "00111111" == binary[-8:]:
+            return int(bin(i)[:-8],2)
     return "None"
 
 
@@ -148,8 +145,8 @@ def decryption(a, p, q, B):
 
     lst = [r, -1*r,s, -1*s]
 
-    rest = [chinese_remainder([p,q],[a,b]) for a in (r, -1*r) for b in (s, -1*s)]
 
+    rest = [chinese_remainder([p,q],[a,b]) for a in (r, -1*r) for b in (s, -1*s)]
 
     posPlain = [int(i - addB) for i in rest]
     if choose(posPlain) != "None":
@@ -191,7 +188,23 @@ def RabinEncrypt(plaintext):
     if not 0 <= B < n:
         B = B%n
 
+    upperbound = "01111010" + "00111111"
+    sliceSize = -2
+    while ((int(upperbound,2)**2) *(int(upperbound,2)+B)) < n:
+        upperbound = "01111010" + upperbound
+        sliceSize += 1
 
+    if sliceSize >=1:
+        ciphertext = []
+
+        plaintextChunks = [plaintext[i:i+sliceSize] for i in range(0,len(plaintext),sliceSize)]
+        for chunk in plaintextChunks:
+            textToEncrypt = ""
+            for char in chunk:
+                textToEncrypt += format((ord(char)),"08b")
+            textToEncrypt = int(textToEncrypt,2)
+            ciphertext.append(encryption(textToEncrypt, n, B))
+        return ciphertext
 
     plaintext = [ord(char) for char in plaintext]
     ciphertext = []
@@ -201,23 +214,40 @@ def RabinEncrypt(plaintext):
     print(f"plaintext = {plaintext}")
     print("\n")
     print(f'Ciphertext = {ciphertext}')
-    return ciphertext
 
+    return ciphertext
 def RabinDecrypt(ciphertext):
 
     ciphertext = [int(i) for i in ciphertext]
 
-    #p = int(delete_space(input('p = ')), 32)
-    #q = int(delete_space(input('q = ')), 32)
-    #p = 1666043
-    #q = 2796203
     p = 10092003300140014003
     q = 36484957213536676883
 
     B = int(delete_space("daae"), 32)
+
+
     n = p * q
     if not 0 <= B < n:
         B = B%n
+
+
+    upperbound = "01111010" + "00111111"
+    sliceSize = -2
+    while ((int(upperbound,2)**2) *(int(upperbound,2)+B)) < n:
+        upperbound = "01111010" + upperbound
+        sliceSize += 1
+
+    if sliceSize >=1:
+        plaintext = []
+        for i in ciphertext:
+            text = format(decryption(i, p, q,B),f"0{8*sliceSize}b")
+            plaintext+= [text[i:i+8] for i in range(0,len(text),8)]
+
+
+
+        plaintext = [chr(int(i,2)) for i in plaintext]
+        textdecrypt= "".join(plaintext)
+        return textdecrypt
 
     plaintext = []
     for i in ciphertext:
@@ -227,5 +257,4 @@ def RabinDecrypt(ciphertext):
 
 
 Cipher = RabinEncrypt("Hola como estas")
-print(Cipher)
 print(f"Message = {RabinDecrypt(Cipher)}")
