@@ -30,20 +30,17 @@ def decrypt_ECC(encryptedMsg, pubKey, privKey):
 
 def get_priv_key():
     return os.urandom(32)
-
 def get_pub_key():
     return os.urandom(32)
 
 
-if __name__ == "__main__":
-    #msg = b'Text to be encrypted by ECC public key and decrypted by its corresponding ECC private key'
-    msg = bytes('Hello there', 'utf-16')
-    print("original msg:", msg)
-    privKey = get_priv_key()
-    pubKey = x25519.scalar_base_mult(privKey)
-    sharedECCKey = x25519.scalar_mult(privKey, pubKey)
-    encryptedMsg = encrypt_ECC(msg, privKey, pubKey)
-    decryptedMsg = decrypt_ECC(encryptedMsg,pubKey,privKey)
+msg = bytes('Hello there', 'utf-16')
+print("original msg:", msg)
+privKey = get_priv_key()
+pubKey = x25519.scalar_base_mult(privKey)
+sharedECCKey = x25519.scalar_mult(privKey, pubKey)
+encryptedMsg = encrypt_ECC(msg, privKey, pubKey)
+decryptedMsg = decrypt_ECC(encryptedMsg,pubKey,privKey)
 
-    print("decrypted msg:", decryptedMsg.decode("utf-16") )
+print("decrypted msg:", decryptedMsg.decode("utf-16") )
 
