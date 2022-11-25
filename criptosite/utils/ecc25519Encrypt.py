@@ -21,11 +21,11 @@ def decrypt_AES_GCM(ciphertext, secretKey):
 def encrypt_ECC(msg, privKey, pubKey):
     sharedECCKey = x25519.scalar_mult(privKey, pubKey)
     ciphertext = encrypt_AES_GCM(msg, sharedECCKey)
-    return ciphertext
+    return ciphertext.hex()
 
 def decrypt_ECC(encryptedMsg, pubKey, privKey):
     sharedECCKey = x25519.scalar_mult(privKey, pubKey)
-    plaintext = decrypt_AES_GCM(encryptedMsg, sharedECCKey)
+    plaintext = decrypt_AES_GCM(bytes.fromhex(encryptedMsg), sharedECCKey)
     return plaintext
 
 def get_priv_key():
@@ -43,7 +43,6 @@ if __name__ == "__main__":
     pubKey = x25519.scalar_base_mult(privKey)
     sharedECCKey = x25519.scalar_mult(privKey, pubKey)
     encryptedMsg = encrypt_ECC(msg, privKey, pubKey)
-
     decryptedMsg = decrypt_ECC(encryptedMsg,pubKey,privKey)
 
     print("decrypted msg:", decryptedMsg.decode("utf-16") )
