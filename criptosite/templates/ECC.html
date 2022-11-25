@@ -29,8 +29,14 @@
                     <form method="POST" action="" target="_self">
                         {% csrf_token %} 
                         <div class="chart-area">
-                            <textarea name='input_text' class="form-control" rows="11" required>{{ clear_text }}</textarea>
+                            <textarea name='input_text' class="form-control" rows="10" required>{{ clear_text }}</textarea>
                         </div>
+                        <label for="mode">Choose Elliptic-curve:</label>
+                        <select name="mode" id="mode">
+                            <option value="1">Recomended</option>
+                            <option value="2">Ecc25519</option>
+                        {{ mode }}
+                        </select>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <span class="input-group-text" id="inputGroup-sizing-default">Public Key</span>
@@ -82,13 +88,25 @@
                     <form method="POST" action="", target="_self">
                         {% csrf_token %} 
                         <div class="chart-area">
-                            <textarea name='ciphered_text' class="form-control" rows="11" required>{{ cipher }}</textarea>
+                            <textarea name='ciphered_text' class="form-control" rows="9" required>{{ cipher }}</textarea>
                         </div>
+                        <label for="mode">Choose Elliptic-curve:</label>
+                        <select name="mode" id="mode">
+                            <option value="1">Recomended</option>
+                            <option value="2">Ecc25519</option>
+                        {{ mode }}
+                        </select>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <span class="input-group-text" id="inputGroup-sizing-default">Private Key</span>
                             </div>
                             <input type="text" name='in_priv_key' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-default">Public Key</span>
+                            </div>
+                            <input type="text" name='in_pub_key' class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                         </div>
                         <input name="decrypt" class="btn btn-primary btn-block" type="submit" value="Submit">
                     </form>

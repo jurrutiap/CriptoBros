@@ -78,12 +78,12 @@ def RSADecryption(plain_text):
         dec_text += dec_data.decode()
     return dec_text, private_key_string
 
-def showPublicKey(keys):
-    return keys.publickey().export_key(key_format).decode()
-#
-#
-def showPrivateKey(keys):
-    return keys.export_key(key_format).decode()
+# def showPublicKey(keys):
+#     return keys.publickey().export_key(key_format).decode()
+# #
+# #
+# def showPrivateKey(keys):
+#     return keys.export_key(key_format).decode()
 
 
 Text = """

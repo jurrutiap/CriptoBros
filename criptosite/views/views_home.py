@@ -33,6 +33,7 @@ import utils.RabinSystem as Rabin
 import utils.elgamal as Elgamal
 import utils.ecc as ECC
 import utils.digital_signature as Signature
+import utils.ecc25519Encrypt as ECC1
 
 def home(request):
     return render(request, 'index.html')
@@ -242,24 +243,45 @@ def elgamal_view(request):
 
 def ecc_view(request):
     if request.method == 'POST':
+        Mode= request.POST['mode']
         try:
-            if 'encrypt' in request.POST:
-                curve = ECC.get_curve()
-                clear_message = request.POST['input_text']
-                text = bytes(clear_message, 'utf-16')
-                priv_key = ECC.get_priv_key()
-                pubKey = priv_key * curve.g
-                encryptedMsg = ECC.encrypt_ECC(text, pubKey)
-                ECC.placeholder = encryptedMsg[3]
-                encryptedMsgObj = ECC.get_obj(encryptedMsg)
-                return render(request, 'ECC.html', {'result': list(encryptedMsgObj.values()), 'out_pub_key': (pubKey.x, pubKey.y), 'out_priv_key': priv_key})
+            if Mode == "1":
+                if 'encrypt' in request.POST:
+                    curve = ECC.get_curve()
+                    clear_message = request.POST['input_text']
+                    text = bytes(clear_message, 'utf-16')
+                    priv_key = ECC.get_priv_key()
+                    pubKey = priv_key * curve.g
+                    encryptedMsg = ECC.encrypt_ECC(text, pubKey)
+                    ECC.placeholder = encryptedMsg[3]
+                    encryptedMsgObj = ECC.get_obj(encryptedMsg)
+                    return render(request, 'ECC.html', {'result': list(encryptedMsgObj.values()), 'out_pub_key': (pubKey.x, pubKey.y), 'out_priv_key': priv_key})
 
-            if 'decrypt' in request.POST:
-                cipher = request.POST['ciphered_text']
-                priv_key = request.POST['in_priv_key']
-                result = ECC.decrypt_ECC(cipher, priv_key)
-                print('entered')
-                return render(request, 'ECC.html', {'cipher': cipher, 'result':result.decode('utf-16'), 'out_priv_key':priv_key})
+                if 'decrypt' in request.POST:
+                    cipher = request.POST['ciphered_text']
+                    priv_key = request.POST['in_priv_key']
+                    result = ECC.decrypt_ECC(cipher, priv_key)
+                    print('entered')
+                    return render(request, 'ECC.html', {'cipher': cipher, 'result':result.decode('utf-16'), 'out_priv_key':priv_key})
+            
+            if Mode == "2":
+                if 'encrypt' in request.POST:
+                    clear_message = request.POST['input_text']
+                    text = bytes(clear_message, 'utf-16')
+                    priv_key = ECC1.get_priv_key()
+                    pubKey = ECC1.get_pub_key()
+                    encryptedMsg = ECC1.encrypt_ECC(text, pubKey, pubKey)
+                    return render(request, 'ECC.html', {'result': encryptedMsg, 'out_pub_key': pubKey, 'out_priv_key': priv_key})
+
+                if 'decrypt' in request.POST:
+                    cipher = request.POST['ciphered_text']
+                    priv_key = request.POST['in_priv_key']
+                    pubKey = request.POST['in_pub_key']
+                    result = ECC1.decrypt_ECC(cipher, pubKey, priv_key)
+                    print('entered')
+                    return render(request, 'ECC.html', {'cipher': cipher, 'result':result.decode('utf-16'), 'out_priv_key':priv_key})
+            
+                
         except:
             return render(request, 'ECC.html')
     return render(request, 'ECC.html')
@@ -315,7 +337,7 @@ def hill_view(request, *textC):
 
 def DESimage_view(request, *textC):
     if request.method == "POST":
-        #try:
+        try:
             if 'encrypt' in request.POST:
                 if os.path.exists("criptosite/static/img/clean.png"):
                     os.remove("criptosite/static/img/clean.png")
@@ -335,8 +357,8 @@ def DESimage_view(request, *textC):
                 fss.save('criptosite/static/img/Encrypted.png', upload)
                 k= DESi.decryptDESImage(k)
                 return render(request, 'DESimage_system.html', {'decrypted_image':'aaaaa', 'k2':k})
-        #except:
-            #return render(request, 'DESimage_system.html')
+        except:
+            return render(request, 'DESimage_system.html')
 
     return render(request, 'DESimage_system.html')
 
