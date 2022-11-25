@@ -13,19 +13,16 @@ def EC25519Sing(message):
 
     key = key.export_key(format = "DER")
 
-    signature = signature.decode()
 
 
-    return signature,key
+    return signature.hex(),key.hex()
 
 def EC25519Verify(message,key,signature):
-    if isinstance(key,str):
-        key = key.encode("raw_unicode_escape")
+    key = bytes.fromhex(key)
     key = ECC.import_key(key)
     if isinstance(message,str):
         message = message.encode()
-    if isinstance(signature,str):
-        signature = signature.encode("raw_unicode_escape")
+    signature = bytes.fromhex(signature)
 
     signer = eddsa.new(key, mode = 'rfc8032')
     try:
