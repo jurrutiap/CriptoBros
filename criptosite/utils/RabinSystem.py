@@ -217,6 +217,10 @@ def RabinEncrypt(plaintext):
 
     return ciphertext
 def RabinDecrypt(ciphertext):
+    if ("[" in ciphertext) or ("]" in ciphertext):
+        ciphertext = ciphertext.replace("[","")
+        ciphertext = ciphertext.replace("]","")
+        ciphertext = ciphertext.split(",")
 
     ciphertext = [int(i) for i in ciphertext]
 
@@ -240,8 +244,11 @@ def RabinDecrypt(ciphertext):
     if sliceSize >=1:
         plaintext = []
         for i in ciphertext:
-            text = format(decryption(i, p, q,B),f"0{8*sliceSize}b")
-            plaintext+= [text[i:i+8] for i in range(0,len(text),8)]
+            try:
+                text = format(decryption(i, p, q,B),f"0{8*sliceSize}b")
+                plaintext+= [text[i:i+8] for i in range(0,len(text),8)]
+            except:
+                plaintext +="00000000"
 
 
 
@@ -256,5 +263,7 @@ def RabinDecrypt(ciphertext):
     return textdecrypt
 
 
-Cipher = RabinEncrypt("Hola como estas")
+Cipher = RabinEncrypt("""Dies irae, dies illa,
+Solvet saeclum in favilla
+Teste David cum Sibylla.""")
 print(f"Message = {RabinDecrypt(Cipher)}")
