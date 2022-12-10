@@ -105,6 +105,18 @@ A graph generated with (0,0) as the origin point is shown bellow
 
 To Decript, the user must provide the origin coordenates, the permutation and the ciphered coordenates. After doing the set-up, the coordinates are translated into letters, returning the original clear text. Since the keys in each alphabet can be used with the same probability when constructing ciphertexts then we can infer that the gamma-pentagonal system is unbreakable.
 
+# V3.0
+
+For version 3.0, bugs from the second release were fixed, such as Hill-Image encryption bugs. Encryption methods were optimized. Public Key cryptosystems module was added, among which the following are shown below:
+
+## Implemented encryption methods
+
+- **RSA Encryption**
+- **Rabin cipher**
+- **Elgamal Cipher (DLP)**
+- **Elgamal Cipher (Eliptic curve: EC255519)**
+- **Digital signature Authenticator (Eliptic curve: SECP256k1)**
+
 ## Instalation and Dependencies
 [(Back to top)](#what-to-expect)
 As a general requirement, is is mandatory to have **`Python`** and **`Bootstrap 4`** installed.
